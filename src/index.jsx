@@ -17,11 +17,9 @@ import React, { StrictMode } from 'react';
 // eslint-disable-next-line import/no-unresolved
 import { createRoot } from 'react-dom/client';
 
-import Header from '@edx/frontend-component-header';
-import { FooterSlot } from '@edx/frontend-component-footer';
-
 import messages from './i18n';
 import configureStore from './data/configureStore';
+import { RobboFooter, RobboHeader } from './robbo-layout';
 
 import './index.scss';
 import Head from './head/Head';
@@ -34,11 +32,11 @@ subscribe(APP_READY, () => {
     <StrictMode>
       <AppProvider store={configureStore()}>
         <Head />
-        <Header />
+        <RobboHeader />
         <main id="main">
           <AppRoutes />
         </main>
-        <FooterSlot />
+        <RobboFooter />
       </AppProvider>
     </StrictMode>,
   );
