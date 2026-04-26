@@ -79,12 +79,14 @@ export const RobboHeader = ({
   return (
     <header className="robbo-layout-header">
       <div className="robbo-layout-header__inner">
-        <a className="robbo-layout-header__brand" href={buildUrl(config.LMS_BASE_URL, '/')} aria-label="РОББО">
-          <span className="robbo-layout-header__wordmark">
-            РОББО
-            <sup className="robbo-layout-header__reg" aria-hidden="true">®</sup>
-          </span>
-        </a>
+        <div className="robbo-layout-header__leading">
+          <a className="robbo-layout-header__brand" href={buildUrl(config.LMS_BASE_URL, '/')} aria-label="РОББО">
+            <span className="robbo-layout-header__wordmark">
+              РОББО
+              <sup className="robbo-layout-header__reg" aria-hidden="true">®</sup>
+            </span>
+          </a>
+        </div>
         <nav className="robbo-layout-header__nav" aria-label="Основная навигация">
           {mainLinks.map((item) => (
             <a
@@ -98,33 +100,35 @@ export const RobboHeader = ({
             </a>
           ))}
         </nav>
-        {showUserDropdown && username && (
-          <div className="robbo-layout-user-menu">
-            <button
-              className="robbo-layout-user-menu__toggle"
-              type="button"
-              aria-haspopup="menu"
-              aria-expanded={isUserMenuOpen}
-              onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-            >
-              <span>{username}</span>
-            </button>
-            {isUserMenuOpen && (
-              <div className="robbo-layout-user-menu__dropdown" role="menu">
-                {userLinks.map((item) => (
-                  <a
-                    key={`${item.href}-${item.label}`}
-                    className="robbo-layout-user-menu__item"
-                    href={item.href}
-                    role="menuitem"
-                  >
-                    {item.label}
-                  </a>
-                ))}
-              </div>
-            )}
-          </div>
-        )}
+        <div className="robbo-layout-header__trailing">
+          {showUserDropdown && username && (
+            <div className="robbo-layout-user-menu">
+              <button
+                className="robbo-layout-user-menu__toggle"
+                type="button"
+                aria-haspopup="menu"
+                aria-expanded={isUserMenuOpen}
+                onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+              >
+                <span>{username}</span>
+              </button>
+              {isUserMenuOpen && (
+                <div className="robbo-layout-user-menu__dropdown" role="menu">
+                  {userLinks.map((item) => (
+                    <a
+                      key={`${item.href}-${item.label}`}
+                      className="robbo-layout-user-menu__item"
+                      href={item.href}
+                      role="menuitem"
+                    >
+                      {item.label}
+                    </a>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+        </div>
       </div>
     </header>
   );

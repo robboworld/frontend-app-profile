@@ -1,20 +1,43 @@
+// Align MFE RobboHeader with LMS `robbo-theme` global header: green bar, 3-column grid, type scale
+$robbo-mfe-header-bar-min-h: 75px;
+$robbo-mfe-header-wordmark: 29px;
+$robbo-mfe-header-nav-fs: 20px;
+$robbo-mfe-header-profile-toggle-fs: 1rem;
+
 .robbo-layout-header {
   position: relative;
   z-index: 20;
+  min-height: $robbo-mfe-header-bar-min-h;
   background: #00b140;
   color: #fff;
   box-shadow: none;
+  box-sizing: border-box;
 }
 
 .robbo-layout-header__inner {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, auto) minmax(0, 1fr) minmax(0, auto);
   align-items: center;
-  min-height: 64px;
-  max-width: 1600px;
+  column-gap: 16px;
+  row-gap: 8px;
+  min-height: $robbo-mfe-header-bar-min-h;
+  max-width: 1450px;
   margin: 0 auto;
   padding: 6px 28px;
-  gap: 20px;
   box-sizing: border-box;
+  min-width: 0;
+
+  @media (min-width: 992px) {
+    column-gap: 24px;
+  }
+}
+
+.robbo-layout-header__leading {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  min-width: 0;
 }
 
 .robbo-layout-header__brand {
@@ -22,7 +45,7 @@
   align-items: center;
   color: #fff;
   text-decoration: none;
-  flex: 0 0 auto;
+  margin: 0;
 
   &:hover,
   &:focus {
@@ -32,7 +55,7 @@
 }
 
 .robbo-layout-header__wordmark {
-  font-size: 1.125rem;
+  font-size: $robbo-mfe-header-wordmark;
   font-weight: 700;
   letter-spacing: 0.04em;
   line-height: 1.1;
@@ -48,19 +71,35 @@
 
 .robbo-layout-header__nav {
   display: flex;
-  flex: 1 1 auto;
   justify-content: center;
   align-items: center;
+  flex-wrap: wrap;
   gap: 8px 28px;
+  min-width: 0;
+  max-width: 100%;
+}
+
+@media (min-width: 992px) {
+  .robbo-layout-header__nav {
+    flex-wrap: nowrap;
+  }
+}
+
+.robbo-layout-header__trailing {
+  position: relative;
+  z-index: 2;
+  justify-self: end;
   min-width: 0;
 }
 
 .robbo-layout-header__link {
   display: inline-flex;
   align-items: center;
-  min-height: 40px;
+  margin: 0;
+  padding: 0.2em 0;
+  min-height: 0;
   color: #fff;
-  font-size: 15px;
+  font-size: $robbo-mfe-header-nav-fs;
   font-weight: 700;
   line-height: 1.35;
   letter-spacing: 0.01em;
@@ -83,24 +122,23 @@
 
 .robbo-layout-user-menu {
   position: relative;
-  z-index: 2;
   flex: 0 0 auto;
 }
 
 .robbo-layout-user-menu__toggle {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   margin: 0;
-  padding: 8px 18px;
+  padding: 6px 16px;
   background: transparent;
   color: #fff;
   border: 1px solid #fff;
   border-radius: 999px;
   box-sizing: border-box;
-  font-size: 14px;
+  font-size: $robbo-mfe-header-profile-toggle-fs;
   font-weight: 700;
-  line-height: 20px;
+  line-height: 1.35;
   cursor: pointer;
 
   &:hover,
@@ -148,10 +186,15 @@
   }
 }
 
+// Как `wrapper-footer` в LMS (`_extras.scss`): разделитель над футером
 .wrapper.wrapper-footer {
+  box-shadow: none;
   background: #fff;
+  border-top: 1px solid #e0e0e0;
+  padding: 20px clamp(20px, 4vw, 45px);
   flex: 0 0 auto;
   margin-top: auto;
+  box-sizing: border-box;
 }
 
 #root {
@@ -211,6 +254,7 @@
   text-align: center;
   min-width: 0;
   width: 100%;
+  line-height: 0;
   padding: 0 clamp(4px, 1vw, 12px);
 }
 
@@ -343,20 +387,29 @@ body.indigo-dark-theme {
 
 @media (max-width: 991.98px) {
   .robbo-layout-header__inner {
-    flex-wrap: wrap;
+    grid-template-columns: minmax(0, 1fr) minmax(0, auto);
+    grid-template-rows: auto auto;
+    column-gap: 16px;
+    row-gap: 10px;
     padding: 10px 16px;
-    gap: 10px 16px;
+  }
+
+  .robbo-layout-header__leading {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .robbo-layout-header__trailing {
+    grid-column: 2;
+    grid-row: 1;
+    justify-self: end;
   }
 
   .robbo-layout-header__nav {
-    order: 3;
-    width: 100%;
+    grid-column: 1 / -1;
+    grid-row: 2;
     justify-content: flex-start;
     overflow-x: auto;
-  }
-
-  .robbo-layout-user-menu {
-    margin-left: auto;
   }
 
   .robbo-site-footer__inner {
