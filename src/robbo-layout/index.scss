@@ -204,14 +204,14 @@ $robbo-mfe-header-profile-toggle-fs: 1rem;
 }
 
 // AppProvider nests Redux + Router wrappers; stretch the column so `main` can grow and footer stays at bottom
-#root > [data-testid="redux-provider"] {
+#root>[data-testid="redux-provider"] {
   display: flex;
   flex-direction: column;
   flex: 1 0 auto;
   min-height: 100vh;
 }
 
-[data-testid="redux-provider"] > [data-testid="browser-router"] {
+[data-testid="redux-provider"]>[data-testid="browser-router"] {
   display: flex;
   flex-direction: column;
   flex: 1 0 auto;
@@ -224,7 +224,7 @@ $robbo-mfe-header-profile-toggle-fs: 1rem;
   min-height: 100vh;
 }
 
-.robbo-layout-page > main,
+.robbo-layout-page>main,
 #root #main {
   flex: 1 0 auto;
 }
