@@ -59,12 +59,8 @@ export const RobboHeader = ({
     },
   ];
 
-  // Same order as LMS `user_dropdown.html`: Dashboard, Profile, Sign Out
+  // Same order as LMS `user_dropdown.html`: Profile, Sign Out (dashboard link omitted — Robbo).
   const userMenuLinks = [
-    {
-      href: dashboardUrl,
-      messageId: 'robbo.header.user.dashboard',
-    },
     username && config.ACCOUNT_PROFILE_URL ? {
       href: `${config.ACCOUNT_PROFILE_URL}/u/${username}`,
       messageId: 'robbo.header.user.profile',
