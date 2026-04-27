@@ -181,7 +181,7 @@ export const RobboFooter = () => (
           <nav className="robbo-footer__nav" aria-label="Документы">
             <ul className="robbo-footer__links">
               <li>
-                <a href="https://edurobbo.ru/doc" target="_blank" rel="noopener noreferrer">
+                <a href="https://edurobbo.ru/skill" target="_blank" rel="noopener noreferrer">
                   Сведения об образовательной организации
                 </a>
               </li>

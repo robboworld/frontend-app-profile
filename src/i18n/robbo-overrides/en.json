@@ -1,0 +1,11 @@
+{
+  "robbo.header.mainNav.myCourses": "My Courses",
+  "robbo.header.mainNav.programs": "Programs",
+  "robbo.header.mainNav.courseCatalog": "Course catalog",
+  "robbo.header.mainNav.aria": "Main navigation",
+  "robbo.header.user.toggleAria": "Options Menu",
+  "robbo.header.user.menuDropdownAria": "More Options",
+  "robbo.header.user.dashboard": "Dashboard",
+  "robbo.header.user.profile": "Profile",
+  "robbo.header.user.signOut": "Sign Out"
+}

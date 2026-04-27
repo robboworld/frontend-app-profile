@@ -1,0 +1,11 @@
+{
+  "robbo.header.mainNav.myCourses": "Мои курсы",
+  "robbo.header.mainNav.programs": "Программы",
+  "robbo.header.mainNav.courseCatalog": "Каталог курсов",
+  "robbo.header.mainNav.aria": "Основная навигация",
+  "robbo.header.user.toggleAria": "Меню параметров",
+  "robbo.header.user.menuDropdownAria": "Дополнительные параметры",
+  "robbo.header.user.dashboard": "Панель управления",
+  "robbo.header.user.profile": "Профиль",
+  "robbo.header.user.signOut": "Выйти"
+}
