@@ -16,8 +16,12 @@
   }
 }
 
+// Match Robbo header bar (`robbo-layout/index.scss`); replaces Paragon `bg-primary` on profile banner
+$robbo-profile-banner-bg: #00b140;
+
 .profile-page-bg-banner {
   height: 12rem;
+  background-color: $robbo-profile-banner-bg;
   background-image: url('./assets/dot-pattern-light.png');
   background-repeat: repeat-x;
   background-size: auto 85%;

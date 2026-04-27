@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { getConfig } from '@edx/frontend-platform';
+import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import { AppContext } from '@edx/frontend-platform/react';
 
 import './index.scss';
@@ -33,6 +34,7 @@ export const RobboHeader = ({
 }) => {
   const { authenticatedUser } = React.useContext(AppContext);
   const [isUserMenuOpen, setIsUserMenuOpen] = React.useState(false);
+  const intl = useIntl();
   const config = getConfig();
   const dashboardUrl = getDashboardUrl(config);
   const catalogUrl = getCatalogUrl(config);
@@ -41,38 +43,35 @@ export const RobboHeader = ({
   const mainLinks = [
     {
       href: dashboardUrl,
-      label: 'Мои курсы',
+      messageId: 'robbo.header.mainNav.myCourses',
       section: 'dashboard',
     },
     ...(config.ENABLE_PROGRAMS ? [{
       href: getProgramsUrl(config),
-      label: 'Programs',
+      messageId: 'robbo.header.mainNav.programs',
       section: 'programs',
     }] : []),
     {
       href: catalogUrl,
-      label: 'Course catalog',
+      messageId: 'robbo.header.mainNav.courseCatalog',
       onClick: onCatalogClick,
       section: 'catalog',
     },
   ];
 
-  const userLinks = [
+  // Same order as LMS `user_dropdown.html`: Dashboard, Profile, Sign Out
+  const userMenuLinks = [
+    {
+      href: dashboardUrl,
+      messageId: 'robbo.header.user.dashboard',
+    },
     username && config.ACCOUNT_PROFILE_URL ? {
       href: `${config.ACCOUNT_PROFILE_URL}/u/${username}`,
-      label: 'Profile',
-    } : null,
-    config.ACCOUNT_SETTINGS_URL ? {
-      href: config.ACCOUNT_SETTINGS_URL,
-      label: 'Account',
-    } : null,
-    config.ORDER_HISTORY_URL ? {
-      href: config.ORDER_HISTORY_URL,
-      label: 'Order History',
+      messageId: 'robbo.header.user.profile',
     } : null,
     config.LOGOUT_URL ? {
       href: config.LOGOUT_URL,
-      label: 'Sign Out',
+      messageId: 'robbo.header.user.signOut',
     } : null,
   ].filter(Boolean);
 
@@ -87,16 +86,22 @@ export const RobboHeader = ({
             </span>
           </a>
         </div>
-        <nav className="robbo-layout-header__nav" aria-label="Основная навигация">
+        <nav
+          className="robbo-layout-header__nav"
+          aria-label={intl.formatMessage({
+            id: 'robbo.header.mainNav.aria',
+            defaultMessage: 'Main navigation',
+          })}
+        >
           {mainLinks.map((item) => (
             <a
-              key={`${item.href}-${item.label}`}
+              key={`${item.href}-${item.messageId}`}
               className={activeSection === item.section ? 'robbo-layout-header__link active' : 'robbo-layout-header__link'}
               href={item.href}
               onClick={item.onClick}
               aria-current={activeSection === item.section ? 'page' : undefined}
             >
-              {item.label}
+              <FormattedMessage id={item.messageId} />
             </a>
           ))}
         </nav>
@@ -108,20 +113,31 @@ export const RobboHeader = ({
                 type="button"
                 aria-haspopup="menu"
                 aria-expanded={isUserMenuOpen}
+                aria-label={intl.formatMessage({
+                  id: 'robbo.header.user.toggleAria',
+                  defaultMessage: 'Options Menu',
+                })}
                 onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
               >
                 <span>{username}</span>
               </button>
               {isUserMenuOpen && (
-                <div className="robbo-layout-user-menu__dropdown" role="menu">
-                  {userLinks.map((item) => (
+                <div
+                  className="robbo-layout-user-menu__dropdown"
+                  role="menu"
+                  aria-label={intl.formatMessage({
+                    id: 'robbo.header.user.menuDropdownAria',
+                    defaultMessage: 'More Options',
+                  })}
+                >
+                  {userMenuLinks.map((item) => (
                     <a
-                      key={`${item.href}-${item.label}`}
+                      key={`${item.href}-${item.messageId}`}
                       className="robbo-layout-user-menu__item"
                       href={item.href}
                       role="menuitem"
                     >
-                      {item.label}
+                      <FormattedMessage id={item.messageId} />
                     </a>
                   ))}
                 </div>

@@ -6,7 +6,7 @@ exports[`<ProfilePage /> Renders correctly in various states app loading 1`] = `
     class="profile-page"
   >
     <div
-      class="profile-page-bg-banner bg-primary d-md-block p-relative"
+      class="profile-page-bg-banner d-md-block p-relative"
     />
     <div>
       <div
@@ -35,7 +35,7 @@ exports[`<ProfilePage /> Renders correctly in various states successfully redire
     class="profile-page"
   >
     <div
-      class="profile-page-bg-banner bg-primary d-md-block p-relative"
+      class="profile-page-bg-banner d-md-block p-relative"
     />
     <div
       class="container-fluid"
@@ -670,7 +670,7 @@ exports[`<ProfilePage /> Renders correctly in various states test country edit w
     class="profile-page"
   >
     <div
-      class="profile-page-bg-banner bg-primary d-md-block p-relative"
+      class="profile-page-bg-banner d-md-block p-relative"
     />
     <div
       class="container-fluid"
@@ -2875,7 +2875,7 @@ exports[`<ProfilePage /> Renders correctly in various states test education edit
     class="profile-page"
   >
     <div
-      class="profile-page-bg-banner bg-primary d-md-block p-relative"
+      class="profile-page-bg-banner d-md-block p-relative"
     />
     <div
       class="container-fluid"
@@ -3874,7 +3874,7 @@ exports[`<ProfilePage /> Renders correctly in various states test preferreded la
     class="profile-page"
   >
     <div
-      class="profile-page-bg-banner bg-primary d-md-block p-relative"
+      class="profile-page-bg-banner d-md-block p-relative"
     />
     <div
       class="container-fluid"
@@ -5748,7 +5748,7 @@ exports[`<ProfilePage /> Renders correctly in various states viewing other profi
     class="profile-page"
   >
     <div
-      class="profile-page-bg-banner bg-primary d-md-block p-relative"
+      class="profile-page-bg-banner d-md-block p-relative"
     />
     <div
       class="container-fluid"
@@ -6154,7 +6154,7 @@ exports[`<ProfilePage /> Renders correctly in various states viewing own profile
     class="profile-page"
   >
     <div
-      class="profile-page-bg-banner bg-primary d-md-block p-relative"
+      class="profile-page-bg-banner d-md-block p-relative"
     />
     <div
       class="container-fluid"
@@ -7031,7 +7031,7 @@ exports[`<ProfilePage /> Renders correctly in various states while saving an edi
     class="profile-page"
   >
     <div
-      class="profile-page-bg-banner bg-primary d-md-block p-relative"
+      class="profile-page-bg-banner d-md-block p-relative"
     />
     <div
       class="container-fluid"
@@ -7972,7 +7972,7 @@ exports[`<ProfilePage /> Renders correctly in various states while saving an edi
     class="profile-page"
   >
     <div
-      class="profile-page-bg-banner bg-primary d-md-block p-relative"
+      class="profile-page-bg-banner d-md-block p-relative"
     />
     <div
       class="container-fluid"
@@ -8921,7 +8921,7 @@ exports[`<ProfilePage /> Renders correctly in various states without credentials
     class="profile-page"
   >
     <div
-      class="profile-page-bg-banner bg-primary d-md-block p-relative"
+      class="profile-page-bg-banner d-md-block p-relative"
     />
     <div
       class="container-fluid"

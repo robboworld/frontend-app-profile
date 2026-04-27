@@ -54,6 +54,8 @@ initialize({
       mergeConfig({
         COLLECT_YEAR_OF_BIRTH: process.env.COLLECT_YEAR_OF_BIRTH,
         ENABLE_SKILLS_BUILDER_PROFILE: process.env.ENABLE_SKILLS_BUILDER_PROFILE,
+        // Align with LMS (`openedx-language-preference`); empty env would skip cookie-based locale.
+        LANGUAGE_PREFERENCE_COOKIE_NAME: process.env.LANGUAGE_PREFERENCE_COOKIE_NAME || 'openedx-language-preference',
       }, 'App loadConfig override handler');
     },
   },
