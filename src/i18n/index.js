@@ -5,6 +5,6 @@ import ruRobbo from './robbo-overrides/ru.json';
 
 // Both `en` and locale catalogs are required: `getLocale()` falls back to `en` when the browser
 // locale is English or unsupported; without `en`, `IntlProvider` receives no messages.
-// Robbo header strings live under robbo-overrides/ and are re-injected into Atlas output via
-// Makefile `pull_translations` → messages/robbo-custom/ (see intl-imports).
+// Robbo strings that must survive `make pull_translations` (Atlas + intl-imports) belong in
+// robbo-overrides/: that package is merged last and overrides openedx-translations.
 export default [{ en: { ...en, ...enRobbo }, ru: { ...ru, ...ruRobbo } }];

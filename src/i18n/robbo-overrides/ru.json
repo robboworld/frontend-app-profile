@@ -7,5 +7,6 @@
   "robbo.header.user.menuDropdownAria": "Дополнительные параметры",
   "robbo.header.user.dashboard": "Панель управления",
   "robbo.header.user.profile": "Профиль",
-  "robbo.header.user.signOut": "Выйти"
+  "robbo.header.user.signOut": "Выйти",
+  "profile.name.full.name": "ФИО"
 }
