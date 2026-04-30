@@ -1,3 +1,9 @@
+/**
+ * Copyright (C) 2024-2026 Robbo <https://robbo.ru>
+ * SPDX-License-Identifier: AGPL-3.0-only
+ *
+ * Part of the Robbo Open edX MFE overrides. See NOTICE at repository root.
+ */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { getConfig } from '@edx/frontend-platform';

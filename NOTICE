@@ -1,0 +1,15 @@
+Robbo Open edX — frontend-app-profile override
+==============================================
+
+This repository is a Robbo fork/override of Open edX frontend-app-profile.
+Upstream: https://github.com/openedx/frontend-app-profile .
+
+Modifications and Robbo-specific files (including src/robbo-layout/ and files
+marked in copyright headers) are:
+
+  Copyright (C) 2024-2026 Robbo <https://robbo.ru>
+
+Licensed under the GNU Affero General Public License v3.0-only. See LICENSE.
+
+For corresponding source matching a deployed Robbo learning instance, see the
+offer published with that service (for example https://skill.robbo.ru).
