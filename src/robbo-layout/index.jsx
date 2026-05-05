@@ -25,10 +25,12 @@ const getDashboardUrl = (config) => (
   || buildUrl(config.LMS_BASE_URL, '/dashboard')
 );
 
+// LMS `/courses` first: Tutor often sets COURSE_SEARCH_URL to the learner app (same as dashboard).
 const getCatalogUrl = (config) => (
-  config.COURSE_SEARCH_URL
+  (config.LMS_BASE_URL && buildUrl(config.LMS_BASE_URL, '/courses'))
+  || config.COURSE_SEARCH_URL
   || config.COURSE_CATALOG_URL
-  || buildUrl(config.LMS_BASE_URL, '/courses')
+  || ''
 );
 
 const getProgramsUrl = (config) => buildUrl(config.LMS_BASE_URL, '/dashboard/programs');
@@ -81,7 +83,7 @@ export const RobboHeader = ({
     <header className="robbo-layout-header">
       <div className="robbo-layout-header__inner">
         <div className="robbo-layout-header__leading">
-          <a className="robbo-layout-header__brand" href={buildUrl(config.LMS_BASE_URL, '/')} aria-label="РОББО">
+          <a className="robbo-layout-header__brand" href={catalogUrl} aria-label="РОББО">
             <span className="robbo-layout-header__wordmark">
               РОББО
               <sup className="robbo-layout-header__reg" aria-hidden="true">®</sup>
