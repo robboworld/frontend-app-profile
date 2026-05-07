@@ -7,6 +7,7 @@ $robbo-mfe-header-bar-min-h: 75px;
 $robbo-mfe-header-wordmark: 29px;
 $robbo-mfe-header-nav-fs: 20px;
 $robbo-mfe-header-profile-toggle-fs: 1rem;
+$robbo-footer-doc-links-gap: 6px; // vertical rhythm between footer legal links (RobboFooter)
 
 .robbo-layout-header {
   position: relative;
@@ -195,31 +196,28 @@ $robbo-mfe-header-profile-toggle-fs: 1rem;
   box-shadow: none;
   background: #fff;
   border-top: 1px solid #e0e0e0;
-  padding: 20px clamp(20px, 4vw, 45px);
+  padding: 0 clamp(20px, 4vw, 45px);
   flex: 0 0 auto;
   margin-top: auto;
   box-sizing: border-box;
+  display: block;
+  width: 100%;
+  min-height: 80px;
+
+  @media (min-width: 992px) {
+    height: 80px;
+  }
+
+  @media (max-width: 991.98px) {
+    height: auto;
+    padding: 12px clamp(20px, 4vw, 45px);
+  }
 }
 
 #root {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-}
-
-// AppProvider nests Redux + Router wrappers; stretch the column so `main` can grow and footer stays at bottom
-#root>[data-testid="redux-provider"] {
-  display: flex;
-  flex-direction: column;
-  flex: 1 0 auto;
-  min-height: 100vh;
-}
-
-[data-testid="redux-provider"]>[data-testid="browser-router"] {
-  display: flex;
-  flex-direction: column;
-  flex: 1 0 auto;
-  min-height: 0;
 }
 
 .robbo-layout-page {
@@ -229,13 +227,20 @@ $robbo-mfe-header-profile-toggle-fs: 1rem;
 }
 
 .robbo-layout-page>main,
-#root #main {
+#root>main {
   flex: 1 0 auto;
 }
 
 .robbo-site-footer {
   background: #fff;
   box-sizing: border-box;
+  width: 100%;
+  display: flex;
+  align-items: center;
+
+  @media (min-width: 992px) {
+    min-height: 80px;
+  }
 }
 
 .robbo-site-footer__inner {
@@ -250,6 +255,10 @@ $robbo-mfe-header-profile-toggle-fs: 1rem;
   margin: 0 auto;
   padding: 0;
   box-sizing: border-box;
+
+  @media (min-width: 992px) {
+    min-height: 80px;
+  }
 }
 
 .robbo-footer__left {
@@ -273,8 +282,11 @@ $robbo-mfe-header-profile-toggle-fs: 1rem;
   text-align: center;
   min-width: 0;
   width: 100%;
-  line-height: 0;
   padding: 0 clamp(4px, 1vw, 12px);
+
+  .robbo-footer__nav {
+    margin: 0;
+  }
 }
 
 .robbo-footer__contacts {
@@ -338,22 +350,39 @@ $robbo-mfe-header-profile-toggle-fs: 1rem;
 }
 
 .robbo-footer__links {
+  display: flex;
+  flex-direction: column;
+  gap: $robbo-footer-doc-links-gap;
   width: 100%;
-  margin: 0;
+  margin: 0; // full reset vs reboot `ul { margin-bottom: 1rem }`
   padding: 0;
   list-style: none;
   text-align: center;
 
-  li {
-    margin: 0 0 clamp(6px, 1vw, 10px);
+  > li {
+    margin: 0;
+    padding: 0;
+  }
 
-    &:last-child {
-      margin-bottom: 0;
+  a {
+    display: block;
+    margin: 0;
+    padding: 0;
+    color: #777;
+    font-size: clamp(11px, 1.1vw, 12px);
+    line-height: 1.25;
+    font-family: var(--pgn-typography-font-family-base, "Helvetica Neue", Arial, sans-serif);
+    text-decoration: underline;
+    word-break: break-word;
+
+    &:hover,
+    &:focus {
+      color: #111;
+      text-decoration: underline;
     }
   }
 }
 
-.robbo-footer__links a,
 .robbo-footer__contacts-line a {
   color: #777;
   font-size: clamp(11px, 1.1vw, 12px);

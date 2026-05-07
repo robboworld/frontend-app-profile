@@ -32,11 +32,13 @@ subscribe(APP_READY, () => {
     <StrictMode>
       <AppProvider store={configureStore()}>
         <Head />
-        <RobboHeader />
-        <main id="main">
-          <AppRoutes />
-        </main>
-        <RobboFooter />
+        <div className="robbo-layout-page">
+          <RobboHeader />
+          <main id="main">
+            <AppRoutes />
+          </main>
+          <RobboFooter />
+        </div>
       </AppProvider>
     </StrictMode>,
   );
