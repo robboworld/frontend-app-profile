@@ -295,13 +295,6 @@ $y-hamburger-middle: ($robbo-mfe-profile-hamburger-box-height - $robbo-mfe-profi
   text-decoration: none;
   transition: background-color 0.15s ease, color 0.15s ease;
 
-  // как LMS `.mobile-nav-link a::after`: » после текста пункта
-  &::after {
-    content: '\00BB';
-    padding-left: 4px;
-    color: inherit;
-  }
-
   &:hover,
   &:focus,
   &.active {
