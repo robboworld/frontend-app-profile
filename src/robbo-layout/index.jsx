@@ -123,7 +123,7 @@ export const RobboHeader = ({
                 })}
                 onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
               >
-                <span>{username}</span>
+                <span className="robbo-layout-user-menu__label">{username}</span>
               </button>
               {isUserMenuOpen && (
                 <div
