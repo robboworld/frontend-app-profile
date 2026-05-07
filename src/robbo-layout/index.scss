@@ -5,14 +5,24 @@
 
 // Align MFE RobboHeader with LMS `robbo-theme` global header: green bar, 3-column grid, type scale
 $robbo-mfe-header-bar-min-h: 75px;
-$robbo-mfe-header-wordmark: 29px;
+$robbo-mfe-header-wordmark: 42px;
 $robbo-mfe-header-nav-fs: 20px;
 $robbo-mfe-header-profile-toggle-fs: 1rem;
-$robbo-mfe-header-wordmark-xs: 22px;
+$robbo-mfe-header-wordmark-xs: 33px;
 $robbo-mfe-user-dropdown-max-w: 224px;
 $robbo-mfe-user-dropdown-viewport-gutter: 16px;
+// Profile mobile hamburger — без урезания зоны tap (≥44×44 на кнопке)
+$robbo-mfe-profile-hamburger-line-width: clamp(24px, 7.2vw, 30px);
+$robbo-mfe-profile-hamburger-line-height: 2px;
+$robbo-mfe-profile-hamburger-box-height: 17px;
 $robbo-footer-doc-links-gap: 6px; // vertical rhythm between footer legal links (RobboFooter)
 $robbo-footer-stack-gap-sm: 14px; // mobile: tighter spacing between footer columns-as-blocks
+// Десктоп: как LMS `.dropdown-user-menu .dropdown-item a:hover` (primary-light / dark)
+// Узкий бар + гамбургер: как LMS `.mobile-menu .mobile-nav-link a`
+$robbo-mfe-user-menu-item-hover-bg-desktop: #f0fdf4;
+$robbo-mfe-user-menu-item-hover-color-desktop: #111827;
+$robbo-mfe-user-menu-item-hover-bg-collapsed: #eaf8ef;
+$robbo-mfe-user-menu-item-hover-color-collapsed: #111;
 
 .robbo-layout-header {
   position: relative;
@@ -169,6 +179,88 @@ $robbo-footer-stack-gap-sm: 14px; // mobile: tighter spacing between footer colu
     transform: rotate(45deg);
     margin-top: -3px;
   }
+
+  &.robbo-layout-user-menu__toggle--hamburger {
+    padding: max(10px, 0.4rem);
+    min-width: 44px;
+    min-height: 44px;
+    border: none;
+    border-radius: 6px;
+    justify-content: center;
+    transition: background 0.2s ease;
+
+    &::after {
+      display: none;
+    }
+
+    &:hover,
+    &:focus {
+      background: rgba(255, 255, 255, 0.14);
+    }
+
+    &:focus-visible {
+      outline: 2px solid rgba(255, 255, 255, 0.5);
+      outline-offset: 2px;
+    }
+  }
+}
+
+// LMS `header.global-header .hamburger-menu`: 4 lines, outer two collapse; inner two → X (.open)
+.robbo-layout-user-menu__hamburger {
+  position: relative;
+  display: block;
+  width: $robbo-mfe-profile-hamburger-line-width;
+  height: $robbo-mfe-profile-hamburger-box-height;
+  flex-shrink: 0;
+}
+
+$y-hamburger-middle: ($robbo-mfe-profile-hamburger-box-height - $robbo-mfe-profile-hamburger-line-height) * 0.5;
+
+.robbo-layout-user-menu__hamburger-line {
+  position: absolute;
+  left: 0;
+  display: block;
+  width: 100%;
+  height: $robbo-mfe-profile-hamburger-line-height;
+  background: #fff;
+  border-radius: 999px;
+  transform-origin: center;
+  transition: transform 0.25s ease-in-out,
+    width 0.25s ease-in-out,
+    left 0.25s ease-in-out,
+    top 0.25s ease-in-out,
+    opacity 0.2s ease-in-out;
+
+  &:nth-child(1) {
+    top: 0;
+  }
+
+  &:nth-child(2),
+  &:nth-child(3) {
+    top: $y-hamburger-middle;
+  }
+
+  &:nth-child(4) {
+    top: $robbo-mfe-profile-hamburger-box-height - $robbo-mfe-profile-hamburger-line-height;
+  }
+}
+
+.robbo-layout-user-menu__toggle.robbo-layout-user-menu__toggle--hamburger.open .robbo-layout-user-menu__hamburger-line {
+  &:nth-child(1),
+  &:nth-child(4) {
+    top: $y-hamburger-middle;
+    left: 50%;
+    width: 0;
+    opacity: 0;
+  }
+
+  &:nth-child(2) {
+    transform: rotate(45deg);
+  }
+
+  &:nth-child(3) {
+    transform: rotate(-45deg);
+  }
 }
 
 .robbo-layout-user-menu__label {
@@ -201,13 +293,69 @@ $robbo-footer-stack-gap-sm: 14px; // mobile: tighter spacing between footer colu
   font-size: 14px;
   line-height: 20px;
   text-decoration: none;
+  transition: background-color 0.15s ease, color 0.15s ease;
+
+  // как LMS `.mobile-nav-link a::after`: » после текста пункта
+  &::after {
+    content: '\00BB';
+    padding-left: 4px;
+    color: inherit;
+  }
 
   &:hover,
-  &:focus {
-    background: #eaf8ef;
-    color: #111;
+  &:focus,
+  &.active {
+    background: $robbo-mfe-user-menu-item-hover-bg-desktop;
+    color: $robbo-mfe-user-menu-item-hover-color-desktop;
     text-decoration: none;
   }
+}
+
+.robbo-layout-header--nav-collapsed .robbo-layout-user-menu__item:hover,
+.robbo-layout-header--nav-collapsed .robbo-layout-user-menu__item:focus,
+.robbo-layout-header--nav-collapsed .robbo-layout-user-menu__item.active {
+  background: $robbo-mfe-user-menu-item-hover-bg-collapsed;
+  color: $robbo-mfe-user-menu-item-hover-color-collapsed;
+}
+
+// Profile (narrow ≤768px): LMS-like bar — wordmark left + user right; catalog/courses in pill menu
+.robbo-layout-header.robbo-layout-header--nav-collapsed {
+  .robbo-layout-header__inner {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: space-between;
+    column-gap: 12px;
+    row-gap: 0;
+    min-height: $robbo-mfe-header-bar-min-h;
+    padding: 8px clamp(12px, 4vw, 20px);
+  }
+
+  .robbo-layout-header__leading {
+    flex: 0 1 auto;
+    min-width: 0;
+  }
+
+  .robbo-layout-header__trailing {
+    flex: 0 1 auto;
+    min-width: 0;
+    max-width: none;
+  }
+
+  .robbo-layout-user-menu__toggle.robbo-layout-user-menu__toggle--hamburger {
+    max-width: none;
+    width: auto;
+    box-sizing: border-box;
+  }
+
+  .robbo-layout-header__nav {
+    display: none !important;
+  }
+}
+
+.robbo-layout-user-menu__item--main-nav {
+  font-weight: 400;
 }
 
 // Как `wrapper-footer` в LMS (`_extras.scss`): разделитель над футером
@@ -535,6 +683,11 @@ body.indigo-dark-theme {
   .robbo-layout-user-menu__toggle {
     max-width: 100%;
     padding: 6px 16px;
+  }
+
+  .robbo-layout-user-menu__toggle.robbo-layout-user-menu__toggle--hamburger {
+    padding: max(10px, 0.55rem);
+    max-width: none;
   }
 
   .robbo-layout-header__nav {

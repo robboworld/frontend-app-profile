@@ -3,6 +3,7 @@
  * SPDX-License-Identifier: AGPL-3.0-only
  *
  * Part of the Robbo Open edX MFE overrides. See NOTICE at repository root.
+ * Modifications Copyright (C) 2026 Robbo. See NOTICE at repository root.
  */
 import React from 'react';
 import PropTypes from 'prop-types';
@@ -11,6 +12,27 @@ import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import { AppContext } from '@edx/frontend-platform/react';
 
 import './index.scss';
+
+const MOBILE_COLLAPSE_NAV_QUERY = '(max-width: 767.98px)';
+
+function useMatchMedia(query) {
+  const [matches, setMatches] = React.useState(
+    () => typeof window !== 'undefined' && window.matchMedia(query).matches,
+  );
+
+  React.useEffect(() => {
+    if (typeof window === 'undefined') {
+      return undefined;
+    }
+    const mq = window.matchMedia(query);
+    const onChange = () => setMatches(mq.matches);
+    onChange();
+    mq.addEventListener('change', onChange);
+    return () => mq.removeEventListener('change', onChange);
+  }, [query]);
+
+  return matches;
+}
 
 const buildUrl = (baseUrl, path) => {
   if (!baseUrl) {
@@ -39,9 +61,12 @@ export const RobboHeader = ({
   activeSection,
   onCatalogClick,
   showUserDropdown,
+  collapseNavIntoUserMenuOnNarrow,
 }) => {
   const { authenticatedUser } = React.useContext(AppContext);
   const [isUserMenuOpen, setIsUserMenuOpen] = React.useState(false);
+  const isNarrowViewport = useMatchMedia(MOBILE_COLLAPSE_NAV_QUERY);
+  const collapseMainNav = Boolean(collapseNavIntoUserMenuOnNarrow && isNarrowViewport);
   const intl = useIntl();
   const config = getConfig();
   const dashboardUrl = getDashboardUrl(config);
@@ -79,8 +104,13 @@ export const RobboHeader = ({
     } : null,
   ].filter(Boolean);
 
+  const headerClassName = ['robbo-layout-header'];
+  if (collapseMainNav) {
+    headerClassName.push('robbo-layout-header--nav-collapsed');
+  }
+
   return (
-    <header className="robbo-layout-header">
+    <header className={headerClassName.join(' ')}>
       <div className="robbo-layout-header__inner">
         <div className="robbo-layout-header__leading">
           <a className="robbo-layout-header__brand" href={catalogUrl} aria-label="РОББО">
@@ -92,6 +122,8 @@ export const RobboHeader = ({
         </div>
         <nav
           className="robbo-layout-header__nav"
+          hidden={collapseMainNav}
+          aria-hidden={collapseMainNav}
           aria-label={intl.formatMessage({
             id: 'robbo.header.mainNav.aria',
             defaultMessage: 'Main navigation',
@@ -113,7 +145,11 @@ export const RobboHeader = ({
           {showUserDropdown && username && (
             <div className="robbo-layout-user-menu">
               <button
-                className="robbo-layout-user-menu__toggle"
+                className={[
+                  'robbo-layout-user-menu__toggle',
+                  collapseMainNav ? 'robbo-layout-user-menu__toggle--hamburger' : '',
+                  collapseMainNav && isUserMenuOpen ? 'open' : '',
+                ].filter(Boolean).join(' ')}
                 type="button"
                 aria-haspopup="menu"
                 aria-expanded={isUserMenuOpen}
@@ -123,7 +159,16 @@ export const RobboHeader = ({
                 })}
                 onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
               >
-                <span className="robbo-layout-user-menu__label">{username}</span>
+                {collapseMainNav ? (
+                  <span className="robbo-layout-user-menu__hamburger" aria-hidden="true">
+                    <span className="robbo-layout-user-menu__hamburger-line" />
+                    <span className="robbo-layout-user-menu__hamburger-line" />
+                    <span className="robbo-layout-user-menu__hamburger-line" />
+                    <span className="robbo-layout-user-menu__hamburger-line" />
+                  </span>
+                ) : (
+                  <span className="robbo-layout-user-menu__label">{username}</span>
+                )}
               </button>
               {isUserMenuOpen && (
                 <div
@@ -134,6 +179,21 @@ export const RobboHeader = ({
                     defaultMessage: 'More Options',
                   })}
                 >
+                  {collapseMainNav && mainLinks.map((item) => (
+                    <a
+                      key={`menu-${item.href}-${item.messageId}`}
+                      className={
+                        ['robbo-layout-user-menu__item', 'robbo-layout-user-menu__item--main-nav',
+                          activeSection === item.section ? 'active' : ''].filter(Boolean).join(' ')
+                      }
+                      href={item.href}
+                      role="menuitem"
+                      onClick={item.onClick}
+                      aria-current={activeSection === item.section ? 'page' : undefined}
+                    >
+                      <FormattedMessage id={item.messageId} />
+                    </a>
+                  ))}
                   {userMenuLinks.map((item) => (
                     <a
                       key={`${item.href}-${item.messageId}`}
@@ -158,12 +218,15 @@ RobboHeader.propTypes = {
   activeSection: PropTypes.oneOf(['catalog', 'dashboard', 'programs']),
   onCatalogClick: PropTypes.func,
   showUserDropdown: PropTypes.bool,
+  /** Profile (LMS-like): logo + user only in bar; main nav links move into user menu ≤768px */
+  collapseNavIntoUserMenuOnNarrow: PropTypes.bool,
 };
 
 RobboHeader.defaultProps = {
   activeSection: null,
   onCatalogClick: undefined,
   showUserDropdown: true,
+  collapseNavIntoUserMenuOnNarrow: false,
 };
 
 export const RobboFooter = () => (

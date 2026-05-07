@@ -33,7 +33,7 @@ subscribe(APP_READY, () => {
       <AppProvider store={configureStore()}>
         <Head />
         <div className="robbo-layout-page">
-          <RobboHeader />
+          <RobboHeader collapseNavIntoUserMenuOnNarrow />
           <main id="main">
             <AppRoutes />
           </main>
