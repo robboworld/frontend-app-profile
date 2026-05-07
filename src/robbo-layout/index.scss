@@ -1,12 +1,28 @@
 // Copyright (C) 2024-2026 Robbo <https://robbo.ru>
 // SPDX-License-Identifier: AGPL-3.0-only
 // Part of the Robbo Open edX MFE overrides. See NOTICE at repository root.
+// Modifications Copyright (C) 2026 Robbo. See NOTICE at repository root.
 
 // Align MFE RobboHeader with LMS `robbo-theme` global header: green bar, 3-column grid, type scale
 $robbo-mfe-header-bar-min-h: 75px;
-$robbo-mfe-header-wordmark: 29px;
+$robbo-mfe-header-wordmark: 42px;
 $robbo-mfe-header-nav-fs: 20px;
 $robbo-mfe-header-profile-toggle-fs: 1rem;
+$robbo-mfe-header-wordmark-xs: 33px;
+$robbo-mfe-user-dropdown-max-w: 224px;
+$robbo-mfe-user-dropdown-viewport-gutter: 16px;
+// Profile mobile hamburger — без урезания зоны tap (≥44×44 на кнопке)
+$robbo-mfe-profile-hamburger-line-width: clamp(24px, 7.2vw, 30px);
+$robbo-mfe-profile-hamburger-line-height: 2px;
+$robbo-mfe-profile-hamburger-box-height: 17px;
+$robbo-footer-doc-links-gap: 6px; // vertical rhythm between footer legal links (RobboFooter)
+$robbo-footer-stack-gap-sm: 14px; // mobile: tighter spacing between footer columns-as-blocks
+// Десктоп: как LMS `.dropdown-user-menu .dropdown-item a:hover` (primary-light / dark)
+// Узкий бар + гамбургер: как LMS `.mobile-menu .mobile-nav-link a`
+$robbo-mfe-user-menu-item-hover-bg-desktop: #f0fdf4;
+$robbo-mfe-user-menu-item-hover-color-desktop: #111827;
+$robbo-mfe-user-menu-item-hover-bg-collapsed: #eaf8ef;
+$robbo-mfe-user-menu-item-hover-color-collapsed: #111;
 
 .robbo-layout-header {
   position: relative;
@@ -134,6 +150,7 @@ $robbo-mfe-header-profile-toggle-fs: 1rem;
   align-items: center;
   gap: 6px;
   margin: 0;
+  max-width: 100%;
   padding: 6px 16px;
   background: transparent;
   color: #fff;
@@ -154,6 +171,7 @@ $robbo-mfe-header-profile-toggle-fs: 1rem;
   &::after {
     content: "";
     display: inline-block;
+    flex-shrink: 0;
     width: 5px;
     height: 5px;
     border: solid #fff;
@@ -161,13 +179,107 @@ $robbo-mfe-header-profile-toggle-fs: 1rem;
     transform: rotate(45deg);
     margin-top: -3px;
   }
+
+  &.robbo-layout-user-menu__toggle--hamburger {
+    padding: max(10px, 0.4rem);
+    min-width: 44px;
+    min-height: 44px;
+    border: none;
+    border-radius: 6px;
+    justify-content: center;
+    transition: background 0.2s ease;
+
+    &::after {
+      display: none;
+    }
+
+    &:hover,
+    &:focus {
+      background: rgba(255, 255, 255, 0.14);
+    }
+
+    &:focus-visible {
+      outline: 2px solid rgba(255, 255, 255, 0.5);
+      outline-offset: 2px;
+    }
+  }
+}
+
+// LMS `header.global-header .hamburger-menu`: 4 lines, outer two collapse; inner two → X (.open)
+.robbo-layout-user-menu__hamburger {
+  position: relative;
+  display: block;
+  width: $robbo-mfe-profile-hamburger-line-width;
+  height: $robbo-mfe-profile-hamburger-box-height;
+  flex-shrink: 0;
+}
+
+$y-hamburger-middle: ($robbo-mfe-profile-hamburger-box-height - $robbo-mfe-profile-hamburger-line-height) * 0.5;
+
+.robbo-layout-user-menu__hamburger-line {
+  position: absolute;
+  left: 0;
+  display: block;
+  width: 100%;
+  height: $robbo-mfe-profile-hamburger-line-height;
+  background: #fff;
+  border-radius: 999px;
+  transform-origin: center;
+  transition: transform 0.25s ease-in-out,
+    width 0.25s ease-in-out,
+    left 0.25s ease-in-out,
+    top 0.25s ease-in-out,
+    opacity 0.2s ease-in-out;
+
+  &:nth-child(1) {
+    top: 0;
+  }
+
+  &:nth-child(2),
+  &:nth-child(3) {
+    top: $y-hamburger-middle;
+  }
+
+  &:nth-child(4) {
+    top: $robbo-mfe-profile-hamburger-box-height - $robbo-mfe-profile-hamburger-line-height;
+  }
+}
+
+.robbo-layout-user-menu__toggle.robbo-layout-user-menu__toggle--hamburger.open .robbo-layout-user-menu__hamburger-line {
+  &:nth-child(1),
+  &:nth-child(4) {
+    top: $y-hamburger-middle;
+    left: 50%;
+    width: 0;
+    opacity: 0;
+  }
+
+  &:nth-child(2) {
+    transform: rotate(45deg);
+  }
+
+  &:nth-child(3) {
+    transform: rotate(-45deg);
+  }
+}
+
+.robbo-layout-user-menu__label {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: start;
 }
 
 .robbo-layout-user-menu__dropdown {
   position: absolute;
   right: 0;
+  left: auto;
   top: calc(100% + 10px);
-  width: 224px;
+  width: min($robbo-mfe-user-dropdown-max-w, calc(100vw - #{$robbo-mfe-user-dropdown-viewport-gutter}));
+  max-width: min($robbo-mfe-user-dropdown-max-w, calc(100vw - #{$robbo-mfe-user-dropdown-viewport-gutter}));
+  box-sizing: border-box;
   overflow: hidden;
   background: #fff;
   border-radius: 8px;
@@ -181,13 +293,62 @@ $robbo-mfe-header-profile-toggle-fs: 1rem;
   font-size: 14px;
   line-height: 20px;
   text-decoration: none;
+  transition: background-color 0.15s ease, color 0.15s ease;
 
   &:hover,
-  &:focus {
-    background: #eaf8ef;
-    color: #111;
+  &:focus,
+  &.active {
+    background: $robbo-mfe-user-menu-item-hover-bg-desktop;
+    color: $robbo-mfe-user-menu-item-hover-color-desktop;
     text-decoration: none;
   }
+}
+
+.robbo-layout-header--nav-collapsed .robbo-layout-user-menu__item:hover,
+.robbo-layout-header--nav-collapsed .robbo-layout-user-menu__item:focus,
+.robbo-layout-header--nav-collapsed .robbo-layout-user-menu__item.active {
+  background: $robbo-mfe-user-menu-item-hover-bg-collapsed;
+  color: $robbo-mfe-user-menu-item-hover-color-collapsed;
+}
+
+// Profile (narrow ≤768px): LMS-like bar — wordmark left + user right; catalog/courses in pill menu
+.robbo-layout-header.robbo-layout-header--nav-collapsed {
+  .robbo-layout-header__inner {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: space-between;
+    column-gap: 12px;
+    row-gap: 0;
+    min-height: $robbo-mfe-header-bar-min-h;
+    padding: 8px clamp(12px, 4vw, 20px);
+  }
+
+  .robbo-layout-header__leading {
+    flex: 0 1 auto;
+    min-width: 0;
+  }
+
+  .robbo-layout-header__trailing {
+    flex: 0 1 auto;
+    min-width: 0;
+    max-width: none;
+  }
+
+  .robbo-layout-user-menu__toggle.robbo-layout-user-menu__toggle--hamburger {
+    max-width: none;
+    width: auto;
+    box-sizing: border-box;
+  }
+
+  .robbo-layout-header__nav {
+    display: none !important;
+  }
+}
+
+.robbo-layout-user-menu__item--main-nav {
+  font-weight: 400;
 }
 
 // Как `wrapper-footer` в LMS (`_extras.scss`): разделитель над футером
@@ -195,31 +356,28 @@ $robbo-mfe-header-profile-toggle-fs: 1rem;
   box-shadow: none;
   background: #fff;
   border-top: 1px solid #e0e0e0;
-  padding: 20px clamp(20px, 4vw, 45px);
+  padding: 0 clamp(20px, 4vw, 45px);
   flex: 0 0 auto;
   margin-top: auto;
   box-sizing: border-box;
+  display: block;
+  width: 100%;
+  min-height: 80px;
+
+  @media (min-width: 992px) {
+    height: 80px;
+  }
+
+  @media (max-width: 991.98px) {
+    height: auto;
+    padding: 12px clamp(20px, 4vw, 45px);
+  }
 }
 
 #root {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-}
-
-// AppProvider nests Redux + Router wrappers; stretch the column so `main` can grow and footer stays at bottom
-#root>[data-testid="redux-provider"] {
-  display: flex;
-  flex-direction: column;
-  flex: 1 0 auto;
-  min-height: 100vh;
-}
-
-[data-testid="redux-provider"]>[data-testid="browser-router"] {
-  display: flex;
-  flex-direction: column;
-  flex: 1 0 auto;
-  min-height: 0;
 }
 
 .robbo-layout-page {
@@ -229,13 +387,20 @@ $robbo-mfe-header-profile-toggle-fs: 1rem;
 }
 
 .robbo-layout-page>main,
-#root #main {
+#root>main {
   flex: 1 0 auto;
 }
 
 .robbo-site-footer {
   background: #fff;
   box-sizing: border-box;
+  width: 100%;
+  display: flex;
+  align-items: center;
+
+  @media (min-width: 992px) {
+    min-height: 80px;
+  }
 }
 
 .robbo-site-footer__inner {
@@ -250,6 +415,10 @@ $robbo-mfe-header-profile-toggle-fs: 1rem;
   margin: 0 auto;
   padding: 0;
   box-sizing: border-box;
+
+  @media (min-width: 992px) {
+    min-height: 80px;
+  }
 }
 
 .robbo-footer__left {
@@ -273,8 +442,11 @@ $robbo-mfe-header-profile-toggle-fs: 1rem;
   text-align: center;
   min-width: 0;
   width: 100%;
-  line-height: 0;
   padding: 0 clamp(4px, 1vw, 12px);
+
+  .robbo-footer__nav {
+    margin: 0;
+  }
 }
 
 .robbo-footer__contacts {
@@ -338,22 +510,39 @@ $robbo-mfe-header-profile-toggle-fs: 1rem;
 }
 
 .robbo-footer__links {
+  display: flex;
+  flex-direction: column;
+  gap: $robbo-footer-doc-links-gap;
   width: 100%;
-  margin: 0;
+  margin: 0; // full reset vs reboot `ul { margin-bottom: 1rem }`
   padding: 0;
   list-style: none;
   text-align: center;
 
-  li {
-    margin: 0 0 clamp(6px, 1vw, 10px);
+  >li {
+    margin: 0;
+    padding: 0;
+  }
 
-    &:last-child {
-      margin-bottom: 0;
+  a {
+    display: block;
+    margin: 0;
+    padding: 0;
+    color: #777;
+    font-size: clamp(11px, 1.1vw, 12px);
+    line-height: 1.25;
+    font-family: var(--pgn-typography-font-family-base, "Helvetica Neue", Arial, sans-serif);
+    text-decoration: underline;
+    word-break: break-word;
+
+    &:hover,
+    &:focus {
+      color: #111;
+      text-decoration: underline;
     }
   }
 }
 
-.robbo-footer__links a,
 .robbo-footer__contacts-line a {
   color: #777;
   font-size: clamp(11px, 1.1vw, 12px);
@@ -410,7 +599,10 @@ body.indigo-dark-theme {
     grid-template-rows: auto auto;
     column-gap: 16px;
     row-gap: 10px;
-    padding: 10px 16px;
+    // как на десктопе: вертикаль 6px, горизонталь 28px
+    padding: 6px 28px;
+    container-type: inline-size;
+    container-name: robbo-header-shell;
   }
 
   .robbo-layout-header__leading {
@@ -427,13 +619,30 @@ body.indigo-dark-theme {
   .robbo-layout-header__nav {
     grid-column: 1 / -1;
     grid-row: 2;
-    justify-content: flex-start;
-    overflow-x: auto;
+    align-self: center;
+    width: 100%;
+    max-width: 100%;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: nowrap;
+    gap: 8px 28px;
+    overflow-x: visible;
+    // кегль от ширины всей полоски хедера (inner): до упора 20px как на ПК, без переноса строк
+    font-size: clamp(13px, calc(4.2cqw + 9px), #{$robbo-mfe-header-nav-fs});
+  }
+
+  .robbo-layout-header__link {
+    flex: 0 1 auto;
+    min-width: 0;
+    justify-content: center;
+    text-align: center;
+    white-space: nowrap;
+    font-size: 1em;
   }
 
   .robbo-site-footer__inner {
     grid-template-columns: 1fr;
-    row-gap: 24px;
+    row-gap: $robbo-footer-stack-gap-sm;
   }
 
   .robbo-footer__left,
@@ -441,5 +650,52 @@ body.indigo-dark-theme {
     justify-self: center;
     align-items: center;
     max-width: 100%;
+  }
+}
+
+// Phones: компактный wordmark; отступы полосы как на ПК (6px 28px)
+@media (max-width: 575.98px) {
+  .robbo-layout-header__inner {
+    padding: 6px 28px;
+    row-gap: 10px;
+  }
+
+  .robbo-layout-header__wordmark {
+    font-size: $robbo-mfe-header-wordmark-xs;
+  }
+
+  .robbo-layout-header__trailing {
+    max-width: min(200px, calc(100vw - 132px));
+    min-width: 0;
+  }
+
+  .robbo-layout-user-menu {
+    max-width: 100%;
+  }
+
+  .robbo-layout-user-menu__toggle {
+    max-width: 100%;
+    padding: 6px 16px;
+  }
+
+  .robbo-layout-user-menu__toggle.robbo-layout-user-menu__toggle--hamburger {
+    padding: max(10px, 0.55rem);
+    max-width: none;
+  }
+
+  .robbo-layout-header__nav {
+    gap: 8px 22px;
+  }
+
+  .wrapper.wrapper-footer {
+    padding: 8px max(12px, 3vw);
+  }
+
+  .robbo-footer__copyright {
+    margin-top: 4px;
+  }
+
+  .robbo-footer__contacts-title {
+    margin-bottom: 4px;
   }
 }
