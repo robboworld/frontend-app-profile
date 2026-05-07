@@ -1,6 +1,7 @@
 // Copyright (C) 2024-2026 Robbo <https://robbo.ru>
 // SPDX-License-Identifier: AGPL-3.0-only
 // Part of the Robbo Open edX MFE overrides. See NOTICE at repository root.
+// Modifications Copyright (C) 2026 Robbo. See NOTICE at repository root.
 
 // Align MFE RobboHeader with LMS `robbo-theme` global header: green bar, 3-column grid, type scale
 $robbo-mfe-header-bar-min-h: 75px;
@@ -8,7 +9,6 @@ $robbo-mfe-header-wordmark: 29px;
 $robbo-mfe-header-nav-fs: 20px;
 $robbo-mfe-header-profile-toggle-fs: 1rem;
 $robbo-mfe-header-wordmark-xs: 22px;
-$robbo-mfe-header-nav-fs-xs: clamp(15px, 4.2vw, 18px);
 $robbo-mfe-user-dropdown-max-w: 224px;
 $robbo-mfe-user-dropdown-viewport-gutter: 16px;
 $robbo-footer-doc-links-gap: 6px; // vertical rhythm between footer legal links (RobboFooter)
@@ -378,7 +378,7 @@ $robbo-footer-stack-gap-sm: 14px; // mobile: tighter spacing between footer colu
   list-style: none;
   text-align: center;
 
-  > li {
+  >li {
     margin: 0;
     padding: 0;
   }
@@ -458,7 +458,10 @@ body.indigo-dark-theme {
     grid-template-rows: auto auto;
     column-gap: 16px;
     row-gap: 10px;
-    padding: 10px 16px;
+    // как на десктопе: вертикаль 6px, горизонталь 28px
+    padding: 6px 28px;
+    container-type: inline-size;
+    container-name: robbo-header-shell;
   }
 
   .robbo-layout-header__leading {
@@ -475,8 +478,25 @@ body.indigo-dark-theme {
   .robbo-layout-header__nav {
     grid-column: 1 / -1;
     grid-row: 2;
+    align-self: center;
+    width: 100%;
+    max-width: 100%;
     justify-content: center;
-    overflow-x: auto;
+    align-items: center;
+    flex-wrap: nowrap;
+    gap: 8px 28px;
+    overflow-x: visible;
+    // кегль от ширины всей полоски хедера (inner): до упора 20px как на ПК, без переноса строк
+    font-size: clamp(13px, calc(4.2cqw + 9px), #{$robbo-mfe-header-nav-fs});
+  }
+
+  .robbo-layout-header__link {
+    flex: 0 1 auto;
+    min-width: 0;
+    justify-content: center;
+    text-align: center;
+    white-space: nowrap;
+    font-size: 1em;
   }
 
   .robbo-site-footer__inner {
@@ -492,10 +512,10 @@ body.indigo-dark-theme {
   }
 }
 
-// Phones: compact wordmark; main nav stays horizontal and centered (wrapped row)
+// Phones: компактный wordmark; отступы полосы как на ПК (6px 28px)
 @media (max-width: 575.98px) {
   .robbo-layout-header__inner {
-    padding: 8px 12px;
+    padding: 6px 28px;
     row-gap: 10px;
   }
 
@@ -514,21 +534,11 @@ body.indigo-dark-theme {
 
   .robbo-layout-user-menu__toggle {
     max-width: 100%;
-    padding: 6px 12px;
+    padding: 6px 16px;
   }
 
   .robbo-layout-header__nav {
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    align-self: stretch;
-    gap: 6px 14px;
-    overflow-x: visible;
-  }
-
-  .robbo-layout-header__link {
-    font-size: $robbo-mfe-header-nav-fs-xs;
+    gap: 8px 22px;
   }
 
   .wrapper.wrapper-footer {
