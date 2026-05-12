@@ -25,7 +25,6 @@ import Name from './forms/Name';
 import Country from './forms/Country';
 import PreferredLanguage from './forms/PreferredLanguage';
 import Education from './forms/Education';
-import SocialLinks from './forms/SocialLinks';
 import Bio from './forms/Bio';
 import Certificates from './forms/Certificates';
 import AgeMessage from './AgeMessage';
@@ -44,6 +43,9 @@ import messages from './ProfilePage.messages';
 import withParams from '../utils/hoc';
 
 ensureConfig(['CREDENTIALS_BASE_URL', 'LMS_BASE_URL'], 'ProfilePage');
+
+// Modifications Copyright (C) 2026 Robbo <https://robbo.ru>. See NOTICE at repository root.
+// Social network links block is intentionally not shown in the profile UI.
 
 class ProfilePage extends React.Component {
   constructor(props, context) {
@@ -170,9 +172,6 @@ class ProfilePage extends React.Component {
       visibilityCountry,
       levelOfEducation,
       visibilityLevelOfEducation,
-      socialLinks,
-      draftSocialLinksByPlatform,
-      visibilitySocialLinks,
       learningGoal,
       visibilityLearningGoal,
       languageProficiencies,
@@ -208,7 +207,6 @@ class ProfilePage extends React.Component {
 
     const isLanguageBlockVisible = isBlockVisible(languageProficiencies.length);
     const isEducationBlockVisible = isBlockVisible(levelOfEducation);
-    const isSocialLinksBLockVisible = isBlockVisible(socialLinks.some((link) => link.socialLink !== null));
     const isBioBlockVisible = isBlockVisible(bio);
     const isCertificatesBlockVisible = isBlockVisible(courseCertificates.length);
     const isNameBlockVisible = isBlockVisible(name);
@@ -277,15 +275,6 @@ class ProfilePage extends React.Component {
                 levelOfEducation={levelOfEducation}
                 visibilityLevelOfEducation={visibilityLevelOfEducation}
                 formId="levelOfEducation"
-                {...commonFormProps}
-              />
-            )}
-            {isSocialLinksBLockVisible && (
-              <SocialLinks
-                socialLinks={socialLinks}
-                draftSocialLinksByPlatform={draftSocialLinksByPlatform}
-                visibilitySocialLinks={visibilitySocialLinks}
-                formId="socialLinks"
                 {...commonFormProps}
               />
             )}
@@ -368,17 +357,6 @@ ProfilePage.propTypes = {
   name: PropTypes.string,
   visibilityName: PropTypes.string.isRequired,
 
-  // Social links form data
-  socialLinks: PropTypes.arrayOf(PropTypes.shape({
-    platform: PropTypes.string,
-    socialLink: PropTypes.string,
-  })),
-  draftSocialLinksByPlatform: PropTypes.objectOf(PropTypes.shape({
-    platform: PropTypes.string,
-    socialLink: PropTypes.string,
-  })),
-  visibilitySocialLinks: PropTypes.string.isRequired,
-
   // Learning Goal form data
   learningGoal: PropTypes.string,
   visibilityLearningGoal: PropTypes.string.isRequired,
@@ -424,8 +402,6 @@ ProfilePage.defaultProps = {
   yearOfBirth: null,
   levelOfEducation: null,
   country: null,
-  socialLinks: [],
-  draftSocialLinksByPlatform: {},
   bio: null,
   learningGoal: null,
   languageProficiencies: [],
