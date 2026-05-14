@@ -100,7 +100,13 @@ class Name extends React.Component {
           ),
           empty: (
             <>
-              <EditableItemHeader content={intl.formatMessage(messages['profile.name.full.name'])} />
+              <EditableItemHeader
+                content={intl.formatMessage(messages['profile.name.full.name'])}
+                showEditButton
+                onClickEdit={this.handleOpen}
+                showVisibility={visibilityName !== null}
+                visibility={visibilityName}
+              />
               <EmptyContent onClick={this.handleOpen}>
                 {intl.formatMessage(messages['profile.name.empty'])}
               </EmptyContent>

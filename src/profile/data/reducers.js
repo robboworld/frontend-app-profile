@@ -1,3 +1,4 @@
+// Modifications Copyright (C) 2026 Robbo <https://robbo.ru>. See NOTICE at repository root.
 import {
   SAVE_PROFILE,
   SAVE_PROFILE_PHOTO,
@@ -42,6 +43,8 @@ const profilePage = (state = initialState, action = {}) => {
         courseCertificates: action.courseCertificates,
         isLoadingProfile: false,
         isAuthenticatedUserProfile: action.isAuthenticatedUserProfile,
+        // Avoid a section staying in "editing" after refetch (e.g. return from Account MFE / DOB).
+        currentlyEditingField: null,
       };
     case SAVE_PROFILE.BEGIN:
       return {

@@ -1,4 +1,5 @@
 {
+  "profile.page.title": "Профиль | {siteName}",
   "robbo.header.mainNav.myCourses": "Мои курсы",
   "robbo.header.mainNav.programs": "Программы",
   "robbo.header.mainNav.courseCatalog": "Каталог курсов",
@@ -8,5 +9,6 @@
   "robbo.header.user.dashboard": "Панель управления",
   "robbo.header.user.profile": "Профиль",
   "robbo.header.user.signOut": "Выйти",
-  "profile.name.full.name": "ФИО"
+  "profile.name.full.name": "ФИО",
+  "profile.accountSettings.cta": "Настройки аккаунта"
 }

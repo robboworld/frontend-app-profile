@@ -100,7 +100,13 @@ class Bio extends React.Component {
           ),
           empty: (
             <>
-              <EditableItemHeader content={intl.formatMessage(messages['profile.bio.about.me'])} />
+              <EditableItemHeader
+                content={intl.formatMessage(messages['profile.bio.about.me'])}
+                showEditButton
+                onClickEdit={this.handleOpen}
+                showVisibility={visibilityBio !== null}
+                visibility={visibilityBio}
+              />
               <EmptyContent onClick={this.handleOpen}>
                 <FormattedMessage
                   id="profile.bio.empty"

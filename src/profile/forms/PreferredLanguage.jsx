@@ -129,6 +129,10 @@ class PreferredLanguage extends React.Component {
             <>
               <EditableItemHeader
                 content={intl.formatMessage(messages['profile.preferredlanguage.label'])}
+                showEditButton
+                onClickEdit={this.handleOpen}
+                showVisibility={visibilityLanguageProficiencies !== null}
+                visibility={visibilityLanguageProficiencies}
               />
               <EmptyContent onClick={this.handleOpen}>
                 {intl.formatMessage(messages['profile.preferredlanguage.empty'])}

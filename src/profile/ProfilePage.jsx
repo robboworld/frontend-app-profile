@@ -46,6 +46,7 @@ ensureConfig(['CREDENTIALS_BASE_URL', 'LMS_BASE_URL'], 'ProfilePage');
 
 // Modifications Copyright (C) 2026 Robbo <https://robbo.ru>. See NOTICE at repository root.
 // Social network links block is intentionally not shown in the profile UI.
+// Account settings link + empty-section edit affordances improve the post–date-of-birth flow.
 
 class ProfilePage extends React.Component {
   constructor(props, context) {
@@ -118,6 +119,33 @@ class ProfilePage extends React.Component {
       <Hyperlink className="btn btn-primary" destination={this.state.viewMyRecordsUrl} target="_blank">
         {this.props.intl.formatMessage(messages['profile.viewMyRecords'])}
       </Hyperlink>
+    );
+  }
+
+  renderAccountSettingsButton() {
+    const { accountSettingsUrl } = this.state;
+    if (!(accountSettingsUrl && this.isAuthenticatedUserProfile())) {
+      return null;
+    }
+    const destination = accountSettingsUrl.replace(/\/$/, '');
+    return (
+      <Hyperlink className="btn btn-outline-primary profile-page__account-settings-btn" destination={destination}>
+        {this.props.intl.formatMessage(messages['profile.accountSettings.cta'])}
+      </Hyperlink>
+    );
+  }
+
+  renderProfileActionButtons() {
+    const records = this.renderViewMyRecordsButton();
+    const account = this.renderAccountSettingsButton();
+    if (!records && !account) {
+      return null;
+    }
+    return (
+      <div className="d-flex flex-wrap gap-2 align-items-center justify-content-md-end">
+        {records}
+        {account}
+      </div>
     );
   }
 
@@ -233,7 +261,7 @@ class ProfilePage extends React.Component {
               {this.renderHeadingLockup()}
             </div>
             <div className="d-none d-md-block float-right">
-              {this.renderViewMyRecordsButton()}
+              {this.renderProfileActionButtons()}
             </div>
           </div>
         </div>
@@ -244,7 +272,7 @@ class ProfilePage extends React.Component {
               {this.renderHeadingLockup()}
             </div>
             <div className="d-md-none mb-4">
-              {this.renderViewMyRecordsButton()}
+              {this.renderProfileActionButtons()}
             </div>
             {isNameBlockVisible && (
               <Name

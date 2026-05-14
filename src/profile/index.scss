@@ -18,6 +18,7 @@
 
 // Match Robbo header bar (`robbo-layout/index.scss`); replaces Paragon `bg-primary` on profile banner
 $robbo-profile-banner-bg: #00b140;
+$robbo-account-settings-cta: #00af41;
 
 .profile-page-bg-banner {
   height: 12rem;
@@ -50,6 +51,32 @@ $robbo-profile-banner-bg: #00b140;
 }
 
 .profile-page {
+  // Account settings (outline) CTA — Robbo green text and border
+  .profile-page__account-settings-btn.btn-outline-primary {
+    $robbo-account-settings-cta-hover: #009a39;
+
+    color: $robbo-account-settings-cta;
+    border-color: $robbo-account-settings-cta;
+    background-color: transparent;
+
+    &:hover {
+      color: $robbo-account-settings-cta-hover;
+      border-color: $robbo-account-settings-cta-hover;
+      background-color: transparent;
+    }
+
+    &:focus-visible {
+      outline: 2px solid $robbo-account-settings-cta;
+      outline-offset: 2px;
+    }
+
+    &:active {
+      color: $robbo-account-settings-cta-hover;
+      border-color: $robbo-account-settings-cta-hover;
+      background-color: transparent;
+    }
+  }
+
   .edit-section-header {
     @extend .h6;
     display: block;

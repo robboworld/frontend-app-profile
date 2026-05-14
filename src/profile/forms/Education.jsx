@@ -125,7 +125,13 @@ class Education extends React.Component {
           ),
           empty: (
             <>
-              <EditableItemHeader content={intl.formatMessage(messages['profile.education.education'])} />
+              <EditableItemHeader
+                content={intl.formatMessage(messages['profile.education.education'])}
+                showEditButton
+                onClickEdit={this.handleOpen}
+                showVisibility={visibilityLevelOfEducation !== null}
+                visibility={visibilityLevelOfEducation}
+              />
               <EmptyContent onClick={this.handleOpen}>
                 <FormattedMessage
                   id="profile.education.empty"

@@ -120,6 +120,10 @@ class Country extends React.Component {
             <>
               <EditableItemHeader
                 content={intl.formatMessage(messages['profile.country.label'])}
+                showEditButton
+                onClickEdit={this.handleOpen}
+                showVisibility={visibilityCountry !== null}
+                visibility={visibilityCountry}
               />
               <EmptyContent onClick={this.handleOpen}>
                 {intl.formatMessage(messages['profile.country.empty'])}

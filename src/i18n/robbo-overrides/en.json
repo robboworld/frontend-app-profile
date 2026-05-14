@@ -1,4 +1,5 @@
 {
+  "profile.page.title": "Profile | {siteName}",
   "robbo.header.mainNav.myCourses": "My Courses",
   "robbo.header.mainNav.programs": "Programs",
   "robbo.header.mainNav.courseCatalog": "Course catalog",
@@ -7,5 +8,6 @@
   "robbo.header.user.menuDropdownAria": "More Options",
   "robbo.header.user.dashboard": "Dashboard",
   "robbo.header.user.profile": "Profile",
-  "robbo.header.user.signOut": "Sign Out"
+  "robbo.header.user.signOut": "Sign Out",
+  "profile.accountSettings.cta": "Account settings"
 }
