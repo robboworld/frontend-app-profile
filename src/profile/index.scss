@@ -18,9 +18,17 @@
 
 // Match Robbo header bar (`robbo-layout/index.scss`); replaces Paragon `bg-primary` on profile banner
 $robbo-profile-banner-bg: #00b140;
+$robbo-profile-banner-height: 12rem;
+// Slightly shorter below `md` to save vertical space on phones (banner stays full width).
+$robbo-profile-banner-height-mobile: 10rem;
 
 .profile-page-bg-banner {
-  height: 12rem;
+  height: $robbo-profile-banner-height;
+
+  @include media-breakpoint-down(md) {
+    height: $robbo-profile-banner-height-mobile;
+  }
+
   background-color: $robbo-profile-banner-bg;
   background-image: url('./assets/dot-pattern-light.png');
   background-repeat: repeat-x;
