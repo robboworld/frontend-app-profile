@@ -3,20 +3,21 @@
 // Part of the Robbo Open edX MFE overrides. See NOTICE at repository root.
 // Modifications Copyright (C) 2026 Robbo. See NOTICE at repository root.
 
-// Align MFE RobboHeader with LMS `robbo-theme` global header: green bar, 3-column grid, type scale
+// RobboHeader mirrors LMS `robbo-theme` global header (`lms/static/sass/extra/_header.scss`, `partials/.../_variables.scss`).
 $robbo-mfe-header-bar-min-h: 75px;
-$robbo-mfe-header-wordmark: 42px;
-$robbo-mfe-header-nav-fs: 20px;
-$robbo-mfe-header-profile-toggle-fs: 1rem;
-$robbo-mfe-header-wordmark-xs: 33px;
+$robbo-mfe-header-bar-min-h-mobile: 55px;
+$robbo-mfe-header-wordmark: 30px; // LMS $robbo-header-wordmark
+$robbo-mfe-header-nav-fs: 20px; // LMS $robbo-header-nav-font
+$robbo-mfe-header-profile-toggle-fs: 1rem; // LMS $robbo-header-profile-toggle-fs
 $robbo-mfe-user-dropdown-max-w: 224px;
 $robbo-mfe-user-dropdown-viewport-gutter: 16px;
 // Profile mobile hamburger — без урезания зоны tap (≥44×44 на кнопке)
 $robbo-mfe-profile-hamburger-line-width: clamp(24px, 7.2vw, 30px);
 $robbo-mfe-profile-hamburger-line-height: 2px;
 $robbo-mfe-profile-hamburger-box-height: 17px;
-$robbo-footer-doc-links-gap: 6px; // vertical rhythm between footer legal links (RobboFooter)
+$robbo-footer-doc-links-gap: 2px; // minimal vertical spacing between footer legal links (RobboFooter; align LMS `extra/_footer.scss`)
 $robbo-footer-stack-gap-sm: 14px; // mobile: tighter spacing between footer columns-as-blocks
+$robbo-footer-font-family: 'Inter', "Helvetica Neue", Arial, sans-serif; // match LMS `$robbo-footer-font-family` / body UI
 // Десктоп: как LMS `.dropdown-user-menu .dropdown-item a:hover` (primary-light / dark)
 // Узкий бар + гамбургер: как LMS `.mobile-menu .mobile-nav-link a`
 $robbo-mfe-user-menu-item-hover-bg-desktop: #f0fdf4;
@@ -32,6 +33,10 @@ $robbo-mfe-user-menu-item-hover-color-collapsed: #111;
   color: #fff;
   box-shadow: none;
   box-sizing: border-box;
+
+  @media (max-width: 767.98px) {
+    min-height: $robbo-mfe-header-bar-min-h-mobile;
+  }
 }
 
 .robbo-layout-header__inner {
@@ -41,14 +46,19 @@ $robbo-mfe-user-menu-item-hover-color-collapsed: #111;
   column-gap: 16px;
   row-gap: 8px;
   min-height: $robbo-mfe-header-bar-min-h;
-  max-width: 1450px;
+  max-width: 1600px; // LMS `.header-container`
   margin: 0 auto;
-  padding: 6px 28px;
+  padding: 6px 20px; // LMS container < lg
   box-sizing: border-box;
   min-width: 0;
 
+  @media (max-width: 767.98px) {
+    min-height: $robbo-mfe-header-bar-min-h-mobile;
+  }
+
   @media (min-width: 992px) {
     column-gap: 24px;
+    padding: 6px 28px; // LMS `.header-container` @ lg+
   }
 }
 
@@ -322,7 +332,11 @@ $y-hamburger-middle: ($robbo-mfe-profile-hamburger-box-height - $robbo-mfe-profi
     column-gap: 12px;
     row-gap: 0;
     min-height: $robbo-mfe-header-bar-min-h;
-    padding: 8px clamp(12px, 4vw, 20px);
+    padding: 6px 20px; // LMS main-header 6px 0 + container gutter < lg
+
+    @media (max-width: 767.98px) {
+      min-height: $robbo-mfe-header-bar-min-h-mobile;
+    }
   }
 
   .robbo-layout-header__leading {
@@ -351,12 +365,12 @@ $y-hamburger-middle: ($robbo-mfe-profile-hamburger-box-height - $robbo-mfe-profi
   font-weight: 400;
 }
 
-// Как `wrapper-footer` в LMS (`_extras.scss`): разделитель над футером
+// Как `wrapper-footer` в LMS (`_extras.scss`): горизонтальные отступы только у `.robbo-site-footer__inner` (как у header).
 .wrapper.wrapper-footer {
   box-shadow: none;
   background: #fff;
   border-top: 1px solid #e0e0e0;
-  padding: 0 clamp(20px, 4vw, 45px);
+  padding: 0;
   flex: 0 0 auto;
   margin-top: auto;
   box-sizing: border-box;
@@ -370,7 +384,7 @@ $y-hamburger-middle: ($robbo-mfe-profile-hamburger-box-height - $robbo-mfe-profi
 
   @media (max-width: 991.98px) {
     height: auto;
-    padding: 12px clamp(20px, 4vw, 45px);
+    padding: 12px 0;
   }
 }
 
@@ -413,11 +427,12 @@ $y-hamburger-middle: ($robbo-mfe-profile-hamburger-box-height - $robbo-mfe-profi
   width: 100%;
   max-width: 1162px;
   margin: 0 auto;
-  padding: 0;
+  padding: 0 20px;
   box-sizing: border-box;
 
   @media (min-width: 992px) {
     min-height: 80px;
+    padding: 0 28px;
   }
 }
 
@@ -442,7 +457,7 @@ $y-hamburger-middle: ($robbo-mfe-profile-hamburger-box-height - $robbo-mfe-profi
   text-align: center;
   min-width: 0;
   width: 100%;
-  padding: 0 clamp(4px, 1vw, 12px);
+  padding: 0;
 
   .robbo-footer__nav {
     margin: 0;
@@ -478,7 +493,7 @@ $y-hamburger-middle: ($robbo-mfe-profile-hamburger-box-height - $robbo-mfe-profi
   line-height: 1.15;
   letter-spacing: 0.02em;
   text-transform: uppercase;
-  font-family: var(--pgn-typography-font-family-base, "Helvetica Neue", Arial, sans-serif);
+  font-family: $robbo-footer-font-family;
   text-align: center;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
 }
@@ -498,7 +513,7 @@ $y-hamburger-middle: ($robbo-mfe-profile-hamburger-box-height - $robbo-mfe-profi
   font-size: clamp(11px, 1.1vw, 12px);
   line-height: 1.45;
   color: #777;
-  font-family: var(--pgn-typography-font-family-base, "Helvetica Neue", Arial, sans-serif);
+  font-family: $robbo-footer-font-family;
 }
 
 .robbo-footer__nav {
@@ -531,7 +546,7 @@ $y-hamburger-middle: ($robbo-mfe-profile-hamburger-box-height - $robbo-mfe-profi
     color: #777;
     font-size: clamp(11px, 1.1vw, 12px);
     line-height: 1.25;
-    font-family: var(--pgn-typography-font-family-base, "Helvetica Neue", Arial, sans-serif);
+    font-family: $robbo-footer-font-family;
     text-decoration: underline;
     word-break: break-word;
 
@@ -547,7 +562,7 @@ $y-hamburger-middle: ($robbo-mfe-profile-hamburger-box-height - $robbo-mfe-profi
   color: #777;
   font-size: clamp(11px, 1.1vw, 12px);
   line-height: 1.45;
-  font-family: var(--pgn-typography-font-family-base, "Helvetica Neue", Arial, sans-serif);
+  font-family: $robbo-footer-font-family;
   text-decoration: underline;
   word-break: break-word;
 
@@ -564,7 +579,7 @@ $y-hamburger-middle: ($robbo-mfe-profile-hamburger-box-height - $robbo-mfe-profi
   font-size: clamp(11px, 1.1vw, 12px);
   line-height: 1.45;
   color: #777;
-  font-family: var(--pgn-typography-font-family-base, "Helvetica Neue", Arial, sans-serif);
+  font-family: $robbo-footer-font-family;
   word-break: break-word;
 }
 
@@ -599,10 +614,7 @@ body.indigo-dark-theme {
     grid-template-rows: auto auto;
     column-gap: 16px;
     row-gap: 10px;
-    // как на десктопе: вертикаль 6px, горизонталь 28px
-    padding: 6px 28px;
-    container-type: inline-size;
-    container-name: robbo-header-shell;
+    // Horizontal padding: inherit 6px 20px from base (LMS `.header-container` < lg).
   }
 
   .robbo-layout-header__leading {
@@ -627,8 +639,7 @@ body.indigo-dark-theme {
     flex-wrap: nowrap;
     gap: 8px 28px;
     overflow-x: visible;
-    // кегль от ширины всей полоски хедера (inner): до упора 20px как на ПК, без переноса строк
-    font-size: clamp(13px, calc(4.2cqw + 9px), #{$robbo-mfe-header-nav-fs});
+    font-size: $robbo-mfe-header-nav-fs; // LMS fixed tab size
   }
 
   .robbo-layout-header__link {
@@ -653,15 +664,11 @@ body.indigo-dark-theme {
   }
 }
 
-// Phones: компактный wordmark; отступы полосы как на ПК (6px 28px)
+// Phones: LMS uses same wordmark size at all breakpoints (`$robbo-header-wordmark`).
 @media (max-width: 575.98px) {
   .robbo-layout-header__inner {
-    padding: 6px 28px;
+    padding: 6px 20px;
     row-gap: 10px;
-  }
-
-  .robbo-layout-header__wordmark {
-    font-size: $robbo-mfe-header-wordmark-xs;
   }
 
   .robbo-layout-header__trailing {
@@ -688,7 +695,7 @@ body.indigo-dark-theme {
   }
 
   .wrapper.wrapper-footer {
-    padding: 8px max(12px, 3vw);
+    padding: 8px 0;
   }
 
   .robbo-footer__copyright {
