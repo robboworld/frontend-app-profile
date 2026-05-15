@@ -127,7 +127,10 @@ class ProfilePage extends React.Component {
     if (!(accountSettingsUrl && this.isAuthenticatedUserProfile())) {
       return null;
     }
-    const destination = accountSettingsUrl.replace(/\/$/, '');
+    // Account MFE is built with PUBLIC_PATH `/account/`; links without a trailing slash break React Router basename.
+    const destination = accountSettingsUrl.endsWith('/')
+      ? accountSettingsUrl
+      : `${accountSettingsUrl}/`;
     return (
       <Hyperlink className="btn btn-outline-primary profile-page__account-settings-btn" destination={destination}>
         {this.props.intl.formatMessage(messages['profile.accountSettings.cta'])}
