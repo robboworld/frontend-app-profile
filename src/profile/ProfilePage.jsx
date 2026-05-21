@@ -145,7 +145,7 @@ class ProfilePage extends React.Component {
       return null;
     }
     return (
-      <div className="d-flex flex-wrap gap-2 align-items-center justify-content-md-end">
+      <div className="profile-page__hero-actions-inner d-flex flex-wrap gap-2 align-items-center justify-content-center justify-content-lg-end">
         {records}
         {account}
       </div>
@@ -158,10 +158,9 @@ class ProfilePage extends React.Component {
 
     return (
       <span data-hj-suppress>
-        <h1 className="h2 mb-0 font-weight-bold text-truncate">{this.props.params.username}</h1>
+        <h1 className="h2 mb-0 font-weight-bold profile-page__username">{this.props.params.username}</h1>
         <DateJoined date={dateJoined} />
         {this.isYOBDisabled() && <UsernameDescription />}
-        <hr className="d-none d-md-block" />
       </span>
     );
   }
@@ -175,7 +174,7 @@ class ProfilePage extends React.Component {
 
     return (
       <div className="row">
-        <div className="col-md-4 col-lg-3">
+        <div className="col-lg-4">
           <Alert variant="danger" dismissible={false} show>
             {photoUploadError.userMessage}
           </Alert>
@@ -244,38 +243,27 @@ class ProfilePage extends React.Component {
     const isLocationBlockVisible = isBlockVisible(country);
 
     return (
-      <div className="container-fluid">
-        <div className="row align-items-center pt-4 mb-4 pt-md-0 mb-md-0">
-          <div className="col-auto col-md-4 col-lg-3">
-            <div className="d-flex align-items-center d-md-block">
-              <ProfileAvatar
-                className="mb-md-3"
-                src={profileImage.src}
-                isDefault={profileImage.isDefault}
-                onSave={this.handleSaveProfilePhoto}
-                onDelete={this.handleDeleteProfilePhoto}
-                savePhotoState={this.props.savePhotoState}
-                isEditable={this.isAuthenticatedUserProfile() && !requiresParentalConsent}
-              />
-            </div>
+      <div className="container-fluid profile-page__container">
+        <div className="row profile-page__hero align-items-center mb-3 mb-lg-0">
+          <div className="col-12 col-lg-4 profile-page__hero-avatar">
+            <ProfileAvatar
+              src={profileImage.src}
+              isDefault={profileImage.isDefault}
+              onSave={this.handleSaveProfilePhoto}
+              onDelete={this.handleDeleteProfilePhoto}
+              savePhotoState={this.props.savePhotoState}
+              isEditable={this.isAuthenticatedUserProfile() && !requiresParentalConsent}
+            />
           </div>
-          <div className="col">
-            <div className="d-md-none">
-              {this.renderHeadingLockup()}
-            </div>
-            <div className="d-none d-md-block float-right">
-              {this.renderProfileActionButtons()}
-            </div>
+          <div className="col d-none d-lg-flex profile-page__hero-actions">
+            {this.renderProfileActionButtons()}
           </div>
         </div>
         {this.renderPhotoUploadErrorMessage()}
-        <div className="row">
-          <div className="col-md-4 col-lg-4">
-            <div className="d-none d-md-block mb-4">
+        <div className="row profile-page__body">
+          <div className="col-12 col-lg-4 profile-page__info profile-page__sidebar">
+            <div className="mb-4 profile-page__heading">
               {this.renderHeadingLockup()}
-            </div>
-            <div className="d-md-none mb-4">
-              {this.renderProfileActionButtons()}
             </div>
             {isNameBlockVisible && (
               <Name
@@ -310,7 +298,7 @@ class ProfilePage extends React.Component {
               />
             )}
           </div>
-          <div className="pt-md-3 col-md-8 col-lg-7 offset-lg-1">
+          <div className="col-12 pt-3 pt-lg-3 col-lg-8 profile-page__info profile-page__main">
             {!this.isYOBDisabled() && this.renderAgeMessage()}
             {isBioBlockVisible && (
               <Bio
@@ -336,6 +324,9 @@ class ProfilePage extends React.Component {
               />
             )}
           </div>
+        </div>
+        <div className="d-lg-none profile-page__footer-actions">
+          {this.renderProfileActionButtons()}
         </div>
       </div>
     );

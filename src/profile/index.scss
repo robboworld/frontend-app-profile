@@ -1,3 +1,5 @@
+@use "sass:math";
+
 .word-break-all {
   word-break: break-all !important;
 }
@@ -21,14 +23,29 @@ $robbo-profile-banner-bg: #00b140;
 $robbo-profile-accent-green: #007a3d;
 $robbo-profile-accent-green-hover: #006233;
 $robbo-profile-banner-height: 12rem;
-// Slightly shorter below `md` to save vertical space on phones (banner stays full width).
+$robbo-profile-banner-height-tablet: 11rem;
+// Slightly shorter on phones (banner stays full width).
 $robbo-profile-banner-height-mobile: 10rem;
+$robbo-profile-avatar-size-mobile: 5rem;
+$robbo-profile-avatar-size-tablet: 7.5rem;
+$robbo-profile-avatar-size-desktop: 12rem;
+// ~2/3 of avatar height overlaps the banner (desktop and mobile use the same ratio).
+$robbo-profile-avatar-banner-overlap-ratio: math.div(2, 3);
+// Match Robbo site footer/header content width (`robbo-layout/index.scss`).
+$robbo-profile-content-max-width: 1162px;
 
 .profile-page-bg-banner {
+  position: relative;
+  z-index: 0;
+  overflow: visible;
   height: $robbo-profile-banner-height;
 
   @include media-breakpoint-down(md) {
     height: $robbo-profile-banner-height-mobile;
+  }
+
+  @include media-breakpoint-between(md, lg) {
+    height: $robbo-profile-banner-height-tablet;
   }
 
   background-color: $robbo-profile-banner-bg;
@@ -60,6 +77,54 @@ $robbo-profile-banner-height-mobile: 10rem;
 }
 
 .profile-page {
+  overflow: visible;
+
+  .profile-page__container {
+    position: relative;
+    z-index: 1;
+    overflow: visible;
+    max-width: $robbo-profile-content-max-width;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 20px;
+    padding-right: 20px;
+
+    @include media-breakpoint-up(lg) {
+      padding-left: 28px;
+      padding-right: 28px;
+    }
+  }
+
+  .profile-page__hero-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    min-width: 0;
+    z-index: 1;
+  }
+
+  .profile-page__main {
+    @include media-breakpoint-up(lg) {
+      .robbo-age-message.alert.alert-info {
+        width: 100%;
+        max-width: none;
+        margin-top: 0;
+      }
+    }
+  }
+
+  .profile-page__sidebar {
+    @include media-breakpoint-up(lg) {
+      .username-description {
+        position: static;
+        left: auto;
+        top: auto;
+        margin-left: 0;
+        width: auto;
+      }
+    }
+  }
+
   // «Настройки аккаунта» (Hyperlink + `btn-outline-primary`).
   a.profile-page__account-settings-btn.pgn__hyperlink.btn.btn-outline-primary {
     color: $robbo-profile-accent-green;
@@ -116,11 +181,137 @@ $robbo-profile-banner-height-mobile: 10rem;
     margin-bottom: $spacer * .5;
   }
 
+  // Overlap on __hero (not __avatar-wrap) so the circle is not clipped by the container.
+  .profile-page__hero {
+    overflow: visible;
+
+    @include media-breakpoint-down(md) {
+      margin-top: -($robbo-profile-avatar-size-mobile * $robbo-profile-avatar-banner-overlap-ratio);
+    }
+
+    @include media-breakpoint-between(md, lg) {
+      margin-top: -($robbo-profile-avatar-size-tablet * $robbo-profile-avatar-banner-overlap-ratio);
+    }
+
+    @include media-breakpoint-up(lg) {
+      margin-top: -($robbo-profile-avatar-size-desktop * $robbo-profile-avatar-banner-overlap-ratio);
+      margin-bottom: 0;
+    }
+  }
+
+  .profile-page__hero-avatar {
+    overflow: visible;
+
+    @include media-breakpoint-down(lg) {
+      display: flex;
+      justify-content: center;
+    }
+  }
+
+  .profile-page__footer-actions {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+    margin-bottom: 1.5rem;
+  }
+
+  // Phone + tablet: centered profile blocks. Desktop (lg+): left alignment.
+  .profile-page__info {
+    @include media-breakpoint-down(lg) {
+      text-align: center;
+
+      .edit-section-header,
+      .h5,
+      .form-text,
+      p {
+        text-align: center;
+      }
+
+      .profile-page__heading {
+        max-width: min(28rem, 100%);
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .d-flex.align-items-center.mt-3.mb-2rem {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .username-description {
+        position: static;
+        left: auto;
+        top: auto;
+        margin-left: 0;
+        width: auto;
+        max-width: 20rem;
+      }
+
+      .btn-link.text-left {
+        text-align: center;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .d-flex.flex-row-reverse.flex-wrap.justify-content-end {
+        justify-content: center;
+      }
+
+      .robbo-age-message.alert.alert-info {
+        max-width: min(28rem, 100%);
+        margin-left: auto;
+        margin-right: auto;
+
+        // Paragon sets `text-align: start` on `.alert-content` and `display: flex` on `.alert-heading`.
+        &.alert-content,
+        .alert-content {
+          text-align: center;
+        }
+
+        .alert-message-content {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          text-align: center;
+          width: 100%;
+        }
+
+        .alert-heading,
+        [id="profile.age.headline"] {
+          display: block;
+          text-align: center;
+          width: 100%;
+        }
+      }
+    }
+  }
+
+  .profile-page__username {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    white-space: normal;
+  }
+
   .profile-avatar-wrap {
-    @include media-breakpoint-up(md) {
-      max-width: 12rem;
+    max-width: $robbo-profile-avatar-size-mobile;
+    margin-bottom: 0;
+    z-index: 2;
+
+    @include media-breakpoint-down(md) {
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    @include media-breakpoint-between(md, lg) {
+      max-width: $robbo-profile-avatar-size-tablet;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    @include media-breakpoint-up(lg) {
+      max-width: $robbo-profile-avatar-size-desktop;
       margin-right: 0;
-      margin-top: -8rem;
+      margin-top: 0;
       margin-bottom: 2rem;
     }
   }
@@ -135,20 +326,20 @@ $robbo-profile-banner-height-mobile: 10rem;
     align-items: center;
     border-radius: 50%;
 
-    @include media-breakpoint-up(md) {
+    @include media-breakpoint-up(lg) {
       background: linear-gradient(to top, rgba(0,0,0,.65) 4rem, rgba(0,0,0,0) 4rem);
       align-items: flex-end;
     }
 
     .btn {
       text-decoration: none;
-      @include media-breakpoint-up(md) {
+      @include media-breakpoint-up(lg) {
         margin-bottom: 1.2rem;
       }
     }
 
     .dropdown {
-      @include media-breakpoint-up(md) {
+      @include media-breakpoint-up(lg) {
         margin-bottom: 1.2rem;
       }
 
@@ -162,13 +353,18 @@ $robbo-profile-banner-height-mobile: 10rem;
   }
 
   .profile-avatar {
-    width: 5rem;
-    height: 5rem;
+    width: $robbo-profile-avatar-size-mobile;
+    height: $robbo-profile-avatar-size-mobile;
     position: relative;
 
-    @include media-breakpoint-up(md) {
-      width: 12rem;
-      height: 12rem;
+    @include media-breakpoint-between(md, lg) {
+      width: $robbo-profile-avatar-size-tablet;
+      height: $robbo-profile-avatar-size-tablet;
+    }
+
+    @include media-breakpoint-up(lg) {
+      width: $robbo-profile-avatar-size-desktop;
+      height: $robbo-profile-avatar-size-desktop;
     }
 
     .profile-avatar-edit-button {
@@ -186,7 +382,7 @@ $robbo-profile-banner-height-mobile: 10rem;
       border-radius:0;
       transition: opacity 200ms ease;
 
-      @include media-breakpoint-up(md) {
+      @include media-breakpoint-up(lg) {
         height: 4rem;
       }
 
