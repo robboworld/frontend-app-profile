@@ -6,6 +6,7 @@ import { getConfig } from '@edx/frontend-platform';
 
 const AgeMessage = ({ accountSettingsUrl }) => (
   <Alert
+    className="robbo-age-message"
     variant="info"
     dismissible={false}
     show

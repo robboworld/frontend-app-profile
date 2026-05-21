@@ -18,7 +18,8 @@
 
 // Match Robbo header bar (`robbo-layout/index.scss`); replaces Paragon `bg-primary` on profile banner
 $robbo-profile-banner-bg: #00b140;
-$robbo-account-settings-cta: #00af41;
+$robbo-profile-accent-green: #007a3d;
+$robbo-profile-accent-green-hover: #006233;
 $robbo-profile-banner-height: 12rem;
 // Slightly shorter below `md` to save vertical space on phones (banner stays full width).
 $robbo-profile-banner-height-mobile: 10rem;
@@ -59,29 +60,44 @@ $robbo-profile-banner-height-mobile: 10rem;
 }
 
 .profile-page {
-  // Account settings (outline) CTA — Robbo green text and border
-  .profile-page__account-settings-btn.btn-outline-primary {
-    $robbo-account-settings-cta-hover: #009a39;
-
-    color: $robbo-account-settings-cta;
-    border-color: $robbo-account-settings-cta;
+  // «Настройки аккаунта» (Hyperlink + `btn-outline-primary`).
+  a.profile-page__account-settings-btn.pgn__hyperlink.btn.btn-outline-primary {
+    color: $robbo-profile-accent-green;
+    border-color: $robbo-profile-accent-green;
     background-color: transparent;
 
-    &:hover {
-      color: $robbo-account-settings-cta-hover;
-      border-color: $robbo-account-settings-cta-hover;
-      background-color: transparent;
+    &:visited {
+      color: $robbo-profile-accent-green;
+      border-color: $robbo-profile-accent-green;
+    }
+
+    &:hover:not(:disabled):not(.disabled),
+    &:active:not(:disabled):not(.disabled) {
+      color: #fff;
+      background-color: $robbo-profile-accent-green;
+      border-color: $robbo-profile-accent-green;
     }
 
     &:focus-visible {
-      outline: 2px solid $robbo-account-settings-cta;
-      outline-offset: 2px;
+      color: #fff;
+      background-color: $robbo-profile-accent-green;
+      border-color: $robbo-profile-accent-green;
+      box-shadow: 0 0 0 0.2rem rgba($robbo-profile-accent-green, 0.35);
+    }
+  }
+
+  // AgeMessage — «Указать дату рождения» (Paragon `alert-info` + `alert-link`).
+  .robbo-age-message.alert-info .alert-link {
+    color: $robbo-profile-accent-green;
+
+    &:hover,
+    &:focus {
+      color: $robbo-profile-accent-green-hover;
     }
 
-    &:active {
-      color: $robbo-account-settings-cta-hover;
-      border-color: $robbo-account-settings-cta-hover;
-      background-color: transparent;
+    &:focus-visible {
+      outline: 2px solid rgba($robbo-profile-accent-green, 0.35);
+      outline-offset: 2px;
     }
   }
 
