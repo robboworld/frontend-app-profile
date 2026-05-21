@@ -101,6 +101,11 @@ $robbo-profile-content-max-width: 1162px;
     justify-content: flex-end;
     min-width: 0;
     z-index: 1;
+
+    // Hero row is pulled up over the banner; centering actions vertically puts CTAs on green.
+    @include media-breakpoint-up(lg) {
+      align-self: flex-end;
+    }
   }
 
   .profile-page__main {
