@@ -89,10 +89,13 @@ $robbo-profile-banner-height-mobile: 10rem;
   // AgeMessage — «Указать дату рождения» (Paragon `alert-info` + `alert-link`).
   .robbo-age-message.alert-info .alert-link {
     color: $robbo-profile-accent-green;
+    text-decoration: none;
 
     &:hover,
-    &:focus {
+    &:focus,
+    &:active {
       color: $robbo-profile-accent-green-hover;
+      text-decoration: none;
     }
 
     &:focus-visible {
