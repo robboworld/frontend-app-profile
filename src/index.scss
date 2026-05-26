@@ -5,4 +5,19 @@
 
 @import './sass/robbo-brand-fonts';
 @import './sass/robbo-brand-tokens';
+@import './sass/robbo-paragon-focus';
 @import './profile/index';
+
+#app {
+  @include robbo-paragon-focus-rings(
+    $robbo-brand-primary-dark,
+    $robbo-brand-primary-darker
+  );
+}
+
+#paragon-portal-root {
+  @include robbo-paragon-focus-rings(
+    $robbo-brand-primary-dark,
+    $robbo-brand-primary-darker
+  );
+}
