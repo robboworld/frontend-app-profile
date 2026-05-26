@@ -31,7 +31,6 @@ import AgeMessage from './AgeMessage';
 import DateJoined from './DateJoined';
 import UsernameDescription from './UsernameDescription';
 import PageLoading from './PageLoading';
-import Banner from './Banner';
 import LearningGoal from './forms/LearningGoal';
 
 // Selectors
@@ -46,16 +45,19 @@ ensureConfig(['CREDENTIALS_BASE_URL', 'LMS_BASE_URL'], 'ProfilePage');
 
 // Modifications Copyright (C) 2026 Robbo <https://robbo.ru>. See NOTICE at repository root.
 // Social network links block is intentionally not shown in the profile UI.
-// Account settings link + empty-section edit affordances improve the post–date-of-birth flow.
+// Account settings are linked from the header user menu (RobboHeader), not from this page.
 
 class ProfilePage extends React.Component {
   constructor(props, context) {
     super(props, context);
 
     const credentialsBaseUrl = context.config.CREDENTIALS_BASE_URL;
+    const accountBaseUrl = context.config.ACCOUNT_SETTINGS_URL;
     this.state = {
       viewMyRecordsUrl: credentialsBaseUrl ? `${credentialsBaseUrl}/records` : null,
-      accountSettingsUrl: context.config.ACCOUNT_SETTINGS_URL,
+      accountSettingsUrl: accountBaseUrl
+        ? (accountBaseUrl.endsWith('/') ? accountBaseUrl : `${accountBaseUrl}/`)
+        : null,
     };
 
     this.handleSaveProfilePhoto = this.handleSaveProfilePhoto.bind(this);
@@ -122,26 +124,9 @@ class ProfilePage extends React.Component {
     );
   }
 
-  renderAccountSettingsButton() {
-    const { accountSettingsUrl } = this.state;
-    if (!(accountSettingsUrl && this.isAuthenticatedUserProfile())) {
-      return null;
-    }
-    // Account MFE is built with PUBLIC_PATH `/account/`; links without a trailing slash break React Router basename.
-    const destination = accountSettingsUrl.endsWith('/')
-      ? accountSettingsUrl
-      : `${accountSettingsUrl}/`;
-    return (
-      <Hyperlink className="btn btn-outline-primary profile-page__account-settings-btn" destination={destination}>
-        {this.props.intl.formatMessage(messages['profile.accountSettings.cta'])}
-      </Hyperlink>
-    );
-  }
-
   renderProfileActionButtons(containerClassName = '') {
     const records = this.renderViewMyRecordsButton();
-    const account = this.renderAccountSettingsButton();
-    if (!records && !account) {
+    if (!records) {
       return null;
     }
     const className = [
@@ -151,7 +136,6 @@ class ProfilePage extends React.Component {
     return (
       <div className={className}>
         {records}
-        {account}
       </div>
     );
   }
@@ -248,8 +232,8 @@ class ProfilePage extends React.Component {
 
     return (
       <div className="container-fluid profile-page__container">
-        <div className="row profile-page__hero profile-page__hero--compact align-items-center mb-2 mb-lg-0">
-          <div className="col-auto col-lg-4 profile-page__hero-avatar">
+        <div className="row profile-page__hero profile-page__hero--compact align-items-center">
+          <div className="col-auto profile-page__hero-avatar">
             <ProfileAvatar
               src={profileImage.src}
               isDefault={profileImage.isDefault}
@@ -259,21 +243,18 @@ class ProfilePage extends React.Component {
               isEditable={this.isAuthenticatedUserProfile() && !requiresParentalConsent}
             />
           </div>
-          <div className="col profile-page__hero-identity d-lg-none">
-            <div className="profile-page__heading profile-page__heading--mobile">
+          <div className="col profile-page__hero-identity">
+            <div className="profile-page__heading">
               {this.renderHeadingLockup()}
             </div>
           </div>
-          <div className="col d-none d-lg-flex profile-page__hero-actions">
+          <div className="col-auto d-none d-lg-flex profile-page__hero-actions">
             {this.renderProfileActionButtons()}
           </div>
         </div>
         {this.renderPhotoUploadErrorMessage()}
         <div className="row profile-page__body">
           <div className="col-12 col-lg-4 profile-page__info profile-page__sidebar">
-            <div className="mb-4 profile-page__heading d-none d-lg-block">
-              {this.renderHeadingLockup()}
-            </div>
             {isNameBlockVisible && (
               <Name
                 name={name}
@@ -307,7 +288,7 @@ class ProfilePage extends React.Component {
               />
             )}
           </div>
-          <div className="col-12 pt-0 pt-lg-3 col-lg-8 profile-page__info profile-page__main">
+          <div className="col-12 col-lg-8 profile-page__info profile-page__main">
             {!this.isYOBDisabled() && this.renderAgeMessage()}
             {isBioBlockVisible && (
               <Bio
@@ -344,7 +325,6 @@ class ProfilePage extends React.Component {
   render() {
     return (
       <div className="profile-page">
-        <Banner />
         {this.renderContent()}
       </div>
     );

@@ -11,11 +11,6 @@ const messages = defineMessages({
     defaultMessage: 'Profile loading...',
     description: 'Message displayed when the profile data is loading.',
   },
-  'profile.accountSettings.cta': {
-    id: 'profile.accountSettings.cta',
-    defaultMessage: 'Advanced settings',
-    description: 'Link to the account micro-frontend (date of birth, account profile fields, etc.).',
-  },
 });
 
 export default messages;

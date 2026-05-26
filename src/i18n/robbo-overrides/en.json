@@ -8,6 +8,6 @@
   "robbo.header.user.menuDropdownAria": "More Options",
   "robbo.header.user.dashboard": "Dashboard",
   "robbo.header.user.profile": "Profile",
-  "robbo.header.user.signOut": "Sign Out",
-  "profile.accountSettings.cta": "Account settings"
+  "robbo.header.user.account": "Account",
+  "robbo.header.user.signOut": "Sign Out"
 }

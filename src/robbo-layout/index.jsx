@@ -57,6 +57,15 @@ const getCatalogUrl = (config) => (
 
 const getProgramsUrl = (config) => buildUrl(config.LMS_BASE_URL, '/dashboard/programs');
 
+/** Account MFE uses PUBLIC_PATH `/account/`; basename requires a trailing slash. */
+const getAccountSettingsUrl = (config) => {
+  const base = config.ACCOUNT_SETTINGS_URL;
+  if (!base) {
+    return null;
+  }
+  return base.endsWith('/') ? base : `${base}/`;
+};
+
 export const RobboHeader = ({
   activeSection,
   onCatalogClick,
@@ -92,11 +101,17 @@ export const RobboHeader = ({
     },
   ];
 
-  // Same order as LMS `user_dropdown.html`: Profile, Sign Out (dashboard link omitted — Robbo).
+  const accountSettingsUrl = getAccountSettingsUrl(config);
+
+  // Profile → Account → Sign Out (dashboard link omitted — Robbo).
   const userMenuLinks = [
     username && config.ACCOUNT_PROFILE_URL ? {
       href: `${config.ACCOUNT_PROFILE_URL}/u/${username}`,
       messageId: 'robbo.header.user.profile',
+    } : null,
+    accountSettingsUrl ? {
+      href: accountSettingsUrl,
+      messageId: 'robbo.header.user.account',
     } : null,
     config.LOGOUT_URL ? {
       href: config.LOGOUT_URL,
