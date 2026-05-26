@@ -3,6 +3,9 @@
 // Part of the Robbo Open edX MFE overrides. See NOTICE at repository root.
 // Modifications Copyright (C) 2026 Robbo. See NOTICE at repository root.
 
+@import '../sass/robbo-brand-fonts';
+@import '../sass/robbo-brand-tokens';
+
 // RobboHeader mirrors LMS `robbo-theme` global header (`lms/static/sass/extra/_header.scss`, `partials/.../_variables.scss`).
 $robbo-mfe-header-bar-min-h: 75px;
 $robbo-mfe-header-bar-min-h-mobile: 55px;
@@ -17,20 +20,20 @@ $robbo-mfe-profile-hamburger-line-height: 2px;
 $robbo-mfe-profile-hamburger-box-height: 17px;
 $robbo-footer-doc-links-gap: 2px; // minimal vertical spacing between footer legal links (RobboFooter; align LMS `extra/_footer.scss`)
 $robbo-footer-stack-gap-sm: 14px; // mobile: tighter spacing between footer columns-as-blocks
-$robbo-footer-font-family: 'Inter', "Helvetica Neue", Arial, sans-serif; // match LMS `$robbo-footer-font-family` / body UI
+$robbo-footer-font-family: $robbo-font-stack;
 // Десктоп: как LMS `.dropdown-user-menu .dropdown-item a:hover` (primary-light / dark)
 // Узкий бар + гамбургер: как LMS `.mobile-menu .mobile-nav-link a`
-$robbo-mfe-user-menu-item-hover-bg-desktop: #f0fdf4;
+$robbo-mfe-user-menu-item-hover-bg-desktop: $robbo-ui-primary-light;
 $robbo-mfe-user-menu-item-hover-color-desktop: #111827;
-$robbo-mfe-user-menu-item-hover-bg-collapsed: #eaf8ef;
+$robbo-mfe-user-menu-item-hover-bg-collapsed: $robbo-ui-primary-light-pressed;
 $robbo-mfe-user-menu-item-hover-color-collapsed: #111;
 
 .robbo-layout-header {
   position: relative;
   z-index: 20;
   min-height: $robbo-mfe-header-bar-min-h;
-  background: #00b140;
-  color: #fff;
+  background: $robbo-brand-primary;
+  color: $robbo-brand-white;
   box-shadow: none;
   box-sizing: border-box;
 
@@ -398,6 +401,10 @@ $y-hamburger-middle: ($robbo-mfe-profile-hamburger-box-height - $robbo-mfe-profi
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  font-family: $robbo-font-stack;
+  color: $robbo-brand-coal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .robbo-layout-page>main,
@@ -486,8 +493,8 @@ $y-hamburger-middle: ($robbo-mfe-profile-hamburger-box-height - $robbo-mfe-profi
   margin: 0;
   padding: clamp(4px, 1.2vw, 6px) clamp(14px, 2.2vw, 21px) clamp(4px, 1.2vw, 6px) clamp(12px, 1.8vw, 15px);
   box-sizing: border-box;
-  background: #00b050;
-  color: #fff;
+  background: $robbo-brand-primary;
+  color: $robbo-brand-white;
   font-size: clamp(14px, 2vw, 24px);
   font-weight: 700;
   line-height: 1.15;

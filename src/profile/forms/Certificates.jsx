@@ -136,7 +136,7 @@ class Certificates extends React.Component {
 
     return (
       <SwitchContent
-        className="mb-4"
+        className="profile-page__field mb-4"
         expression={editMode}
         cases={{
           editing: (
@@ -173,8 +173,6 @@ class Certificates extends React.Component {
             <>
               <EditableItemHeader
                 content={intl.formatMessage(messages['profile.certificates.my.certificates'])}
-                showEditButton
-                onClickEdit={this.handleOpen}
                 showVisibility={visibilityCourseCertificates !== null}
                 visibility={visibilityCourseCertificates}
               />

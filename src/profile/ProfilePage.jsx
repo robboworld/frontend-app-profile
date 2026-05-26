@@ -138,14 +138,18 @@ class ProfilePage extends React.Component {
     );
   }
 
-  renderProfileActionButtons() {
+  renderProfileActionButtons(containerClassName = '') {
     const records = this.renderViewMyRecordsButton();
     const account = this.renderAccountSettingsButton();
     if (!records && !account) {
       return null;
     }
+    const className = [
+      'profile-page__hero-actions-inner d-flex flex-wrap gap-2 align-items-center justify-content-center justify-content-lg-end',
+      containerClassName,
+    ].filter(Boolean).join(' ');
     return (
-      <div className="profile-page__hero-actions-inner d-flex flex-wrap gap-2 align-items-center justify-content-center justify-content-lg-end">
+      <div className={className}>
         {records}
         {account}
       </div>
@@ -244,8 +248,8 @@ class ProfilePage extends React.Component {
 
     return (
       <div className="container-fluid profile-page__container">
-        <div className="row profile-page__hero align-items-center mb-3 mb-lg-0">
-          <div className="col-12 col-lg-4 profile-page__hero-avatar">
+        <div className="row profile-page__hero profile-page__hero--compact align-items-center mb-2 mb-lg-0">
+          <div className="col-auto col-lg-4 profile-page__hero-avatar">
             <ProfileAvatar
               src={profileImage.src}
               isDefault={profileImage.isDefault}
@@ -255,6 +259,11 @@ class ProfilePage extends React.Component {
               isEditable={this.isAuthenticatedUserProfile() && !requiresParentalConsent}
             />
           </div>
+          <div className="col profile-page__hero-identity d-lg-none">
+            <div className="profile-page__heading profile-page__heading--mobile">
+              {this.renderHeadingLockup()}
+            </div>
+          </div>
           <div className="col d-none d-lg-flex profile-page__hero-actions">
             {this.renderProfileActionButtons()}
           </div>
@@ -262,7 +271,7 @@ class ProfilePage extends React.Component {
         {this.renderPhotoUploadErrorMessage()}
         <div className="row profile-page__body">
           <div className="col-12 col-lg-4 profile-page__info profile-page__sidebar">
-            <div className="mb-4 profile-page__heading">
+            <div className="mb-4 profile-page__heading d-none d-lg-block">
               {this.renderHeadingLockup()}
             </div>
             {isNameBlockVisible && (
@@ -298,7 +307,7 @@ class ProfilePage extends React.Component {
               />
             )}
           </div>
-          <div className="col-12 pt-3 pt-lg-3 col-lg-8 profile-page__info profile-page__main">
+          <div className="col-12 pt-0 pt-lg-3 col-lg-8 profile-page__info profile-page__main">
             {!this.isYOBDisabled() && this.renderAgeMessage()}
             {isBioBlockVisible && (
               <Bio
@@ -326,7 +335,7 @@ class ProfilePage extends React.Component {
           </div>
         </div>
         <div className="d-lg-none profile-page__footer-actions">
-          {this.renderProfileActionButtons()}
+          {this.renderProfileActionButtons('profile-page__hero-actions-inner--footer')}
         </div>
       </div>
     );

@@ -57,7 +57,7 @@ class Education extends React.Component {
 
     return (
       <SwitchContent
-        className="mb-5"
+        className="profile-page__field mb-5"
         expression={editMode}
         cases={{
           editing: (
@@ -127,8 +127,6 @@ class Education extends React.Component {
             <>
               <EditableItemHeader
                 content={intl.formatMessage(messages['profile.education.education'])}
-                showEditButton
-                onClickEdit={this.handleOpen}
                 showVisibility={visibilityLevelOfEducation !== null}
                 visibility={visibilityLevelOfEducation}
               />

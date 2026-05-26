@@ -1,5 +1,7 @@
 @use "sass:math";
 
+// Brand tokens loaded from `src/index.scss` (`../sass/robbo-brand-tokens`).
+
 .word-break-all {
   word-break: break-all !important;
 }
@@ -19,30 +21,53 @@
 }
 
 // Match Robbo header bar (`robbo-layout/index.scss`); replaces Paragon `bg-primary` on profile banner
-$robbo-profile-banner-bg: #00b140;
-$robbo-profile-accent-green: #007a3d;
-$robbo-profile-accent-green-hover: #006233;
+$robbo-profile-banner-bg: $robbo-brand-primary;
+$robbo-profile-accent-green: $robbo-brand-primary-dark;
+$robbo-profile-accent-green-hover: $robbo-brand-primary-darker;
 $robbo-profile-banner-height: 12rem;
 $robbo-profile-banner-height-tablet: 11rem;
-// Slightly shorter on phones (banner stays full width).
-$robbo-profile-banner-height-mobile: 10rem;
 $robbo-profile-avatar-size-mobile: 5rem;
+// Hero row on < lg: 2× base mobile avatar; column width follows the circle (col-auto).
+$robbo-profile-avatar-size-mobile-hero: $robbo-profile-avatar-size-mobile * 2;
 $robbo-profile-avatar-size-tablet: 7.5rem;
 $robbo-profile-avatar-size-desktop: 12rem;
 // ~2/3 of avatar height overlaps the banner (desktop and mobile use the same ratio).
 $robbo-profile-avatar-banner-overlap-ratio: math.div(2, 3);
 // Match Robbo site footer/header content width (`robbo-layout/index.scss`).
 $robbo-profile-content-max-width: 1162px;
+// Gap below fixed header when the green banner is hidden (< md).
+$robbo-profile-header-gap-mobile: 1.25rem;
+// Spacing scale (mobile profile polish, < lg).
+$robbo-profile-space-xs: 0.25rem;
+$robbo-profile-space-sm: 0.5rem;
+$robbo-profile-space-md: 0.75rem;
+$robbo-profile-space-lg: 1rem;
+$robbo-profile-space-xl: 1.25rem;
+// Field cards (mobile + desktop).
+$robbo-profile-field-radius: 0.625rem;
+$robbo-profile-field-border-color: rgba(0, 0, 0, 0.08);
+$robbo-profile-field-bg: #fafafa;
+$robbo-profile-section-gap-mobile: $robbo-profile-space-md;
+$robbo-profile-section-gap-desktop: $robbo-profile-space-lg;
+$robbo-profile-field-padding-mobile: $robbo-profile-space-lg;
+$robbo-profile-field-padding-desktop: $robbo-profile-space-lg $robbo-profile-space-xl;
+// Legacy aliases (mobile rules).
+$robbo-profile-mobile-field-radius: $robbo-profile-field-radius;
+$robbo-profile-mobile-field-border-color: $robbo-profile-field-border-color;
+$robbo-profile-mobile-field-bg: $robbo-profile-field-bg;
+$robbo-profile-mobile-section-gap: $robbo-profile-section-gap-mobile;
+$robbo-profile-mobile-field-padding: $robbo-profile-field-padding-mobile;
+$robbo-profile-text-primary: #111827;
+$robbo-profile-text-secondary: #6b7280;
+$robbo-profile-title-size: 0.9375rem;
+$robbo-profile-value-size: 1rem;
+$robbo-profile-helper-size: 0.8125rem;
 
 .profile-page-bg-banner {
   position: relative;
   z-index: 0;
   overflow: visible;
   height: $robbo-profile-banner-height;
-
-  @include media-breakpoint-down(md) {
-    height: $robbo-profile-banner-height-mobile;
-  }
 
   @include media-breakpoint-between(md, lg) {
     height: $robbo-profile-banner-height-tablet;
@@ -89,6 +114,10 @@ $robbo-profile-content-max-width: 1162px;
     padding-left: 20px;
     padding-right: 20px;
 
+    @include media-breakpoint-down(md) {
+      padding-top: $robbo-profile-header-gap-mobile;
+    }
+
     @include media-breakpoint-up(lg) {
       padding-left: 28px;
       padding-right: 28px;
@@ -110,6 +139,8 @@ $robbo-profile-content-max-width: 1162px;
 
   .profile-page__main {
     @include media-breakpoint-up(lg) {
+      padding-top: 0 !important;
+
       .robbo-age-message.alert.alert-info {
         width: 100%;
         max-width: none;
@@ -132,6 +163,8 @@ $robbo-profile-content-max-width: 1162px;
 
   // «Настройки аккаунта» (Hyperlink + `btn-outline-primary`).
   a.profile-page__account-settings-btn.pgn__hyperlink.btn.btn-outline-primary {
+    min-height: 2.75rem;
+    font-weight: 600;
     color: $robbo-profile-accent-green;
     border-color: $robbo-profile-accent-green;
     background-color: transparent;
@@ -190,10 +223,6 @@ $robbo-profile-content-max-width: 1162px;
   .profile-page__hero {
     overflow: visible;
 
-    @include media-breakpoint-down(md) {
-      margin-top: -($robbo-profile-avatar-size-mobile * $robbo-profile-avatar-banner-overlap-ratio);
-    }
-
     @include media-breakpoint-between(md, lg) {
       margin-top: -($robbo-profile-avatar-size-tablet * $robbo-profile-avatar-banner-overlap-ratio);
     }
@@ -204,12 +233,88 @@ $robbo-profile-content-max-width: 1162px;
     }
   }
 
+  .profile-page__hero--compact {
+    @include media-breakpoint-down(lg) {
+      gap: $robbo-profile-space-md;
+      margin-bottom: $robbo-profile-space-lg;
+      padding-bottom: $robbo-profile-space-lg;
+      border-bottom: 1px solid $robbo-profile-mobile-field-border-color;
+    }
+  }
+
   .profile-page__hero-avatar {
     overflow: visible;
 
     @include media-breakpoint-down(lg) {
       display: flex;
+      flex-shrink: 0;
+      justify-content: flex-start;
+      align-items: center;
+      min-width: 0;
+    }
+  }
+
+  .profile-page__hero-identity {
+    @include media-breakpoint-down(lg) {
+      display: flex;
+      flex-direction: column;
       justify-content: center;
+      align-items: flex-start;
+      text-align: left;
+      min-width: 0;
+      padding-left: $robbo-profile-space-md;
+      flex: 1 1 0;
+    }
+  }
+
+  .profile-page__heading--mobile {
+    @include media-breakpoint-down(lg) {
+      width: 100%;
+      min-width: 0;
+
+      .profile-page__username {
+        font-size: clamp(1.125rem, 4.5vw, 1.375rem);
+        font-weight: 700;
+        line-height: 1.25;
+        color: $robbo-profile-text-primary;
+        margin-bottom: $robbo-profile-space-xs;
+      }
+    }
+  }
+
+  .profile-page__member-since {
+    color: $robbo-profile-text-secondary;
+    font-size: $robbo-profile-helper-size;
+    line-height: 1.35;
+  }
+
+  .profile-page__heading {
+    @include media-breakpoint-up(lg) {
+      margin-bottom: 0;
+
+      .profile-page__username {
+        font-size: 1.75rem;
+        font-weight: 700;
+        line-height: 1.2;
+        color: $robbo-profile-text-primary;
+        margin-bottom: $robbo-profile-space-xs;
+      }
+    }
+  }
+
+  .profile-page__sidebar > .profile-page__heading.mb-4 {
+    @include media-breakpoint-up(lg) {
+      margin-bottom: 0 !important;
+    }
+  }
+
+  .profile-page__body {
+    @include media-breakpoint-down(lg) {
+      row-gap: $robbo-profile-space-md;
+    }
+
+    @include media-breakpoint-up(lg) {
+      row-gap: $robbo-profile-section-gap-desktop;
     }
   }
 
@@ -218,29 +323,170 @@ $robbo-profile-content-max-width: 1162px;
     justify-content: center;
     margin-top: 2rem;
     margin-bottom: 1.5rem;
+
+    .profile-page__hero-actions-inner--footer {
+      width: 100%;
+      max-width: 36rem;
+    }
+
+    @include media-breakpoint-down(lg) {
+      margin-top: 1.25rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid $robbo-profile-mobile-field-border-color;
+
+      .profile-page__hero-actions-inner--footer {
+        justify-content: stretch;
+      }
+
+      .profile-page__hero-actions-inner--footer .btn {
+        width: 100%;
+      }
+    }
   }
 
-  // Phone + tablet: centered profile blocks. Desktop (lg+): left alignment.
+  // Secondary edit control (filled sections).
+  .profile-page__edit-btn {
+    color: $robbo-profile-text-secondary;
+    font-size: $robbo-profile-helper-size;
+    font-weight: 500;
+    white-space: nowrap;
+    text-decoration: none;
+
+    &:hover,
+    &:focus-visible {
+      color: $robbo-profile-accent-green;
+      text-decoration: none;
+    }
+
+    &:focus-visible {
+      outline: 2px solid rgba($robbo-profile-accent-green, 0.35);
+      outline-offset: 2px;
+      border-radius: 0.25rem;
+    }
+  }
+
+  // Primary empty-state action.
+  .profile-page__empty-cta {
+    display: inline-flex;
+    align-items: center;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    min-height: 2.75rem;
+    padding: $robbo-profile-space-sm 0;
+    color: $robbo-profile-accent-green;
+    font-size: $robbo-profile-value-size;
+    font-weight: 600;
+    line-height: 1.3;
+    text-align: left;
+    text-decoration: none;
+
+    &:hover,
+    &:focus-visible {
+      color: $robbo-profile-accent-green-hover;
+      text-decoration: underline;
+    }
+
+    &:focus-visible {
+      outline: 2px solid rgba($robbo-profile-accent-green, 0.35);
+      outline-offset: 2px;
+      border-radius: 0.25rem;
+    }
+  }
+
+  // Field cards + typography (mobile and desktop).
   .profile-page__info {
+    text-align: left;
+
+    &.profile-page__sidebar,
+    &.profile-page__main {
+      display: flex;
+      flex-direction: column;
+
+      @include media-breakpoint-down(lg) {
+        gap: $robbo-profile-section-gap-mobile;
+      }
+
+      @include media-breakpoint-up(lg) {
+        gap: $robbo-profile-section-gap-desktop;
+      }
+    }
+
+    .profile-page__field {
+      margin-bottom: 0 !important;
+      background: $robbo-profile-field-bg;
+      border: 1px solid $robbo-profile-field-border-color;
+      border-radius: $robbo-profile-field-radius;
+
+      @include media-breakpoint-down(lg) {
+        padding: $robbo-profile-field-padding-mobile;
+      }
+
+      @include media-breakpoint-up(lg) {
+        padding: $robbo-profile-field-padding-desktop;
+      }
+    }
+
+    .editable-item-header {
+      margin-bottom: $robbo-profile-space-sm !important;
+
+      &__title-row {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: $robbo-profile-space-sm;
+      }
+
+      .edit-section-header {
+        flex: 1;
+        min-width: 0;
+        font-size: $robbo-profile-title-size;
+        font-weight: 600;
+        line-height: 1.35;
+        color: $robbo-profile-text-primary;
+        text-align: left;
+      }
+
+      &__edit {
+        flex-shrink: 0;
+        margin-top: -0.125rem;
+      }
+
+      &__visibility {
+        margin-top: $robbo-profile-space-xs;
+        font-size: $robbo-profile-helper-size;
+        line-height: 1.35;
+        color: $robbo-profile-text-secondary;
+
+        .ml-auto {
+          margin-left: 0 !important;
+        }
+      }
+    }
+
+    .h5,
+    .lead {
+      margin-top: $robbo-profile-space-xs;
+      margin-bottom: $robbo-profile-space-xs;
+      font-size: $robbo-profile-value-size;
+      font-weight: 600;
+      line-height: 1.4;
+      color: $robbo-profile-text-primary;
+      text-align: left;
+    }
+
+    .form-text {
+      margin-top: $robbo-profile-space-xs;
+      margin-bottom: 0;
+      font-size: $robbo-profile-helper-size;
+      line-height: 1.45;
+      color: $robbo-profile-text-secondary;
+      text-align: left;
+    }
+
     @include media-breakpoint-down(lg) {
-      text-align: center;
-
-      .edit-section-header,
-      .h5,
-      .form-text,
-      p {
-        text-align: center;
-      }
-
-      .profile-page__heading {
-        max-width: min(28rem, 100%);
-        margin-left: auto;
-        margin-right: auto;
-      }
-
       .d-flex.align-items-center.mt-3.mb-2rem {
         flex-direction: column;
-        align-items: center;
+        align-items: stretch;
       }
 
       .username-description {
@@ -249,23 +495,22 @@ $robbo-profile-content-max-width: 1162px;
         top: auto;
         margin-left: 0;
         width: auto;
-        max-width: 20rem;
-      }
-
-      .btn-link.text-left {
-        text-align: center;
-        margin-left: auto;
-        margin-right: auto;
+        max-width: none;
+        text-align: left;
       }
 
       .d-flex.flex-row-reverse.flex-wrap.justify-content-end {
-        justify-content: center;
+        flex-direction: column-reverse;
+        align-items: stretch;
+        justify-content: flex-start;
+        gap: $robbo-profile-space-md;
       }
 
       .robbo-age-message.alert.alert-info {
         max-width: min(28rem, 100%);
         margin-left: auto;
         margin-right: auto;
+        text-align: center;
 
         // Paragon sets `text-align: start` on `.alert-content` and `display: flex` on `.alert-heading`.
         &.alert-content,
@@ -289,6 +534,18 @@ $robbo-profile-content-max-width: 1162px;
         }
       }
     }
+
+    @include media-breakpoint-up(lg) {
+      .d-flex.flex-row-reverse.flex-wrap.justify-content-end {
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        gap: $robbo-profile-space-md;
+      }
+
+      .robbo-age-message.alert.alert-info {
+        border-radius: $robbo-profile-field-radius;
+      }
+    }
   }
 
   .profile-page__username {
@@ -298,19 +555,16 @@ $robbo-profile-content-max-width: 1162px;
   }
 
   .profile-avatar-wrap {
+    display: inline-block;
     max-width: $robbo-profile-avatar-size-mobile;
     margin-bottom: 0;
     z-index: 2;
 
-    @include media-breakpoint-down(md) {
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    @include media-breakpoint-between(md, lg) {
-      max-width: $robbo-profile-avatar-size-tablet;
-      margin-left: auto;
-      margin-right: auto;
+    @include media-breakpoint-down(lg) {
+      margin-left: 0;
+      margin-right: 0;
+      width: $robbo-profile-avatar-size-mobile-hero;
+      max-width: $robbo-profile-avatar-size-mobile-hero;
     }
 
     @include media-breakpoint-up(lg) {
@@ -321,55 +575,57 @@ $robbo-profile-content-max-width: 1162px;
     }
   }
 
-  .profile-avatar-menu-container {
-    background: rgba(0,0,0,.65);
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 50%;
-
-    @include media-breakpoint-up(lg) {
-      background: linear-gradient(to top, rgba(0,0,0,.65) 4rem, rgba(0,0,0,0) 4rem);
-      align-items: flex-end;
-    }
-
-    .btn {
-      text-decoration: none;
-      @include media-breakpoint-up(lg) {
-        margin-bottom: 1.2rem;
-      }
-    }
-
-    .dropdown {
-      @include media-breakpoint-up(lg) {
-        margin-bottom: 1.2rem;
-      }
-
-      .btn {
-        color: $white;
-        background: transparent;
-        border-color: transparent;
-        margin: 0;
-      }
-    }
-  }
-
   .profile-avatar {
     width: $robbo-profile-avatar-size-mobile;
     height: $robbo-profile-avatar-size-mobile;
     position: relative;
+    overflow: hidden;
 
-    @include media-breakpoint-between(md, lg) {
-      width: $robbo-profile-avatar-size-tablet;
-      height: $robbo-profile-avatar-size-tablet;
+    @include media-breakpoint-down(lg) {
+      width: $robbo-profile-avatar-size-mobile-hero;
+      height: $robbo-profile-avatar-size-mobile-hero;
     }
 
     @include media-breakpoint-up(lg) {
       width: $robbo-profile-avatar-size-desktop;
       height: $robbo-profile-avatar-size-desktop;
+    }
+
+    &__media,
+    &__image {
+      width: 100%;
+      height: 100%;
+    }
+
+    &__shade {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      border-radius: 50%;
+      pointer-events: none;
+      overflow: hidden;
+
+      &::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 38%;
+        min-height: 2.75rem;
+        max-height: 4.25rem;
+        background: linear-gradient(
+          to top,
+          rgba(0, 0, 0, 0.78) 0%,
+          rgba(0, 0, 0, 0.42) 55%,
+          transparent 100%
+        );
+      }
+    }
+
+    &__pending {
+      z-index: 3;
+      background-color: rgba(0, 0, 0, 0.65);
     }
 
     .profile-avatar-edit-button {
@@ -393,6 +649,130 @@ $robbo-profile-content-max-width: 1162px;
 
       &:focus, &:hover, &:active, &.active {
         opacity: 1;
+      }
+    }
+  }
+
+  .profile-avatar-controls {
+    position: absolute;
+    left: 50%;
+    bottom: 0.4rem;
+    z-index: 2;
+    transform: translateX(-50%);
+    pointer-events: none;
+
+    > * {
+      pointer-events: auto;
+    }
+
+    @include media-breakpoint-up(lg) {
+      bottom: 0.65rem;
+    }
+  }
+
+  .profile-avatar-menu__trigger,
+  .profile-avatar-menu__dropdown .dropdown-toggle {
+    margin: 0;
+    padding: 0.2rem 0.5rem 0.45rem;
+    color: $white;
+    font-size: $robbo-profile-helper-size;
+    font-weight: 600;
+    line-height: 1.2;
+    text-decoration: none;
+    white-space: nowrap;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+
+    &:hover,
+    &:focus,
+    &:active,
+    &.show {
+      color: $white;
+      text-decoration: none;
+      background: transparent;
+      border: none;
+      box-shadow: none;
+    }
+
+    &:focus-visible {
+      outline: 2px solid rgba(255, 255, 255, 0.85);
+      outline-offset: 2px;
+      border-radius: 0.25rem;
+    }
+  }
+
+  .profile-avatar-menu__dropdown .dropdown-toggle {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.125rem;
+    padding: 0.15rem 0.5rem 0.3rem;
+  }
+
+  // Paragon chevron uses rotate(135deg); open state = +180° → 315deg (points up).
+  .profile-avatar-menu__dropdown .dropdown-toggle::after {
+    display: block;
+    margin: 0;
+    margin-inline-start: 0;
+    position: static;
+    top: auto;
+    vertical-align: unset;
+    transform: rotate(135deg);
+    transform-origin: center center;
+    transition: transform 0.18s ease;
+  }
+
+  .profile-avatar-menu__dropdown .dropdown-toggle.show::after,
+  .profile-avatar-menu__dropdown .dropdown-toggle[aria-expanded="true"]::after {
+    transform: rotate(315deg);
+  }
+
+  .profile-avatar-menu__popover.dropdown-menu {
+    min-width: 11rem;
+    margin-top: 0.35rem !important;
+    padding: $robbo-profile-space-xs;
+    background: #fff;
+    border: 1px solid $robbo-profile-field-border-color;
+    border-radius: $robbo-profile-field-radius;
+    box-shadow: 0 10px 28px rgba(17, 24, 39, 0.14);
+    transform-origin: top center;
+    opacity: 0;
+    transform: translateY(-0.35rem);
+    transition:
+      opacity 0.18s ease,
+      transform 0.18s ease;
+
+    &.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .profile-avatar-menu__item.dropdown-item {
+    padding: 0.5rem 0.75rem;
+    font-size: $robbo-profile-value-size;
+    font-weight: 500;
+    line-height: 1.35;
+    color: $robbo-profile-text-primary;
+    border-radius: calc(#{$robbo-profile-field-radius} - 2px);
+
+    &:hover,
+    &:focus {
+      color: $robbo-profile-accent-green;
+      background-color: $robbo-ui-primary-light;
+    }
+
+    &:active {
+      color: $robbo-profile-accent-green-hover;
+      background-color: $robbo-ui-primary-light-pressed;
+    }
+
+    &--danger {
+      &:hover,
+      &:focus {
+        color: #b91c1c;
+        background-color: #fef2f2;
       }
     }
   }

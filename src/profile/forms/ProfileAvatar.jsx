@@ -43,8 +43,7 @@ class ProfileAvatar extends React.Component {
   renderPending() {
     return (
       <div
-        className="position-absolute w-100 h-100 d-flex justify-content-center align-items-center rounded-circle"
-        style={{ backgroundColor: 'rgba(0,0,0,.65)' }}
+        className="profile-avatar__pending position-absolute w-100 h-100 d-flex justify-content-center align-items-center rounded-circle"
       >
         <div className="spinner-border text-primary" role="status" />
       </div>
@@ -59,7 +58,7 @@ class ProfileAvatar extends React.Component {
         <Button
           variant="link"
           size="sm"
-          className="text-white btn-block"
+          className="profile-avatar-menu__trigger text-white"
           onClick={this.onClickUpload}
         >
           <FormattedMessage
@@ -72,19 +71,43 @@ class ProfileAvatar extends React.Component {
     }
 
     return (
-      <Dropdown>
-        <Dropdown.Toggle>
+      <Dropdown
+        drop="down"
+        className="profile-avatar-menu__dropdown"
+      >
+        <Dropdown.Toggle
+          variant="link"
+          size="sm"
+          id="profile-avatar-photo-menu"
+          className="profile-avatar-menu__trigger text-white"
+        >
           {intl.formatMessage(messages['profile.profileavatar.change-button'])}
         </Dropdown.Toggle>
-        <Dropdown.Menu>
-          <Dropdown.Item type="button" onClick={this.onClickUpload}>
+        <Dropdown.Menu
+          className="profile-avatar-menu__popover"
+          popperConfig={{
+            strategy: 'fixed',
+            modifiers: [
+              { name: 'offset', options: { offset: [0, 6] } },
+            ],
+          }}
+        >
+          <Dropdown.Item
+            type="button"
+            className="profile-avatar-menu__item"
+            onClick={this.onClickUpload}
+          >
             <FormattedMessage
               id="profile.profileavatar.upload-button"
               defaultMessage="Upload Photo"
               description="Upload photo button"
             />
           </Dropdown.Item>
-          <Dropdown.Item type="button" onClick={this.onClickDelete}>
+          <Dropdown.Item
+            type="button"
+            className="profile-avatar-menu__item profile-avatar-menu__item--danger"
+            onClick={this.onClickDelete}
+          >
             <FormattedMessage
               id="profile.profileavatar.remove.button"
               defaultMessage="Remove"
@@ -96,13 +119,13 @@ class ProfileAvatar extends React.Component {
     );
   }
 
-  renderMenu() {
-    if (!this.props.isEditable) {
+  renderControls() {
+    if (!this.props.isEditable || this.props.savePhotoState === 'pending') {
       return null;
     }
 
     return (
-      <div className="profile-avatar-menu-container">
+      <div className="profile-avatar-controls">
         {this.renderMenuContent()}
       </div>
     );
@@ -116,7 +139,7 @@ class ProfileAvatar extends React.Component {
     ) : (
       <img
         data-hj-suppress
-        className="w-100 h-100 d-block rounded-circle overflow-hidden"
+        className="profile-avatar__image w-100 h-100 d-block rounded-circle"
         style={{ objectFit: 'cover' }}
         alt={intl.formatMessage(messages['profile.image.alt.attribute'])}
         src={this.props.src}
@@ -125,12 +148,18 @@ class ProfileAvatar extends React.Component {
   }
 
   render() {
+    const showShade = this.props.isEditable && this.props.savePhotoState !== 'pending';
+
     return (
       <div className="profile-avatar-wrap position-relative">
         <div className="profile-avatar rounded-circle bg-light">
-          {this.props.savePhotoState === 'pending' ? this.renderPending() : this.renderMenu() }
-          {this.renderAvatar()}
+          {this.props.savePhotoState === 'pending' ? this.renderPending() : null}
+          <div className="profile-avatar__media">
+            {this.renderAvatar()}
+          </div>
+          {showShade ? <div className="profile-avatar__shade" aria-hidden="true" /> : null}
         </div>
+        {this.renderControls()}
         <form
           ref={this.form}
           onSubmit={this.onSubmit}

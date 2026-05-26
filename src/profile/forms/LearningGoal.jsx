@@ -34,7 +34,7 @@ const LearningGoal = (props) => {
 
   return (
     <SwitchContent
-      className="mb-5"
+      className="profile-page__field mb-5"
       expression={editMode}
       cases={{
         editable: (

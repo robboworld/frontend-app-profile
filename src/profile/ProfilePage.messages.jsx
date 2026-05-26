@@ -13,7 +13,7 @@ const messages = defineMessages({
   },
   'profile.accountSettings.cta': {
     id: 'profile.accountSettings.cta',
-    defaultMessage: 'Account settings',
+    defaultMessage: 'Advanced settings',
     description: 'Link to the account micro-frontend (date of birth, account profile fields, etc.).',
   },
 });

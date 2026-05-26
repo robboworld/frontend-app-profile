@@ -50,7 +50,7 @@ class Bio extends React.Component {
 
     return (
       <SwitchContent
-        className="mb-5"
+        className="profile-page__field mb-5"
         expression={editMode}
         cases={{
           editing: (
@@ -102,8 +102,6 @@ class Bio extends React.Component {
             <>
               <EditableItemHeader
                 content={intl.formatMessage(messages['profile.bio.about.me'])}
-                showEditButton
-                onClickEdit={this.handleOpen}
                 showVisibility={visibilityBio !== null}
                 visibility={visibilityBio}
               />

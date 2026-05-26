@@ -52,7 +52,7 @@ class Name extends React.Component {
 
     return (
       <SwitchContent
-        className="mb-5"
+        className="profile-page__field mb-5"
         expression={editMode}
         cases={{
           editing: (
@@ -102,8 +102,6 @@ class Name extends React.Component {
             <>
               <EditableItemHeader
                 content={intl.formatMessage(messages['profile.name.full.name'])}
-                showEditButton
-                onClickEdit={this.handleOpen}
                 showVisibility={visibilityName !== null}
                 visibility={visibilityName}
               />

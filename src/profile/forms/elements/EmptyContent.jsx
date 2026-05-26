@@ -8,7 +8,7 @@ const EmptyContent = ({ children, onClick, showPlusIcon }) => (
     {onClick ? (
       <button
         type="button"
-        className="pl-0 text-left btn btn-link"
+        className="pl-0 text-left btn btn-link profile-page__empty-cta"
         onClick={onClick}
         onKeyDown={(e) => { if (e.key === 'Enter') { onClick(); } }}
         tabIndex={0}
