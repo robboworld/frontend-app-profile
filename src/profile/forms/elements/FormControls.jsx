@@ -51,7 +51,7 @@ const FormControls = ({
           }}
           disabledStates={[]}
         />
-        <Button variant="link" onClick={cancelHandler}>
+        <Button variant="outline-primary" onClick={cancelHandler}>
           {intl.formatMessage(messages['profile.formcontrols.button.cancel'])}
         </Button>
       </div>

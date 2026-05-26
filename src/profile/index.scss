@@ -1,5 +1,3 @@
-@use "sass:math";
-
 // Brand tokens loaded from `src/index.scss` (`../sass/robbo-brand-tokens`).
 
 .word-break-all {
@@ -20,23 +18,17 @@
   }
 }
 
-// Match Robbo header bar (`robbo-layout/index.scss`); replaces Paragon `bg-primary` on profile banner
-$robbo-profile-banner-bg: $robbo-brand-primary;
 $robbo-profile-accent-green: $robbo-brand-primary-dark;
 $robbo-profile-accent-green-hover: $robbo-brand-primary-darker;
-$robbo-profile-banner-height: 12rem;
-$robbo-profile-banner-height-tablet: 11rem;
 $robbo-profile-avatar-size-mobile: 5rem;
 // Hero row on < lg: 2× base mobile avatar; column width follows the circle (col-auto).
 $robbo-profile-avatar-size-mobile-hero: $robbo-profile-avatar-size-mobile * 2;
-$robbo-profile-avatar-size-tablet: 7.5rem;
-$robbo-profile-avatar-size-desktop: 12rem;
-// ~2/3 of avatar height overlaps the banner (desktop and mobile use the same ratio).
-$robbo-profile-avatar-banner-overlap-ratio: math.div(2, 3);
+// Compact inline avatar in desktop hero (no banner overlap).
+$robbo-profile-avatar-size-desktop-hero: 7.5rem;
 // Match Robbo site footer/header content width (`robbo-layout/index.scss`).
 $robbo-profile-content-max-width: 1162px;
-// Gap below fixed header when the green banner is hidden (< md).
-$robbo-profile-header-gap-mobile: 1.25rem;
+// Gap below fixed site header.
+$robbo-profile-header-gap: 1.25rem;
 // Spacing scale (mobile profile polish, < lg).
 $robbo-profile-space-xs: 0.25rem;
 $robbo-profile-space-sm: 0.5rem;
@@ -62,21 +54,61 @@ $robbo-profile-text-secondary: #6b7280;
 $robbo-profile-title-size: 0.9375rem;
 $robbo-profile-value-size: 1rem;
 $robbo-profile-helper-size: 0.8125rem;
+// Hero identity on < lg (slightly larger than field helper text).
+$robbo-profile-hero-username-size-mobile: clamp(1.25rem, 5vw, 1.5rem);
+$robbo-profile-hero-meta-size-mobile: 0.875rem;
+// Save / Cancel in field editors (aligned with account MFE).
+$robbo-profile-form-action-font-weight: 400;
 
-.profile-page-bg-banner {
-  position: relative;
-  z-index: 0;
-  overflow: visible;
-  height: $robbo-profile-banner-height;
+@mixin robbo-profile-btn-primary {
+  font-weight: $robbo-profile-form-action-font-weight;
+  background-color: $robbo-profile-accent-green;
+  border-color: $robbo-profile-accent-green;
+  color: #fff;
 
-  @include media-breakpoint-between(md, lg) {
-    height: $robbo-profile-banner-height-tablet;
+  &:visited {
+    color: #fff;
   }
 
-  background-color: $robbo-profile-banner-bg;
-  background-image: url('./assets/dot-pattern-light.png');
-  background-repeat: repeat-x;
-  background-size: auto 85%;
+  &:hover:not(:disabled):not(.disabled),
+  &:active:not(:disabled):not(.disabled) {
+    background-color: $robbo-profile-accent-green-hover;
+    border-color: $robbo-profile-accent-green-hover;
+    color: #fff;
+  }
+
+  &:focus-visible {
+    background-color: $robbo-profile-accent-green;
+    border-color: $robbo-profile-accent-green;
+    color: #fff;
+    box-shadow: 0 0 0 0.2rem rgba($robbo-profile-accent-green, 0.35);
+  }
+}
+
+@mixin robbo-profile-btn-outline-primary {
+  font-weight: $robbo-profile-form-action-font-weight;
+  color: $robbo-profile-accent-green;
+  border-color: $robbo-profile-accent-green;
+  background-color: transparent;
+
+  &:visited {
+    color: $robbo-profile-accent-green;
+    border-color: $robbo-profile-accent-green;
+  }
+
+  &:hover:not(:disabled):not(.disabled),
+  &:active:not(:disabled):not(.disabled) {
+    color: #fff;
+    background-color: $robbo-profile-accent-green;
+    border-color: $robbo-profile-accent-green;
+  }
+
+  &:focus-visible {
+    color: #fff;
+    background-color: $robbo-profile-accent-green;
+    border-color: $robbo-profile-accent-green;
+    box-shadow: 0 0 0 0.2rem rgba($robbo-profile-accent-green, 0.35);
+  }
 }
 
 .username-description {
@@ -104,6 +136,16 @@ $robbo-profile-helper-size: 0.8125rem;
 .profile-page {
   overflow: visible;
 
+  .btn-primary,
+  .pgn__stateful-btn.btn-primary {
+    @include robbo-profile-btn-primary;
+  }
+
+  .btn-outline-primary,
+  a.btn-outline-primary {
+    @include robbo-profile-btn-outline-primary;
+  }
+
   .profile-page__container {
     position: relative;
     z-index: 1;
@@ -114,9 +156,7 @@ $robbo-profile-helper-size: 0.8125rem;
     padding-left: 20px;
     padding-right: 20px;
 
-    @include media-breakpoint-down(md) {
-      padding-top: $robbo-profile-header-gap-mobile;
-    }
+    padding-top: $robbo-profile-header-gap;
 
     @include media-breakpoint-up(lg) {
       padding-left: 28px;
@@ -128,13 +168,9 @@ $robbo-profile-helper-size: 0.8125rem;
     display: flex;
     align-items: center;
     justify-content: flex-end;
+    flex-shrink: 0;
     min-width: 0;
     z-index: 1;
-
-    // Hero row is pulled up over the banner; centering actions vertically puts CTAs on green.
-    @include media-breakpoint-up(lg) {
-      align-self: flex-end;
-    }
   }
 
   .profile-page__main {
@@ -158,34 +194,6 @@ $robbo-profile-helper-size: 0.8125rem;
         margin-left: 0;
         width: auto;
       }
-    }
-  }
-
-  // «Настройки аккаунта» (Hyperlink + `btn-outline-primary`).
-  a.profile-page__account-settings-btn.pgn__hyperlink.btn.btn-outline-primary {
-    min-height: 2.75rem;
-    font-weight: 600;
-    color: $robbo-profile-accent-green;
-    border-color: $robbo-profile-accent-green;
-    background-color: transparent;
-
-    &:visited {
-      color: $robbo-profile-accent-green;
-      border-color: $robbo-profile-accent-green;
-    }
-
-    &:hover:not(:disabled):not(.disabled),
-    &:active:not(:disabled):not(.disabled) {
-      color: #fff;
-      background-color: $robbo-profile-accent-green;
-      border-color: $robbo-profile-accent-green;
-    }
-
-    &:focus-visible {
-      color: #fff;
-      background-color: $robbo-profile-accent-green;
-      border-color: $robbo-profile-accent-green;
-      box-shadow: 0 0 0 0.2rem rgba($robbo-profile-accent-green, 0.35);
     }
   }
 
@@ -219,24 +227,21 @@ $robbo-profile-helper-size: 0.8125rem;
     margin-bottom: $spacer * .5;
   }
 
-  // Overlap on __hero (not __avatar-wrap) so the circle is not clipped by the container.
   .profile-page__hero {
     overflow: visible;
-
-    @include media-breakpoint-between(md, lg) {
-      margin-top: -($robbo-profile-avatar-size-tablet * $robbo-profile-avatar-banner-overlap-ratio);
-    }
+    margin-bottom: $robbo-profile-space-lg;
 
     @include media-breakpoint-up(lg) {
-      margin-top: -($robbo-profile-avatar-size-desktop * $robbo-profile-avatar-banner-overlap-ratio);
-      margin-bottom: 0;
+      gap: $robbo-profile-space-xl;
+      margin-bottom: $robbo-profile-section-gap-desktop;
+      padding-bottom: $robbo-profile-section-gap-desktop;
+      border-bottom: 1px solid $robbo-profile-field-border-color;
     }
   }
 
   .profile-page__hero--compact {
     @include media-breakpoint-down(lg) {
       gap: $robbo-profile-space-md;
-      margin-bottom: $robbo-profile-space-lg;
       padding-bottom: $robbo-profile-space-lg;
       border-bottom: 1px solid $robbo-profile-mobile-field-border-color;
     }
@@ -255,40 +260,37 @@ $robbo-profile-helper-size: 0.8125rem;
   }
 
   .profile-page__hero-identity {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    text-align: left;
+    min-width: 0;
+    flex: 1 1 0;
+
     @include media-breakpoint-down(lg) {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: flex-start;
-      text-align: left;
-      min-width: 0;
       padding-left: $robbo-profile-space-md;
-      flex: 1 1 0;
     }
   }
 
-  .profile-page__heading--mobile {
-    @include media-breakpoint-down(lg) {
-      width: 100%;
-      min-width: 0;
+  .profile-page__heading {
+    width: 100%;
+    min-width: 0;
 
+    @include media-breakpoint-down(lg) {
       .profile-page__username {
-        font-size: clamp(1.125rem, 4.5vw, 1.375rem);
+        font-size: $robbo-profile-hero-username-size-mobile;
         font-weight: 700;
         line-height: 1.25;
         color: $robbo-profile-text-primary;
         margin-bottom: $robbo-profile-space-xs;
       }
+
+      .profile-page__member-since {
+        font-size: $robbo-profile-hero-meta-size-mobile;
+      }
     }
-  }
 
-  .profile-page__member-since {
-    color: $robbo-profile-text-secondary;
-    font-size: $robbo-profile-helper-size;
-    line-height: 1.35;
-  }
-
-  .profile-page__heading {
     @include media-breakpoint-up(lg) {
       margin-bottom: 0;
 
@@ -302,10 +304,10 @@ $robbo-profile-helper-size: 0.8125rem;
     }
   }
 
-  .profile-page__sidebar > .profile-page__heading.mb-4 {
-    @include media-breakpoint-up(lg) {
-      margin-bottom: 0 !important;
-    }
+  .profile-page__member-since {
+    color: $robbo-profile-text-secondary;
+    font-size: $robbo-profile-helper-size;
+    line-height: 1.35;
   }
 
   .profile-page__body {
@@ -314,7 +316,13 @@ $robbo-profile-helper-size: 0.8125rem;
     }
 
     @include media-breakpoint-up(lg) {
+      align-items: flex-start;
       row-gap: $robbo-profile-section-gap-desktop;
+
+      // Align field cards with hero; sidebar no longer carries duplicate identity block.
+      > [class*="col-lg-"] {
+        padding-top: 0;
+      }
     }
   }
 
@@ -423,6 +431,83 @@ $robbo-profile-helper-size: 0.8125rem;
 
       @include media-breakpoint-up(lg) {
         padding: $robbo-profile-field-padding-desktop;
+      }
+
+      // Inline edit form (e.g. «Добавить язык») — align with account MFE field editor.
+      [role="dialog"] {
+        background: transparent;
+      }
+
+      [role="dialog"] form {
+        .edit-section-header {
+          display: block;
+          margin-bottom: $robbo-profile-space-sm;
+          font-size: $robbo-profile-title-size;
+          font-weight: 600;
+          line-height: 1.35;
+          color: $robbo-profile-text-primary;
+        }
+
+        .pgn__form-group,
+        .form-group {
+          margin-bottom: $robbo-profile-space-md;
+        }
+
+        .form-control,
+        select.form-control,
+        textarea.form-control {
+          border: 1px solid $robbo-profile-field-border-color;
+          border-radius: $robbo-profile-field-radius;
+          background-color: #fff;
+          font-size: $robbo-profile-value-size;
+          color: $robbo-profile-text-primary;
+
+          &:focus {
+            border-color: $robbo-profile-accent-green;
+            box-shadow: 0 0 0 0.2rem rgba($robbo-profile-accent-green, 0.25);
+          }
+        }
+
+        textarea.form-control {
+          min-height: 6rem;
+        }
+
+        .col-form-label {
+          margin-bottom: $robbo-profile-space-xs;
+          padding-bottom: 0;
+          font-size: $robbo-profile-helper-size;
+          font-weight: 600;
+          line-height: 1.35;
+          color: $robbo-profile-text-secondary;
+        }
+
+        .d-flex.flex-row-reverse.flex-wrap.justify-content-end {
+          gap: $robbo-profile-space-md;
+        }
+
+        .form-group.flex-shrink-0.flex-grow-1 {
+          display: flex;
+          flex-wrap: wrap;
+          align-items: center;
+          gap: $robbo-profile-space-sm;
+          margin-bottom: 0;
+        }
+
+        .pgn__stateful-btn.btn-primary,
+        .btn-primary,
+        .btn-outline-primary {
+          min-height: 2.75rem;
+        }
+
+        .form-group.d-flex.flex-wrap {
+          align-items: center;
+          gap: $robbo-profile-space-sm;
+
+          .form-control {
+            flex: 1;
+            min-width: 0;
+          }
+        }
       }
     }
 
@@ -568,10 +653,9 @@ $robbo-profile-helper-size: 0.8125rem;
     }
 
     @include media-breakpoint-up(lg) {
-      max-width: $robbo-profile-avatar-size-desktop;
-      margin-right: 0;
-      margin-top: 0;
-      margin-bottom: 2rem;
+      width: $robbo-profile-avatar-size-desktop-hero;
+      max-width: $robbo-profile-avatar-size-desktop-hero;
+      margin: 0;
     }
   }
 
@@ -587,8 +671,8 @@ $robbo-profile-helper-size: 0.8125rem;
     }
 
     @include media-breakpoint-up(lg) {
-      width: $robbo-profile-avatar-size-desktop;
-      height: $robbo-profile-avatar-size-desktop;
+      width: $robbo-profile-avatar-size-desktop-hero;
+      height: $robbo-profile-avatar-size-desktop-hero;
     }
 
     &__media,
@@ -642,10 +726,6 @@ $robbo-profile-helper-size: 0.8125rem;
       background: rgba(0,0,0,.5);
       border-radius:0;
       transition: opacity 200ms ease;
-
-      @include media-breakpoint-up(lg) {
-        height: 4rem;
-      }
 
       &:focus, &:hover, &:active, &.active {
         opacity: 1;
