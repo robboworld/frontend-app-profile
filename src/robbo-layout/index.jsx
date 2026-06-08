@@ -12,6 +12,7 @@ import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import { AppContext } from '@edx/frontend-platform/react';
 
 import './index.scss';
+import fasieLogo from './fasie-logo.png';
 
 const MOBILE_COLLAPSE_NAV_QUERY = '(max-width: 767.98px)';
 
@@ -282,9 +283,34 @@ export const RobboFooter = () => (
         </div>
         <div className="robbo-footer__contacts">
           <p className="robbo-footer__contacts-title">Контактные данные:</p>
-          <p className="robbo-footer__contacts-line">
-            Почта <a href="mailto:skill@robbo.ru">skill@robbo.ru</a>
-          </p>
+          <ul className="robbo-footer__contacts-list">
+            <li className="robbo-footer__contacts-item">
+              <span className="robbo-footer__contacts-label">Почта</span>
+              <a className="robbo-footer__contacts-link" href="mailto:skill@robbo.ru">skill@robbo.ru</a>
+            </li>
+            <li className="robbo-footer__contacts-item">
+              <span className="robbo-footer__contacts-label">Наш сайт</span>
+              <a className="robbo-footer__contacts-link" href="https://robbo.ru" target="_blank" rel="noopener noreferrer">robbo.ru</a>
+            </li>
+            <li className="robbo-footer__contacts-item">
+              <span className="robbo-footer__contacts-label">Поддержка</span>
+              <a className="robbo-footer__contacts-link" href="https://support.robbo.world/" target="_blank" rel="noopener noreferrer">support.robbo.world</a>
+            </li>
+          </ul>
+        </div>
+        <div className="robbo-footer__partner">
+          <a
+            className="robbo-footer__partner-link"
+            href="https://fasie.ru"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img
+              className="robbo-footer__partner-logo"
+              src={fasieLogo}
+              alt="Фонд содействия инновациям"
+            />
+          </a>
         </div>
       </div>
     </footer>

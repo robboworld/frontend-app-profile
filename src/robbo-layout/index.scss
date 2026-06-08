@@ -19,6 +19,7 @@ $robbo-mfe-profile-hamburger-line-width: clamp(24px, 7.2vw, 30px);
 $robbo-mfe-profile-hamburger-line-height: 2px;
 $robbo-mfe-profile-hamburger-box-height: 17px;
 $robbo-footer-doc-links-gap: 2px; // minimal vertical spacing between footer legal links (RobboFooter; align LMS `extra/_footer.scss`)
+$robbo-footer-contacts-label-w: 5.5rem; // ширина колонки меток в блоке контактов
 $robbo-footer-stack-gap-sm: 14px; // mobile: tighter spacing between footer columns-as-blocks
 $robbo-footer-font-family: $robbo-font-stack;
 // Десктоп: как LMS `.dropdown-user-menu .dropdown-item a:hover` (primary-light / dark)
@@ -382,7 +383,7 @@ $y-hamburger-middle: ($robbo-mfe-profile-hamburger-box-height - $robbo-mfe-profi
   min-height: 80px;
 
   @media (min-width: 992px) {
-    height: 80px;
+    min-height: 80px;
   }
 
   @media (max-width: 991.98px) {
@@ -426,7 +427,7 @@ $y-hamburger-middle: ($robbo-mfe-profile-hamburger-box-height - $robbo-mfe-profi
 
 .robbo-site-footer__inner {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr) minmax(0, 1fr) auto;
   align-items: center;
   justify-items: center;
   column-gap: clamp(16px, 3vw, 40px);
@@ -472,14 +473,43 @@ $y-hamburger-middle: ($robbo-mfe-profile-hamburger-box-height - $robbo-mfe-profi
 }
 
 .robbo-footer__contacts {
+  --robbo-footer-contacts-label-w: #{$robbo-footer-contacts-label-w};
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: flex-start;
+  justify-self: center;
+  text-align: left;
+  min-width: 0;
+  width: max-content;
+  max-width: 100%;
+}
+
+// Логотип партнёра «Фонд содействия инновациям»: компактная колонка справа.
+.robbo-footer__partner {
+  display: flex;
+  justify-content: flex-end;
   align-items: center;
   justify-self: end;
-  text-align: center;
   min-width: 0;
-  width: 100%;
+}
+
+.robbo-footer__partner-link {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 4px;
+
+  &:focus-visible {
+    outline: 2px solid $robbo-brand-primary;
+    outline-offset: 3px;
+  }
+}
+
+.robbo-footer__partner-logo {
+  display: block;
+  width: auto;
+  height: clamp(40px, 4.5vw, 52px);
+  object-fit: contain;
 }
 
 
@@ -565,33 +595,61 @@ $y-hamburger-middle: ($robbo-mfe-profile-hamburger-box-height - $robbo-mfe-profi
   }
 }
 
-.robbo-footer__contacts-line a {
-  color: #777;
+.robbo-footer__contacts-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  width: 100%;
+}
+
+.robbo-footer__contacts-item {
+  display: grid;
+  grid-template-columns: var(--robbo-footer-contacts-label-w) minmax(0, 1fr);
+  column-gap: 0.4em;
+  align-items: baseline;
+  margin: 0;
+}
+
+.robbo-footer__contacts-title,
+.robbo-footer__contacts-label,
+.robbo-footer__contacts-link {
   font-size: clamp(11px, 1.1vw, 12px);
-  line-height: 1.45;
+  line-height: 1.2;
   font-family: $robbo-footer-font-family;
+}
+
+.robbo-footer__contacts-title,
+.robbo-footer__contacts-label {
+  margin: 0;
+  color: #777;
+}
+
+.robbo-footer__contacts-title {
+  align-self: center;
+  width: 100%;
+  text-align: center;
+  margin-bottom: clamp(2px, 0.35vw, 4px);
+}
+
+.robbo-footer__contacts-label {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.robbo-footer__contacts-link {
+  min-width: 0;
+  color: #777;
   text-decoration: underline;
-  word-break: break-word;
+  overflow-wrap: anywhere;
 
   &:hover,
   &:focus {
     color: #111;
     text-decoration: underline;
   }
-}
-
-.robbo-footer__contacts-title,
-.robbo-footer__contacts-line {
-  margin: 0;
-  font-size: clamp(11px, 1.1vw, 12px);
-  line-height: 1.45;
-  color: #777;
-  font-family: $robbo-footer-font-family;
-  word-break: break-word;
-}
-
-.robbo-footer__contacts-title {
-  margin-bottom: clamp(4px, 0.8vw, 8px);
 }
 
 body.indigo-dark-theme {
@@ -602,15 +660,15 @@ body.indigo-dark-theme {
   .robbo-footer__copyright,
   .robbo-footer__links a,
   .robbo-footer__contacts-title,
-  .robbo-footer__contacts-line,
-  .robbo-footer__contacts-line a {
+  .robbo-footer__contacts-label,
+  .robbo-footer__contacts-link {
     color: #777;
   }
 
   .robbo-footer__links a:hover,
   .robbo-footer__links a:focus,
-  .robbo-footer__contacts-line a:hover,
-  .robbo-footer__contacts-line a:focus {
+  .robbo-footer__contacts-link:hover,
+  .robbo-footer__contacts-link:focus {
     color: #111;
   }
 }
@@ -663,11 +721,27 @@ body.indigo-dark-theme {
     row-gap: $robbo-footer-stack-gap-sm;
   }
 
-  .robbo-footer__left,
-  .robbo-footer__contacts {
+  .robbo-footer__left {
     justify-self: center;
     align-items: center;
     max-width: 100%;
+  }
+
+  .robbo-footer__contacts {
+    justify-self: center;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .robbo-footer__contacts-list {
+    margin-inline: auto;
+  }
+
+  .robbo-footer__partner {
+    justify-self: center;
+    justify-content: center;
   }
 }
 
@@ -710,6 +784,6 @@ body.indigo-dark-theme {
   }
 
   .robbo-footer__contacts-title {
-    margin-bottom: 4px;
+    margin-bottom: 2px;
   }
 }
