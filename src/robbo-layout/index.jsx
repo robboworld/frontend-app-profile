@@ -245,23 +245,63 @@ RobboHeader.defaultProps = {
   collapseNavIntoUserMenuOnNarrow: false,
 };
 
+const FooterMailIcon = () => (
+  <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false">
+    <rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" strokeWidth="1.8" fill="none" />
+    <path d="M3 7l9 6 9-6" stroke="currentColor" strokeWidth="1.8" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
+
+const FooterGlobeIcon = () => (
+  <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false">
+    <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.8" fill="none" />
+    <path d="M3 12h18M12 3c2.5 2.8 2.5 14.2 0 18M12 3c-2.5 2.8-2.5 14.2 0 18" stroke="currentColor" strokeWidth="1.8" fill="none" strokeLinecap="round" />
+  </svg>
+);
+
+const FooterSupportIcon = () => (
+  <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false">
+    <path d="M4 11v3a2 2 0 002 2h1v-7H6a2 2 0 00-2 2zM18 9h1a2 2 0 012 2v3a2 2 0 01-2 2h-1V9z" stroke="currentColor" strokeWidth="1.8" fill="none" strokeLinejoin="round" />
+    <path d="M8 18v1a4 4 0 004 4 4 4 0 004-4v-1" stroke="currentColor" strokeWidth="1.8" fill="none" strokeLinecap="round" />
+    <path d="M12 14v-1a3 3 0 013-3" stroke="currentColor" strokeWidth="1.8" fill="none" strokeLinecap="round" />
+  </svg>
+);
+
 export const RobboFooter = () => (
   <div className="wrapper wrapper-footer">
     <footer id="footer" className="robbo-site-footer">
       <div className="robbo-site-footer__inner">
-        <div className="robbo-footer__left">
-          <div className="robbo-footer__brand">
-            <span className="robbo-footer__logo" aria-label="РОББО">
-              РОББО
-              <sup className="robbo-footer__reg" aria-hidden="true">®</sup>
-            </span>
+        <div className="robbo-footer__main">
+          <div className="robbo-footer__brand-col">
+            <div className="robbo-footer__brand">
+              <span className="robbo-footer__logo" aria-label="РОББО">
+                РОББО
+                <sup className="robbo-footer__reg" aria-hidden="true">®</sup>
+              </span>
+            </div>
+            <p className="robbo-footer__tagline">Образовательная платформа РОББО</p>
+            <p className="robbo-footer__copyright">
+              © ООО «РОББО ТЕХНОЛОГИИ», {new Date().getFullYear()}
+            </p>
           </div>
-          <p className="robbo-footer__copyright">
-            © ООО «РОББО ТЕХНОЛОГИИ», {new Date().getFullYear()}
-          </p>
-        </div>
-        <div className="robbo-footer__center">
-          <nav className="robbo-footer__nav" aria-label="Документы">
+          <div className="robbo-footer__partner-col">
+            <div className="robbo-footer__partner">
+              <a
+                className="robbo-footer__partner-link"
+                href="https://fasie.ru"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img
+                  className="robbo-footer__partner-logo"
+                  src={fasieLogo}
+                  alt="Фонд содействия инновациям"
+                />
+              </a>
+            </div>
+          </div>
+          <nav className="robbo-footer__col" aria-label="Документы">
+            <h2 className="robbo-footer__heading">Документы</h2>
             <ul className="robbo-footer__links">
               <li>
                 <a href="https://edurobbo.ru/skill" target="_blank" rel="noopener noreferrer">
@@ -280,37 +320,51 @@ export const RobboFooter = () => (
               </li>
             </ul>
           </nav>
-        </div>
-        <div className="robbo-footer__contacts">
-          <p className="robbo-footer__contacts-title">Контактные данные:</p>
-          <ul className="robbo-footer__contacts-list">
-            <li className="robbo-footer__contacts-item">
-              <span className="robbo-footer__contacts-label">Почта</span>
-              <a className="robbo-footer__contacts-link" href="mailto:skill@robbo.ru">skill@robbo.ru</a>
-            </li>
-            <li className="robbo-footer__contacts-item">
-              <span className="robbo-footer__contacts-label">Наш сайт</span>
-              <a className="robbo-footer__contacts-link" href="https://robbo.ru" target="_blank" rel="noopener noreferrer">robbo.ru</a>
-            </li>
-            <li className="robbo-footer__contacts-item">
-              <span className="robbo-footer__contacts-label">Поддержка</span>
-              <a className="robbo-footer__contacts-link" href="https://support.robbo.world/" target="_blank" rel="noopener noreferrer">support.robbo.world</a>
-            </li>
-          </ul>
-        </div>
-        <div className="robbo-footer__partner">
-          <a
-            className="robbo-footer__partner-link"
-            href="https://fasie.ru"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <img
-              className="robbo-footer__partner-logo"
-              src={fasieLogo}
-              alt="Фонд содействия инновациям"
-            />
-          </a>
+          <div className="robbo-footer__col robbo-footer__contacts-col">
+            <h2 className="robbo-footer__heading">Контакты</h2>
+            <ul className="robbo-footer__contacts-list">
+              <li className="robbo-footer__contacts-item">
+                <span className="robbo-footer__contacts-icon" aria-hidden="true">
+                  <FooterMailIcon />
+                </span>
+                <a
+                  className="robbo-footer__contacts-link"
+                  href="mailto:info@robbo.ru"
+                  aria-label="Почта: info@robbo.ru"
+                >
+                  info@robbo.ru
+                </a>
+              </li>
+              <li className="robbo-footer__contacts-item">
+                <span className="robbo-footer__contacts-icon" aria-hidden="true">
+                  <FooterGlobeIcon />
+                </span>
+                <a
+                  className="robbo-footer__contacts-link"
+                  href="https://robbo.ru"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Наш сайт: robbo.ru"
+                >
+                  robbo.ru
+                </a>
+              </li>
+              <li className="robbo-footer__contacts-item">
+                <span className="robbo-footer__contacts-icon" aria-hidden="true">
+                  <FooterSupportIcon />
+                </span>
+                <a
+                  className="robbo-footer__contacts-link"
+                  href="https://support.robbo.world/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Поддержка: support.robbo.world"
+                >
+                  support.robbo.world
+                </a>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </footer>
