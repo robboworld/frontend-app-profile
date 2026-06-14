@@ -435,6 +435,16 @@ $robbo-profile-form-action-font-weight: 400;
         padding: $robbo-profile-field-padding-desktop;
       }
 
+      // Height crossfade runs on the inner TransitionReplace (no card padding).
+      > .pgn-transition-replace-group {
+        transition: height 280ms cubic-bezier(0.4, 0, 0.2, 1);
+
+        .pgn__transition-replace-enter-active,
+        .pgn__transition-replace-exit-active {
+          transition: opacity 280ms cubic-bezier(0.4, 0, 0.2, 1);
+        }
+      }
+
       // Inline edit form (e.g. «Добавить язык») — align with account MFE field editor.
       [role="dialog"] {
         background: transparent;

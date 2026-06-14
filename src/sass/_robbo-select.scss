@@ -1,0 +1,152 @@
+// Custom dropdown — same visual language as account MFE `.robbo-phone-country`.
+$robbo-select-accent-green: $robbo-brand-primary-dark;
+$robbo-select-accent-green-subtle-bg: $robbo-ui-primary-light;
+$robbo-select-field-radius: 0.625rem;
+$robbo-select-field-border-color: rgba(0, 0, 0, 0.08);
+$robbo-select-text-primary: #111827;
+$robbo-select-text-secondary: #6b7280;
+$robbo-select-value-size: 1rem;
+$robbo-select-trigger-padding: 0.75rem 1rem;
+$robbo-select-trigger-padding-mobile: 0.75rem;
+
+.robbo-select {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.robbo-select__trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  width: 100%;
+  min-height: 2.75rem;
+  margin: 0;
+  padding: $robbo-select-trigger-padding;
+  border: 1px solid $robbo-select-field-border-color;
+  border-radius: $robbo-select-field-radius;
+  background-color: #fff;
+  color: $robbo-select-text-primary;
+  font-size: $robbo-select-value-size;
+  line-height: 1.35;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+
+  &:hover:not(:disabled) {
+    border-color: darken($robbo-select-field-border-color, 8%);
+  }
+
+  &:focus,
+  &:focus-visible {
+    outline: none;
+    border-color: $robbo-select-accent-green;
+    box-shadow: 0 0 0 1px rgba($robbo-select-accent-green, 0.25);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.65;
+    background-color: #fafafa;
+  }
+}
+
+.robbo-select--open .robbo-select__trigger {
+  border-color: $robbo-select-accent-green;
+  box-shadow: 0 0 0 1px rgba($robbo-select-accent-green, 0.25);
+}
+
+.robbo-select__value {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.robbo-select__value--placeholder {
+  color: $robbo-select-text-secondary;
+}
+
+.robbo-select__arrow {
+  flex: 0 0 auto;
+  width: 1rem;
+  height: 1rem;
+  opacity: 0.65;
+  transition: transform 0.18s ease, opacity 0.18s ease, color 0.18s ease;
+}
+
+.robbo-select--open .robbo-select__arrow {
+  transform: rotate(180deg);
+  opacity: 1;
+  color: $robbo-select-accent-green;
+}
+
+.robbo-select__menu {
+  position: absolute;
+  top: calc(100% + 0.25rem);
+  left: 0;
+  right: 0;
+  z-index: 1050;
+  max-height: 15rem;
+  overflow: auto;
+  margin: 0;
+  padding: 0.375rem;
+  list-style: none;
+  background: #fff;
+  border: 1px solid $robbo-select-field-border-color;
+  border-radius: $robbo-select-field-radius;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.robbo-select__option {
+  margin: 0;
+}
+
+.robbo-select__option-button {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin: 0;
+  padding: 0.625rem 0.75rem;
+  border: 0;
+  border-radius: 0.5rem;
+  background: transparent;
+  color: $robbo-select-text-primary;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+
+  &:hover,
+  &:focus,
+  &:focus-visible {
+    outline: none;
+    background: $robbo-select-accent-green-subtle-bg;
+    color: $robbo-select-accent-green;
+  }
+}
+
+.robbo-select__option--highlighted .robbo-select__option-button {
+  background: $robbo-select-accent-green-subtle-bg;
+  color: $robbo-select-accent-green;
+}
+
+.robbo-select__option-label {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+// Inline visibility picker in form footer.
+.robbo-select.robbo-select--inline {
+  width: auto;
+  min-width: 10rem;
+  max-width: 100%;
+}
+
+@include media-breakpoint-down(sm) {
+  .robbo-select__trigger {
+    padding: $robbo-select-trigger-padding-mobile;
+  }
+}

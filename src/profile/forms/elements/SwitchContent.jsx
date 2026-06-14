@@ -22,6 +22,8 @@ const onChildExit = (htmlNode) => {
   }
 };
 
+const FIELD_TRANSITION_MS = 280;
+
 const SwitchContent = ({ expression, cases, className }) => {
   const getContent = (caseKey) => {
     if (cases[caseKey]) {
@@ -40,14 +42,29 @@ const SwitchContent = ({ expression, cases, className }) => {
     return null;
   };
 
-  return (
+  const content = getContent(expression);
+  if (!content) {
+    return null;
+  }
+
+  const transition = (
     <TransitionReplace
-      className={className}
+      enterDuration={FIELD_TRANSITION_MS}
+      exitDuration={FIELD_TRANSITION_MS}
       onChildExit={onChildExit}
     >
-      {getContent(expression)}
+      {content}
     </TransitionReplace>
   );
+
+  // Card chrome (padding, border) must stay on a stable outer shell — not on
+  // TransitionReplace, which animates height on the same node and conflicts with
+  // border-box padding (jerky expand/collapse when switching to edit mode).
+  if (className) {
+    return <div className={className}>{transition}</div>;
+  }
+
+  return transition;
 };
 
 SwitchContent.propTypes = {

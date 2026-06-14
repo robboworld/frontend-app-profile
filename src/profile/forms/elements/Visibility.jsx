@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEyeSlash, faEye } from '@fortawesome/free-regular-svg-icons';
 
 import messages from './Visibility.messages';
+import RobboSelect from '../../components/RobboSelect';
 
 const Visibility = ({ to, intl }) => {
   const icon = to === 'private' ? faEyeSlash : faEye;
@@ -31,7 +32,7 @@ Visibility.defaultProps = {
 };
 
 const VisibilitySelect = ({ intl, className, ...props }) => {
-  const { value } = props;
+  const { value, id, name, onChange } = props;
   const icon = value === 'private' ? faEyeSlash : faEye;
 
   return (
@@ -39,14 +40,25 @@ const VisibilitySelect = ({ intl, className, ...props }) => {
       <span className="d-inline-block ml-1 mr-2" style={{ width: '1.5rem' }}>
         <FontAwesomeIcon icon={icon} />
       </span>
-      <select className="d-inline-block form-control" {...props}>
-        <option key="private" value="private">
-          {intl.formatMessage(messages['profile.visibility.who.just.me'])}
-        </option>
-        <option key="all_users" value="all_users">
-          {intl.formatMessage(messages['profile.visibility.who.everyone'], { siteName: getConfig().SITE_NAME })}
-        </option>
-      </select>
+      <RobboSelect
+        id={id}
+        name={name}
+        className="robbo-select--inline"
+        value={value}
+        onChange={onChange}
+        options={[
+          {
+            value: 'private',
+            label: intl.formatMessage(messages['profile.visibility.who.just.me']),
+          },
+          {
+            value: 'all_users',
+            label: intl.formatMessage(messages['profile.visibility.who.everyone'], {
+              siteName: getConfig().SITE_NAME,
+            }),
+          },
+        ]}
+      />
     </span>
   );
 };

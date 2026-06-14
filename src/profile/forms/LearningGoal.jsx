@@ -4,9 +4,6 @@ import { connect } from 'react-redux';
 import { injectIntl, intlShape } from '@edx/frontend-platform/i18n';
 import get from 'lodash.get';
 
-// Mock Data
-import mockData from '../data/mock_data';
-
 import messages from './LearningGoal.messages';
 
 // Components
@@ -17,19 +14,12 @@ import SwitchContent from './elements/SwitchContent';
 import { editableFormSelector } from '../data/selectors';
 
 const LearningGoal = (props) => {
-  let { learningGoal, editMode, visibilityLearningGoal } = props;
-  const { intl } = props;
+  const {
+    learningGoal, editMode, visibilityLearningGoal, intl,
+  } = props;
 
-  if (!learningGoal) {
-    learningGoal = mockData.learningGoal;
-  }
-
-  if (!editMode || editMode === 'empty') { // editMode defaults to 'empty', not sure why yet
-    editMode = mockData.editMode;
-  }
-
-  if (!visibilityLearningGoal) {
-    visibilityLearningGoal = mockData.visibilityLearningGoal;
+  if (!learningGoal || !editMode) {
+    return null;
   }
 
   return (

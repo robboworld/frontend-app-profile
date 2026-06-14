@@ -12,6 +12,7 @@ import FormControls from './elements/FormControls';
 import EditableItemHeader from './elements/EditableItemHeader';
 import EmptyContent from './elements/EmptyContent';
 import SwitchContent from './elements/SwitchContent';
+import RobboSelect from '../components/RobboSelect';
 
 // Constants
 import { EDUCATION_LEVELS } from '../data/constants';
@@ -70,25 +71,24 @@ class Education extends React.Component {
                   <label className="edit-section-header" htmlFor={formId}>
                     {intl.formatMessage(messages['profile.education.education'])}
                   </label>
-                  <select
+                  <RobboSelect
                     data-hj-suppress
-                    className="form-control"
                     id={formId}
                     name={formId}
-                    value={levelOfEducation}
+                    value={levelOfEducation || ''}
                     onChange={this.handleChange}
-                  >
-                    <option value="">&nbsp;</option>
-                    {EDUCATION_LEVELS.map(level => (
-                      <option key={level} value={level}>
-                        {intl.formatMessage(get(
+                    options={[
+                      { value: '', label: '' },
+                      ...EDUCATION_LEVELS.map((level) => ({
+                        value: level,
+                        label: intl.formatMessage(get(
                           messages,
                           `profile.education.levels.${level}`,
                           messages['profile.education.levels.o'],
-                        ))}
-                      </option>
-                    ))}
-                  </select>
+                        )),
+                      })),
+                    ]}
+                  />
                   {error !== null && (
                     <Form.Control.Feedback hasIcon={false}>
                       {error}

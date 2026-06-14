@@ -11,6 +11,7 @@ import FormControls from './elements/FormControls';
 import EditableItemHeader from './elements/EditableItemHeader';
 import EmptyContent from './elements/EmptyContent';
 import SwitchContent from './elements/SwitchContent';
+import RobboSelect from '../components/RobboSelect';
 
 // Selectors
 import { preferredLanguageSelector } from '../data/selectors';
@@ -84,19 +85,20 @@ class PreferredLanguage extends React.Component {
                   <label className="edit-section-header" htmlFor={formId}>
                     {intl.formatMessage(messages['profile.preferredlanguage.label'])}
                   </label>
-                  <select
+                  <RobboSelect
                     data-hj-suppress
                     id={formId}
                     name={formId}
-                    className="form-control"
                     value={value}
                     onChange={this.handleChange}
-                  >
-                    <option value="">&nbsp;</option>
-                    {sortedLanguages.map(({ code, name }) => (
-                      <option key={code} value={code}>{name}</option>
-                    ))}
-                  </select>
+                    options={[
+                      { value: '', label: '' },
+                      ...sortedLanguages.map(({ code, name }) => ({
+                        value: code,
+                        label: name,
+                      })),
+                    ]}
+                  />
                   {error !== null && (
                     <Form.Control.Feedback hasIcon={false}>
                       {error}
