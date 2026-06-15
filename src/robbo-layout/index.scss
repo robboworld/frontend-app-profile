@@ -11,6 +11,16 @@ $robbo-mfe-header-bar-min-h: 75px;
 $robbo-mfe-header-bar-min-h-mobile: 55px;
 $robbo-mfe-header-wordmark: 30px; // LMS $robbo-header-wordmark
 $robbo-mfe-header-nav-fs: 20px; // LMS $robbo-header-nav-font
+$robbo-dropdown-enter-duration: 200ms;
+$robbo-dropdown-enter-ease: ease-out;
+$robbo-profile-chevron-size: 5px;
+$robbo-profile-chevron-border: 2px;
+$robbo-profile-chevron-nudge-closed: -2px;
+$robbo-profile-chevron-nudge-open: 0;
+$robbo-profile-chevron-duration: 200ms;
+$robbo-menu-item-enter-duration: 180ms;
+$robbo-menu-item-stagger-start: 80ms;
+$robbo-menu-item-stagger-step: 45ms;
 $robbo-mfe-header-profile-toggle-fs: 1rem; // LMS $robbo-header-profile-toggle-fs
 $robbo-mfe-user-dropdown-max-w: 224px;
 $robbo-mfe-user-dropdown-viewport-gutter: 16px;
@@ -140,6 +150,7 @@ $robbo-mfe-user-menu-item-hover-color-collapsed: #111;
   letter-spacing: 0.01em;
   text-decoration: none;
   border-bottom: 2px solid transparent;
+  transition: color 200ms ease, border-bottom-color 200ms ease;
 
   &:hover,
   &:focus,
@@ -187,12 +198,23 @@ $robbo-mfe-user-menu-item-hover-color-collapsed: #111;
     content: "";
     display: inline-block;
     flex-shrink: 0;
-    width: 5px;
-    height: 5px;
-    border: solid #fff;
-    border-width: 0 2px 2px 0;
+    margin: 0;
+    width: $robbo-profile-chevron-size;
+    height: $robbo-profile-chevron-size;
+    border: $robbo-profile-chevron-border solid #fff;
+    border-width: 0 $robbo-profile-chevron-border $robbo-profile-chevron-border 0;
     transform: rotate(45deg);
-    margin-top: -3px;
+    position: relative;
+    top: $robbo-profile-chevron-nudge-closed;
+    vertical-align: middle;
+    box-sizing: content-box;
+    transition: transform $robbo-profile-chevron-duration ease,
+      top $robbo-profile-chevron-duration ease;
+  }
+
+  &[aria-expanded="true"]::after {
+    top: $robbo-profile-chevron-nudge-open;
+    transform: rotate(225deg);
   }
 
   &.robbo-layout-user-menu__toggle--hamburger {
@@ -299,6 +321,7 @@ $y-hamburger-middle: ($robbo-mfe-profile-hamburger-box-height - $robbo-mfe-profi
   background: #fff;
   border-radius: 8px;
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
+  animation: robbo-dropdown-enter $robbo-dropdown-enter-duration $robbo-dropdown-enter-ease;
 }
 
 .robbo-layout-user-menu__item {
@@ -761,5 +784,47 @@ body.indigo-dark-theme {
 
   .wrapper.wrapper-footer {
     padding: 20px 0;
+  }
+}
+
+@keyframes robbo-dropdown-enter {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes robbo-menu-item-enter {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.robbo-layout-user-menu__dropdown .robbo-layout-user-menu__item {
+  animation: robbo-menu-item-enter $robbo-menu-item-enter-duration ease-out backwards;
+}
+
+@for $i from 1 through 5 {
+  .robbo-layout-user-menu__dropdown .robbo-layout-user-menu__item:nth-child(#{$i}) {
+    animation-delay: $robbo-menu-item-stagger-start + ($i - 1) * $robbo-menu-item-stagger-step;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .robbo-layout-user-menu__dropdown {
+    animation: none;
+  }
+
+  .robbo-layout-user-menu__dropdown .robbo-layout-user-menu__item {
+    animation: none;
   }
 }
