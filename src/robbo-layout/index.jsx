@@ -304,11 +304,6 @@ export const RobboFooter = () => (
             <h2 className="robbo-footer__heading">Документы</h2>
             <ul className="robbo-footer__links">
               <li>
-                <a href="https://edurobbo.ru/skill" target="_blank" rel="noopener noreferrer">
-                  Сведения об образовательной организации
-                </a>
-              </li>
-              <li>
                 <a href="https://robbo.ru/wp-content/uploads/policy.pdf" target="_blank" rel="noopener noreferrer">
                   Политика обработки персональных данных
                 </a>
