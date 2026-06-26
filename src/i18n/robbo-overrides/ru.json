@@ -11,5 +11,7 @@
   "robbo.header.user.account": "Учетная запись",
   "robbo.header.user.signOut": "Выйти",
   "profile.name.full.name": "ФИО",
+  "profile.name.details": "Это ФИО отображается в вашей учетной записи и в сертификатах.",
+  "profile.name.empty": "Добавить ФИО",
   "profile.profileavatar.upload-button": "Загрузить фото"
 }
