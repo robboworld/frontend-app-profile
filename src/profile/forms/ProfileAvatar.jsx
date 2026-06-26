@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Dropdown } from '@openedx/paragon';
+import { Button } from '@openedx/paragon';
 import { FormattedMessage, injectIntl, intlShape } from '@edx/frontend-platform/i18n';
 
 import { ReactComponent as DefaultAvatar } from '../assets/avatar.svg';
@@ -14,17 +14,50 @@ class ProfileAvatar extends React.Component {
     this.fileInput = React.createRef();
     this.form = React.createRef();
 
+    this.state = {
+      isPhotoMenuOpen: false,
+    };
+
+    this.photoMenuRef = React.createRef();
+
     this.onClickUpload = this.onClickUpload.bind(this);
     this.onClickDelete = this.onClickDelete.bind(this);
     this.onChangeInput = this.onChangeInput.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+    this.onTogglePhotoMenu = this.onTogglePhotoMenu.bind(this);
+    this.onDocumentClick = this.onDocumentClick.bind(this);
+  }
+
+  componentDidMount() {
+    document.addEventListener('mousedown', this.onDocumentClick);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('mousedown', this.onDocumentClick);
+  }
+
+  onTogglePhotoMenu() {
+    this.setState((state) => ({ isPhotoMenuOpen: !state.isPhotoMenuOpen }));
+  }
+
+  onDocumentClick(event) {
+    const { photoMenuRef } = this;
+    if (photoMenuRef.current && !photoMenuRef.current.contains(event.target)) {
+      this.setState({ isPhotoMenuOpen: false });
+    }
+  }
+
+  closePhotoMenu() {
+    this.setState({ isPhotoMenuOpen: false });
   }
 
   onClickUpload() {
+    this.closePhotoMenu();
     this.fileInput.current.click();
   }
 
   onClickDelete() {
+    this.closePhotoMenu();
     this.props.onDelete();
   }
 
@@ -70,52 +103,55 @@ class ProfileAvatar extends React.Component {
       );
     }
 
+    const { isPhotoMenuOpen } = this.state;
+
     return (
-      <Dropdown
-        drop="down"
-        className="profile-avatar-menu__dropdown"
-      >
-        <Dropdown.Toggle
+      <div className="profile-avatar-menu__dropdown" ref={this.photoMenuRef}>
+        <Button
           variant="link"
           size="sm"
           id="profile-avatar-photo-menu"
-          className="profile-avatar-menu__trigger text-white"
+          className={[
+            'profile-avatar-menu__trigger',
+            'profile-avatar-menu__trigger--dropdown',
+            'text-white',
+            isPhotoMenuOpen ? 'open' : '',
+          ].filter(Boolean).join(' ')}
+          onClick={this.onTogglePhotoMenu}
+          aria-expanded={isPhotoMenuOpen}
+          aria-haspopup="menu"
         >
           {intl.formatMessage(messages['profile.profileavatar.change-button'])}
-        </Dropdown.Toggle>
-        <Dropdown.Menu
-          className="profile-avatar-menu__popover"
-          popperConfig={{
-            strategy: 'fixed',
-            modifiers: [
-              { name: 'offset', options: { offset: [0, 6] } },
-            ],
-          }}
-        >
-          <Dropdown.Item
-            type="button"
-            className="profile-avatar-menu__item"
-            onClick={this.onClickUpload}
-          >
-            <FormattedMessage
-              id="profile.profileavatar.upload-button"
-              defaultMessage="Upload Photo"
-              description="Upload photo button"
-            />
-          </Dropdown.Item>
-          <Dropdown.Item
-            type="button"
-            className="profile-avatar-menu__item profile-avatar-menu__item--danger"
-            onClick={this.onClickDelete}
-          >
-            <FormattedMessage
-              id="profile.profileavatar.remove.button"
-              defaultMessage="Remove"
-              description="Remove photo button"
-            />
-          </Dropdown.Item>
-        </Dropdown.Menu>
-      </Dropdown>
+        </Button>
+        {isPhotoMenuOpen ? (
+          <div className="profile-avatar-menu__popover" role="menu">
+            <button
+              type="button"
+              className="profile-avatar-menu__item"
+              role="menuitem"
+              onClick={this.onClickUpload}
+            >
+              <FormattedMessage
+                id="profile.profileavatar.upload-button"
+                defaultMessage="Upload Photo"
+                description="Upload photo button"
+              />
+            </button>
+            <button
+              type="button"
+              className="profile-avatar-menu__item profile-avatar-menu__item--danger"
+              role="menuitem"
+              onClick={this.onClickDelete}
+            >
+              <FormattedMessage
+                id="profile.profileavatar.remove.button"
+                defaultMessage="Remove"
+                description="Remove photo button"
+              />
+            </button>
+          </div>
+        ) : null}
+      </div>
     );
   }
 

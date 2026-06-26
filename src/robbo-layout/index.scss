@@ -22,7 +22,6 @@ $robbo-menu-item-enter-duration: 180ms;
 $robbo-menu-item-stagger-start: 80ms;
 $robbo-menu-item-stagger-step: 45ms;
 $robbo-mfe-header-profile-toggle-fs: 1rem; // LMS $robbo-header-profile-toggle-fs
-$robbo-mfe-user-dropdown-max-w: 224px;
 $robbo-mfe-user-dropdown-viewport-gutter: 16px;
 // Profile mobile hamburger — без урезания зоны tap (≥44×44 на кнопке)
 $robbo-mfe-profile-hamburger-line-width: clamp(24px, 7.2vw, 30px);
@@ -314,8 +313,8 @@ $y-hamburger-middle: ($robbo-mfe-profile-hamburger-box-height - $robbo-mfe-profi
   right: 0;
   left: auto;
   top: calc(100% + 10px);
-  width: min($robbo-mfe-user-dropdown-max-w, calc(100vw - #{$robbo-mfe-user-dropdown-viewport-gutter}));
-  max-width: min($robbo-mfe-user-dropdown-max-w, calc(100vw - #{$robbo-mfe-user-dropdown-viewport-gutter}));
+  width: max-content;
+  max-width: calc(100vw - #{$robbo-mfe-user-dropdown-viewport-gutter});
   box-sizing: border-box;
   overflow: hidden;
   background: #fff;
@@ -331,6 +330,7 @@ $y-hamburger-middle: ($robbo-mfe-profile-hamburger-box-height - $robbo-mfe-profi
   font-size: 14px;
   line-height: 20px;
   text-decoration: none;
+  white-space: nowrap;
   transition: background-color 0.15s ease, color 0.15s ease;
 
   &:hover,

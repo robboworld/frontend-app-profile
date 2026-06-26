@@ -656,6 +656,7 @@ $robbo-profile-form-action-font-weight: 400;
     max-width: $robbo-profile-avatar-size-mobile;
     margin-bottom: 0;
     z-index: 2;
+    overflow: visible;
 
     @include media-breakpoint-down(lg) {
       margin-left: 0;
@@ -716,6 +717,10 @@ $robbo-profile-form-action-font-weight: 400;
           rgba(0, 0, 0, 0.42) 55%,
           transparent 100%
         );
+
+        @include media-breakpoint-down(lg) {
+          min-height: 3.25rem;
+        }
       }
     }
 
@@ -749,7 +754,7 @@ $robbo-profile-form-action-font-weight: 400;
     position: absolute;
     left: 50%;
     bottom: 0.4rem;
-    z-index: 2;
+    z-index: 5;
     transform: translateX(-50%);
     pointer-events: none;
 
@@ -757,13 +762,30 @@ $robbo-profile-form-action-font-weight: 400;
       pointer-events: auto;
     }
 
+    @include media-breakpoint-down(lg) {
+      left: 0;
+      right: 0;
+      width: 100%;
+      transform: none;
+      display: flex;
+      justify-content: center;
+      padding: 0 0.5rem;
+      box-sizing: border-box;
+    }
+
     @include media-breakpoint-up(lg) {
       bottom: 0.65rem;
     }
   }
 
-  .profile-avatar-menu__trigger,
-  .profile-avatar-menu__dropdown .dropdown-toggle {
+  .profile-avatar-menu__dropdown {
+    position: relative;
+    display: inline-flex;
+    justify-content: center;
+    max-width: 100%;
+  }
+
+  .profile-avatar-menu__trigger {
     margin: 0;
     padding: 0.2rem 0.5rem 0.45rem;
     color: $white;
@@ -779,7 +801,7 @@ $robbo-profile-form-action-font-weight: 400;
     &:hover,
     &:focus,
     &:active,
-    &.show {
+    &.open {
       color: $white;
       text-decoration: none;
       background: transparent;
@@ -792,62 +814,112 @@ $robbo-profile-form-action-font-weight: 400;
       outline-offset: 2px;
       border-radius: 0.25rem;
     }
+
+    @include media-breakpoint-down(lg) {
+      max-width: 100%;
+      white-space: normal;
+      text-align: center;
+      font-size: clamp(0.6875rem, 3.2vw, $robbo-profile-helper-size);
+      line-height: 1.15;
+    }
   }
 
-  .profile-avatar-menu__dropdown .dropdown-toggle {
+  .profile-avatar-menu__trigger--dropdown {
     display: inline-flex;
     flex-direction: column;
     align-items: center;
     gap: 0.125rem;
     padding: 0.15rem 0.5rem 0.3rem;
+
+    @include media-breakpoint-down(lg) {
+      max-width: 100%;
+    }
+
+    &::after {
+      display: block;
+      content: "";
+      width: 0.45rem;
+      height: 0.45rem;
+      margin: 0;
+      border: 0;
+      border-right: 2px solid currentColor;
+      border-bottom: 2px solid currentColor;
+      transform: rotate(45deg);
+      transform-origin: center center;
+      transition: transform 0.18s ease;
+    }
+
+    &.open::after {
+      transform: rotate(225deg);
+    }
   }
 
-  // Paragon chevron uses rotate(135deg); open state = +180° → 315deg (points up).
-  .profile-avatar-menu__dropdown .dropdown-toggle::after {
-    display: block;
+  .profile-avatar-menu__popover {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 50%;
+    z-index: 10;
+    width: max-content;
+    max-width: calc(100vw - 2rem);
     margin: 0;
-    margin-inline-start: 0;
-    position: static;
-    top: auto;
-    vertical-align: unset;
-    transform: rotate(135deg);
-    transform-origin: center center;
-    transition: transform 0.18s ease;
-  }
-
-  .profile-avatar-menu__dropdown .dropdown-toggle.show::after,
-  .profile-avatar-menu__dropdown .dropdown-toggle[aria-expanded="true"]::after {
-    transform: rotate(315deg);
-  }
-
-  .profile-avatar-menu__popover.dropdown-menu {
-    min-width: 11rem;
-    margin-top: 0.35rem !important;
     padding: $robbo-profile-space-xs;
     background: #fff;
     border: 1px solid $robbo-profile-field-border-color;
     border-radius: $robbo-profile-field-radius;
     box-shadow: 0 10px 28px rgba(17, 24, 39, 0.14);
-    transform-origin: top center;
-    opacity: 0;
-    transform: translateY(-0.35rem);
-    transition:
-      opacity 0.18s ease,
-      transform 0.18s ease;
+    box-sizing: border-box;
+    transform: translateX(-50%);
+    animation: robbo-profile-avatar-dropdown-enter 200ms ease-out;
+  }
 
-    &.show {
-      opacity: 1;
-      transform: translateY(0);
+  .profile-avatar-menu__popover .profile-avatar-menu__item {
+    animation: robbo-menu-item-enter 180ms ease-out backwards;
+  }
+
+  @for $i from 1 through 2 {
+    .profile-avatar-menu__popover .profile-avatar-menu__item:nth-child(#{$i}) {
+      animation-delay: 80ms + ($i - 1) * 45ms;
     }
   }
 
-  .profile-avatar-menu__item.dropdown-item {
+  @keyframes robbo-profile-avatar-dropdown-enter {
+    from {
+      opacity: 0;
+      transform: translateX(-50%) translateY(-6px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .profile-avatar-menu__popover {
+      animation: none;
+    }
+
+    .profile-avatar-menu__popover .profile-avatar-menu__item {
+      animation: none;
+    }
+  }
+
+  .profile-avatar-menu__item {
+    display: block;
+    width: auto;
+    margin: 0;
     padding: 0.5rem 0.75rem;
     font-size: $robbo-profile-value-size;
     font-weight: 500;
     line-height: 1.35;
     color: $robbo-profile-text-primary;
+    text-align: start;
+    white-space: nowrap;
+    background: transparent;
+    border: none;
     border-radius: calc(#{$robbo-profile-field-radius} - 2px);
+    cursor: pointer;
+    box-sizing: border-box;
 
     &:hover,
     &:focus {
