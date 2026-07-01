@@ -11,6 +11,7 @@ import { getConfig } from '@edx/frontend-platform';
 import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import { AppContext } from '@edx/frontend-platform/react';
 
+import { useRobboAnalyticsMenu } from './analyticsMenu';
 import './index.scss';
 
 const MOBILE_COLLAPSE_NAV_QUERY = '(max-width: 767.98px)';
@@ -102,8 +103,9 @@ export const RobboHeader = ({
   ];
 
   const accountSettingsUrl = getAccountSettingsUrl(config);
+  const robboAnalyticsMenu = useRobboAnalyticsMenu(authenticatedUser);
 
-  // Profile → Account → Sign Out (dashboard link omitted — Robbo).
+  // Profile → Account → Analytics → Sign Out (dashboard link omitted — Robbo).
   const userMenuLinks = [
     username && config.ACCOUNT_PROFILE_URL ? {
       href: `${config.ACCOUNT_PROFILE_URL}/u/${username}`,
@@ -112,6 +114,10 @@ export const RobboHeader = ({
     accountSettingsUrl ? {
       href: accountSettingsUrl,
       messageId: 'robbo.header.user.account',
+    } : null,
+    robboAnalyticsMenu.canAccess && robboAnalyticsMenu.url ? {
+      href: robboAnalyticsMenu.url,
+      messageId: 'robbo.header.user.analytics',
     } : null,
     config.LOGOUT_URL ? {
       href: config.LOGOUT_URL,

@@ -9,5 +9,6 @@
   "robbo.header.user.dashboard": "Dashboard",
   "robbo.header.user.profile": "Profile",
   "robbo.header.user.account": "Account",
+  "robbo.header.user.analytics": "Analytics",
   "robbo.header.user.signOut": "Sign Out"
 }

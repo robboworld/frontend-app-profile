@@ -9,6 +9,7 @@
   "robbo.header.user.dashboard": "Панель управления",
   "robbo.header.user.profile": "Профиль",
   "robbo.header.user.account": "Учетная запись",
+  "robbo.header.user.analytics": "Аналитика",
   "robbo.header.user.signOut": "Выйти",
   "profile.name.full.name": "ФИО"
 }
