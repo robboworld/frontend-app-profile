@@ -863,8 +863,11 @@ $robbo-profile-form-action-font-weight: 400;
     position: relative;
 
     .certificate-title {
-      font-family: $font-family-serif;
-      font-weight: 400;
+      font-family: inherit;
+      font-size: inherit;
+      font-weight: inherit;
+      line-height: inherit;
+      color: inherit;
     }
 
     .certificate-type-illustration {

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  FormattedDate, FormattedMessage, injectIntl, intlShape,
+  FormattedMessage, injectIntl, intlShape,
 } from '@edx/frontend-platform/i18n';
 import { Hyperlink } from '@openedx/paragon';
 import { connect } from 'react-redux';
@@ -83,24 +83,21 @@ class Certificates extends React.Component {
                   messages['profile.certificates.types.unknown'],
                 ))}
               </p>
-              <h4 className="certificate-title">{courseDisplayName}</h4>
+              <p className="small mb-0 certificate-title">{courseDisplayName}</p>
             </div>
             <p className="small mb-0">
-              <FormattedMessage
-                id="profile.certificate.organization.label"
-                defaultMessage="From"
-              />
+              {intl.formatMessage(messages['profile.certificate.organization.label'])}
             </p>
             <p className="h6 mb-4">{courseOrganization}</p>
             <div className="flex-grow-1" />
             <p className="small mb-2">
-              <FormattedMessage
-                id="profile.certificate.completion.date.label"
-                defaultMessage="Completed on {date}"
-                values={{
-                  date: <FormattedDate value={new Date(modifiedDate)} />,
-                }}
-              />
+              {intl.formatMessage(messages['profile.certificate.completion.date.label'], {
+                date: intl.formatDate(new Date(modifiedDate), {
+                  day: '2-digit',
+                  month: '2-digit',
+                  year: 'numeric',
+                }),
+              })}
             </p>
             <div>
               <Hyperlink destination={downloadUrl} className="btn btn-outline-primary" target="_blank">

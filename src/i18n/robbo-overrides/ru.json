@@ -11,5 +11,9 @@
   "robbo.header.user.account": "Учетная запись",
   "robbo.header.user.analytics": "Аналитика",
   "robbo.header.user.signOut": "Выйти",
-  "profile.name.full.name": "ФИО"
+  "profile.name.full.name": "ФИО",
+  "profile.certificate.organization.label": "От",
+  "profile.certificate.completion.date.label": "Завершено {date}",
+  "profile.certificates.types.honor": "Сертификат",
+  "profile.certificates.types.audit": "Сертификат"
 }
