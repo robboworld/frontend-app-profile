@@ -18,6 +18,8 @@
   "profile.certificates.types.verified": "Подтверждённый сертификат",
   "profile.certificates.types.professional": "Профессиональный сертификат",
   "profile.certificates.types.unknown": "Сертификат",
+  "profile.certificates.types.honor": "Сертификат",
+  "profile.certificates.types.audit": "Сертификат",
   "profile.country.label": "Местоположение",
   "profile.country.empty": "Добавить местоположение",
   "profile.education.empty": "Добавить образование",

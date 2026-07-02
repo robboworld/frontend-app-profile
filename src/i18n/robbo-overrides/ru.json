@@ -13,5 +13,9 @@
   "profile.name.full.name": "ФИО",
   "profile.name.details": "Это ФИО отображается в вашей учетной записи и в сертификатах.",
   "profile.name.empty": "Добавить ФИО",
-  "profile.profileavatar.upload-button": "Загрузить фото"
+  "profile.profileavatar.upload-button": "Загрузить фото",
+  "profile.certificate.organization.label": "От",
+  "profile.certificate.completion.date.label": "Завершено {date}",
+  "profile.certificates.types.honor": "Сертификат",
+  "profile.certificates.types.audit": "Сертификат"
 }
