@@ -12,7 +12,6 @@ import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import { AppContext } from '@edx/frontend-platform/react';
 
 import './index.scss';
-import fasieLogo from './fasie-logo.png';
 
 const MOBILE_COLLAPSE_NAV_QUERY = '(max-width: 767.98px)';
 
@@ -143,9 +142,9 @@ export const RobboHeader = ({
     <header className={headerClassName.join(' ')}>
       <div className="robbo-layout-header__inner">
         <div className="robbo-layout-header__leading">
-          <a className="robbo-layout-header__brand" href={catalogUrl} aria-label="РОББО">
+          <a className="robbo-layout-header__brand" href={catalogUrl} aria-label="ROBBO">
             <span className="robbo-layout-header__wordmark">
-              РОББО
+              ROBBO
               <sup className="robbo-layout-header__reg" aria-hidden="true">®</sup>
             </span>
           </a>
@@ -281,56 +280,41 @@ const FooterSupportIcon = () => (
   </svg>
 );
 
-export const RobboFooter = () => (
+export const RobboFooter = () => {
+  const config = getConfig();
+  const privacyUrl = buildUrl(config.LMS_BASE_URL, '/privacy');
+  const tosUrl = buildUrl(config.LMS_BASE_URL, '/tos');
+  return (
   <div className="wrapper wrapper-footer">
     <footer id="footer" className="robbo-site-footer">
       <div className="robbo-site-footer__inner">
         <div className="robbo-footer__main">
           <div className="robbo-footer__brand-col">
             <div className="robbo-footer__brand">
-              <span className="robbo-footer__logo" aria-label="РОББО">
-                РОББО
+              <span className="robbo-footer__logo" aria-label="ROBBO">
+                ROBBO
                 <sup className="robbo-footer__reg" aria-hidden="true">®</sup>
               </span>
             </div>
-            <p className="robbo-footer__tagline">Образовательная платформа РОББО</p>
-            <p className="robbo-footer__copyright">
-              © ООО «РОББО ТЕХНОЛОГИИ», {new Date().getFullYear()}
-            </p>
+            <p className="robbo-footer__tagline">ROBBO learning platform</p>
           </div>
-          <div className="robbo-footer__partner-col">
-            <div className="robbo-footer__partner">
-              <a
-                className="robbo-footer__partner-link"
-                href="https://fasie.ru"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <img
-                  className="robbo-footer__partner-logo"
-                  src={fasieLogo}
-                  alt="Фонд содействия инновациям"
-                />
-              </a>
-            </div>
-          </div>
-          <nav className="robbo-footer__col" aria-label="Документы">
-            <h2 className="robbo-footer__heading">Документы</h2>
+          <nav className="robbo-footer__col" aria-label="Documents">
+            <h2 className="robbo-footer__heading">Documents</h2>
             <ul className="robbo-footer__links">
               <li>
-                <a href="https://robbo.ru/wp-content/uploads/policy.pdf" target="_blank" rel="noopener noreferrer">
-                  Политика обработки персональных данных
+                <a href={privacyUrl}>
+                  Privacy Policy
                 </a>
               </li>
               <li>
-                <a href="https://robbo.ru/wp-content/uploads/agree.pdf" target="_blank" rel="noopener noreferrer">
-                  Согласие на обработку персональных данных
+                <a href={tosUrl}>
+                  Terms of Service
                 </a>
               </li>
             </ul>
           </nav>
           <div className="robbo-footer__col robbo-footer__contacts-col">
-            <h2 className="robbo-footer__heading">Контакты</h2>
+            <h2 className="robbo-footer__heading">Contacts</h2>
             <ul className="robbo-footer__contacts-list">
               <li className="robbo-footer__contacts-item">
                 <span className="robbo-footer__contacts-icon" aria-hidden="true">
@@ -339,7 +323,7 @@ export const RobboFooter = () => (
                 <a
                   className="robbo-footer__contacts-link"
                   href="mailto:info@robbo.ru"
-                  aria-label="Почта: info@robbo.ru"
+                  aria-label="Email: info@robbo.ru"
                 >
                   info@robbo.ru
                 </a>
@@ -353,7 +337,7 @@ export const RobboFooter = () => (
                   href="https://robbo.ru"
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label="Наш сайт: robbo.ru"
+                  aria-label="Our website: robbo.ru"
                 >
                   robbo.ru
                 </a>
@@ -367,7 +351,7 @@ export const RobboFooter = () => (
                   href="https://support.robbo.world/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label="Поддержка: support.robbo.world"
+                  aria-label="Support: support.robbo.world"
                 >
                   support.robbo.world
                 </a>
@@ -378,6 +362,7 @@ export const RobboFooter = () => (
       </div>
     </footer>
   </div>
-);
+  );
+};
 
 export default RobboHeader;

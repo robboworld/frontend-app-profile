@@ -405,7 +405,8 @@ $y-hamburger-middle: ($robbo-mfe-profile-hamburger-box-height - $robbo-mfe-profi
   display: block;
   width: 100%;
 
-  @media (max-width: 991.98px) {
+  // Match LMS `.wrapper-footer` media-breakpoint-down(lg) => 1199.98px
+  @media (max-width: 1199.98px) {
     padding: 24px 0;
   }
 }
@@ -452,7 +453,7 @@ $y-hamburger-middle: ($robbo-mfe-profile-hamburger-box-height - $robbo-mfe-profi
 
 .robbo-footer__main {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   column-gap: clamp(20px, 4vw, 48px);
   align-items: start;
   width: 100%;
@@ -584,7 +585,8 @@ $y-hamburger-middle: ($robbo-mfe-profile-hamburger-box-height - $robbo-mfe-profi
     display: block;
     margin: 0;
     padding: 0;
-    color: $robbo-brand-grey;
+    // Match contact links / LMS platform link blue
+    color: #1b6d99;
     font-size: clamp(11px, 1.1vw, 13px);
     line-height: 1.45;
     font-family: $robbo-footer-font-family;
@@ -594,7 +596,7 @@ $y-hamburger-middle: ($robbo-mfe-profile-hamburger-box-height - $robbo-mfe-profi
 
     &:hover,
     &:focus {
-      color: $robbo-brand-primary;
+      color: #0079bc;
       text-decoration: underline;
     }
 
@@ -634,9 +636,11 @@ $y-hamburger-middle: ($robbo-mfe-profile-hamburger-box-height - $robbo-mfe-profi
 
 .robbo-footer__contacts-link {
   min-width: 0;
-  color: $robbo-brand-grey;
-  font-size: clamp(11px, 1.1vw, 13px);
-  line-height: 1.45;
+  // Match LMS: platform a:not(.btn) uses font:inherit → body 16px + link blue
+  color: #1b6d99;
+  font-size: 16px;
+  // Match LMS platform links (font:inherit → body line-height 16px)
+  line-height: 16px;
   font-family: $robbo-footer-font-family;
   text-decoration: none;
   overflow-wrap: anywhere;
@@ -644,7 +648,7 @@ $y-hamburger-middle: ($robbo-mfe-profile-hamburger-box-height - $robbo-mfe-profi
 
   &:hover,
   &:focus {
-    color: $robbo-brand-primary;
+    color: #0079bc;
     text-decoration: underline;
   }
 
@@ -663,9 +667,7 @@ body.indigo-dark-theme {
   .robbo-footer__copyright,
   .robbo-footer__tagline,
   .robbo-footer__heading,
-  .robbo-footer__links a,
-  .robbo-footer__contacts-icon,
-  .robbo-footer__contacts-link {
+  .robbo-footer__contacts-icon {
     color: $robbo-brand-grey;
   }
 
@@ -673,11 +675,16 @@ body.indigo-dark-theme {
     color: $robbo-brand-coal;
   }
 
+  .robbo-footer__links a,
+  .robbo-footer__contacts-link {
+    color: #1b6d99;
+  }
+
   .robbo-footer__links a:hover,
   .robbo-footer__links a:focus,
   .robbo-footer__contacts-link:hover,
   .robbo-footer__contacts-link:focus {
-    color: $robbo-brand-primary;
+    color: #0079bc;
   }
 }
 
@@ -724,6 +731,10 @@ body.indigo-dark-theme {
     font-size: 1em;
   }
 
+}
+
+// Open edX BS4: media-breakpoint-down(lg) => max-width 1199.98px (stack until xl).
+@media (max-width: 1199.98px) {
   .robbo-footer__main {
     grid-template-columns: 1fr;
     row-gap: $robbo-footer-stack-gap-sm;

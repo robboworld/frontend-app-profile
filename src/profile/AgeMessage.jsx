@@ -12,7 +12,11 @@ const AgeMessage = ({ accountSettingsUrl }) => (
     show
   >
     <Alert.Heading id="profile.age.headline">
-      Ваш профиль скрыт
+      <FormattedMessage
+        id="profile.age.headline"
+        defaultMessage="Your profile is hidden"
+        description="Headline when profile is hidden due to age / parental consent"
+      />
     </Alert.Heading>
     <FormattedMessage
       id="profile.age.details"
