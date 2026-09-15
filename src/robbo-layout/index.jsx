@@ -13,6 +13,7 @@ import { AppContext } from '@edx/frontend-platform/react';
 
 import './index.scss';
 import fasieLogo from './fasie-logo.png';
+import { getRobboLkHeaderNavItem, RobboFooterMainNav } from './lkNav';
 
 const MOBILE_COLLAPSE_NAV_QUERY = '(max-width: 767.98px)';
 
@@ -102,6 +103,10 @@ export const RobboHeader = ({
       section: 'catalog',
     },
   ];
+  const lkNavItem = getRobboLkHeaderNavItem(config);
+  if (lkNavItem) {
+    mainLinks.push(lkNavItem);
+  }
 
   const accountSettingsUrl = getAccountSettingsUrl(config);
 
@@ -281,7 +286,12 @@ const FooterSupportIcon = () => (
   </svg>
 );
 
-export const RobboFooter = () => (
+export const RobboFooter = () => {
+  const config = getConfig();
+  const dashboardUrl = getDashboardUrl(config);
+  const catalogUrl = getCatalogUrl(config);
+
+  return (
   <div className="wrapper wrapper-footer">
     <footer id="footer" className="robbo-site-footer">
       <div className="robbo-site-footer__inner">
@@ -314,6 +324,11 @@ export const RobboFooter = () => (
               </a>
             </div>
           </div>
+          <RobboFooterMainNav
+            config={config}
+            dashboardUrl={dashboardUrl}
+            catalogUrl={catalogUrl}
+          />
           <nav className="robbo-footer__col" aria-label="Документы">
             <h2 className="robbo-footer__heading">Документы</h2>
             <ul className="robbo-footer__links">
@@ -378,6 +393,7 @@ export const RobboFooter = () => (
       </div>
     </footer>
   </div>
-);
+  );
+};
 
 export default RobboHeader;
