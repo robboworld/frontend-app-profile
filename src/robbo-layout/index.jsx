@@ -13,7 +13,7 @@ import { AppContext } from '@edx/frontend-platform/react';
 
 import './index.scss';
 import fasieLogo from './fasie-logo.png';
-import { getRobboLkHeaderNavItem, RobboFooterMainNav } from './lkNav';
+import { getRobboLkHeaderNavItem } from './lkNav';
 
 const MOBILE_COLLAPSE_NAV_QUERY = '(max-width: 767.98px)';
 
@@ -278,20 +278,7 @@ const FooterGlobeIcon = () => (
   </svg>
 );
 
-const FooterSupportIcon = () => (
-  <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false">
-    <path d="M4 11v3a2 2 0 002 2h1v-7H6a2 2 0 00-2 2zM18 9h1a2 2 0 012 2v3a2 2 0 01-2 2h-1V9z" stroke="currentColor" strokeWidth="1.8" fill="none" strokeLinejoin="round" />
-    <path d="M8 18v1a4 4 0 004 4 4 4 0 004-4v-1" stroke="currentColor" strokeWidth="1.8" fill="none" strokeLinecap="round" />
-    <path d="M12 14v-1a3 3 0 013-3" stroke="currentColor" strokeWidth="1.8" fill="none" strokeLinecap="round" />
-  </svg>
-);
-
-export const RobboFooter = () => {
-  const config = getConfig();
-  const dashboardUrl = getDashboardUrl(config);
-  const catalogUrl = getCatalogUrl(config);
-
-  return (
+export const RobboFooter = () => (
   <div className="wrapper wrapper-footer">
     <footer id="footer" className="robbo-site-footer">
       <div className="robbo-site-footer__inner">
@@ -314,7 +301,7 @@ export const RobboFooter = () => {
                 className="robbo-footer__partner-link"
                 href="https://fasie.ru"
                 target="_blank"
-                rel="noopener noreferrer"
+                rel="noopener"
               >
                 <img
                   className="robbo-footer__partner-logo"
@@ -324,21 +311,16 @@ export const RobboFooter = () => {
               </a>
             </div>
           </div>
-          <RobboFooterMainNav
-            config={config}
-            dashboardUrl={dashboardUrl}
-            catalogUrl={catalogUrl}
-          />
           <nav className="robbo-footer__col" aria-label="Документы">
             <h2 className="robbo-footer__heading">Документы</h2>
             <ul className="robbo-footer__links">
               <li>
-                <a href="https://robbo.ru/wp-content/uploads/policy.pdf" target="_blank" rel="noopener noreferrer">
+                <a href="https://robbo.ru/wp-content/uploads/policy.pdf" target="_blank" rel="noopener" style={{ textDecoration: 'underline' }}>
                   Политика обработки персональных данных
                 </a>
               </li>
               <li>
-                <a href="https://robbo.ru/wp-content/uploads/agree.pdf" target="_blank" rel="noopener noreferrer">
+                <a href="https://robbo.ru/wp-content/uploads/agree.pdf" target="_blank" rel="noopener" style={{ textDecoration: 'underline' }}>
                   Согласие на обработку персональных данных
                 </a>
               </li>
@@ -367,24 +349,11 @@ export const RobboFooter = () => {
                   className="robbo-footer__contacts-link"
                   href="https://robbo.ru"
                   target="_blank"
-                  rel="noopener noreferrer"
+                  rel="noopener"
+                  style={{ textDecoration: 'underline' }}
                   aria-label="Наш сайт: robbo.ru"
                 >
                   robbo.ru
-                </a>
-              </li>
-              <li className="robbo-footer__contacts-item">
-                <span className="robbo-footer__contacts-icon" aria-hidden="true">
-                  <FooterSupportIcon />
-                </span>
-                <a
-                  className="robbo-footer__contacts-link"
-                  href="https://support.robbo.world/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Поддержка: support.robbo.world"
-                >
-                  support.robbo.world
                 </a>
               </li>
             </ul>
@@ -393,7 +362,6 @@ export const RobboFooter = () => {
       </div>
     </footer>
   </div>
-  );
-};
+);
 
 export default RobboHeader;
