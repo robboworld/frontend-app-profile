@@ -322,10 +322,10 @@ export const RobboFooter = () => {
                 </span>
                 <a
                   className="robbo-footer__contacts-link"
-                  href="mailto:info@robbo.ru"
-                  aria-label="Email: info@robbo.ru"
+                  href="mailto:info@robbo.world"
+                  aria-label="Email: info@robbo.world"
                 >
-                  info@robbo.ru
+                  info@robbo.world
                 </a>
               </li>
               <li className="robbo-footer__contacts-item">
@@ -334,12 +334,12 @@ export const RobboFooter = () => {
                 </span>
                 <a
                   className="robbo-footer__contacts-link"
-                  href="https://robbo.ru"
+                  href="https://robbo.world"
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label="Our website: robbo.ru"
+                  aria-label="Our website: robbo.world"
                 >
-                  robbo.ru
+                  robbo.world
                 </a>
               </li>
               <li className="robbo-footer__contacts-item">
