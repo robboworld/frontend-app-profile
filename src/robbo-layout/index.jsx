@@ -11,6 +11,7 @@ import { getConfig } from '@edx/frontend-platform';
 import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import { AppContext } from '@edx/frontend-platform/react';
 
+import RobboStackBadge from './stackBadge';
 import './index.scss';
 
 const MOBILE_COLLAPSE_NAV_QUERY = '(max-width: 767.98px)';
@@ -142,6 +143,7 @@ export const RobboHeader = ({
     <header className={headerClassName.join(' ')}>
       <div className="robbo-layout-header__inner">
         <div className="robbo-layout-header__leading">
+          <RobboStackBadge className="robbo-layout-header__stack-badge" />
           <a className="robbo-layout-header__brand" href={catalogUrl} aria-label="ROBBO">
             <span className="robbo-layout-header__wordmark">
               ROBBO

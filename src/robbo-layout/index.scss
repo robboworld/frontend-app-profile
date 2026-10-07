@@ -11,6 +11,8 @@ $robbo-mfe-header-bar-min-h: 75px;
 $robbo-mfe-header-bar-min-h-mobile: 55px;
 $robbo-mfe-header-wordmark: 30px; // LMS $robbo-header-wordmark
 $robbo-mfe-header-nav-fs: 20px; // LMS $robbo-header-nav-font
+$robbo-mfe-stack-badge-size: 28px; // LMS $robbo-stack-badge-size
+$robbo-mfe-stack-badge-fs: 16px; // LMS $robbo-stack-badge-fs
 $robbo-dropdown-enter-duration: 200ms;
 $robbo-dropdown-enter-ease: ease-out;
 $robbo-profile-chevron-size: 5px;
@@ -81,7 +83,28 @@ $robbo-mfe-user-menu-item-hover-color-collapsed: #111;
   z-index: 2;
   display: flex;
   align-items: center;
+  gap: 10px;
   min-width: 0;
+}
+
+// Admin-only stack profile letter (O / S / C), as LMS `.robbo-stack-badge`.
+.robbo-layout-header__stack-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  box-sizing: border-box;
+  min-width: $robbo-mfe-stack-badge-size;
+  height: $robbo-mfe-stack-badge-size;
+  padding: 0 4px;
+  border: 2px solid currentColor;
+  border-radius: 6px;
+  color: #fff;
+  font-size: $robbo-mfe-stack-badge-fs;
+  font-weight: 700;
+  line-height: 1;
+  cursor: default;
+  user-select: none;
 }
 
 .robbo-layout-header__brand {
