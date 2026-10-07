@@ -321,7 +321,9 @@ export const profilePageSelector = createSelector(
   saveStateSelector,
   savePhotoStateSelector,
   isLoadingProfileSelector,
+  currentlyEditingFieldSelector,
   draftSocialLinksByPlatformSelector,
+  profilePreferencesSelector,
   accountErrorsSelector,
   (
     account,
@@ -330,7 +332,9 @@ export const profilePageSelector = createSelector(
     saveState,
     savePhotoState,
     isLoadingProfile,
+    currentlyEditingField,
     draftSocialLinksByPlatform,
+    preferences,
     errors,
   ) => ({
     // Account data we need
@@ -364,6 +368,10 @@ export const profilePageSelector = createSelector(
     name: formValues.name,
     visibilityName: formValues.visibilityName,
 
+    // Learning Goal form data
+    learningGoal: account.learningGoal,
+    visibilityLearningGoal: preferences.visibilityLearningGoal || 'all_users',
+
     // Social links form data
     socialLinks: formValues.socialLinks,
     visibilitySocialLinks: formValues.visibilitySocialLinks,
@@ -373,6 +381,7 @@ export const profilePageSelector = createSelector(
     saveState,
     savePhotoState,
     isLoadingProfile,
+    currentlyEditingField,
     photoUploadError: errors.photo || null,
   }),
 );

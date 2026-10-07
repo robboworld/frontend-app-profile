@@ -13,6 +13,8 @@ import { AppContext } from '@edx/frontend-platform/react';
 
 import { useRobboAnalyticsMenu } from './analyticsMenu';
 import './index.scss';
+import fasieLogo from './fasie-logo.png';
+import { getRobboLkHeaderNavItem } from './lkNav';
 
 const MOBILE_COLLAPSE_NAV_QUERY = '(max-width: 767.98px)';
 
@@ -75,6 +77,7 @@ export const RobboHeader = ({
 }) => {
   const { authenticatedUser } = React.useContext(AppContext);
   const [isUserMenuOpen, setIsUserMenuOpen] = React.useState(false);
+  const userMenuRef = React.useRef(null);
   const isNarrowViewport = useMatchMedia(MOBILE_COLLAPSE_NAV_QUERY);
   const collapseMainNav = Boolean(collapseNavIntoUserMenuOnNarrow && isNarrowViewport);
   const intl = useIntl();
@@ -101,6 +104,10 @@ export const RobboHeader = ({
       section: 'catalog',
     },
   ];
+  const lkNavItem = getRobboLkHeaderNavItem(config);
+  if (lkNavItem) {
+    mainLinks.push(lkNavItem);
+  }
 
   const accountSettingsUrl = getAccountSettingsUrl(config);
   const robboAnalyticsMenu = useRobboAnalyticsMenu(authenticatedUser);
@@ -124,6 +131,19 @@ export const RobboHeader = ({
       messageId: 'robbo.header.user.signOut',
     } : null,
   ].filter(Boolean);
+
+  React.useEffect(() => {
+    if (!isUserMenuOpen) {
+      return undefined;
+    }
+    const handlePointerDown = (event) => {
+      if (userMenuRef.current && !userMenuRef.current.contains(event.target)) {
+        setIsUserMenuOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handlePointerDown);
+    return () => document.removeEventListener('mousedown', handlePointerDown);
+  }, [isUserMenuOpen]);
 
   const headerClassName = ['robbo-layout-header'];
   if (collapseMainNav) {
@@ -164,7 +184,7 @@ export const RobboHeader = ({
         </nav>
         <div className="robbo-layout-header__trailing">
           {showUserDropdown && username && (
-            <div className="robbo-layout-user-menu">
+            <div className="robbo-layout-user-menu" ref={userMenuRef}>
               <button
                 className={[
                   'robbo-layout-user-menu__toggle',
@@ -250,47 +270,100 @@ RobboHeader.defaultProps = {
   collapseNavIntoUserMenuOnNarrow: false,
 };
 
+const FooterMailIcon = () => (
+  <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false">
+    <rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" strokeWidth="1.8" fill="none" />
+    <path d="M3 7l9 6 9-6" stroke="currentColor" strokeWidth="1.8" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
+
+const FooterGlobeIcon = () => (
+  <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false">
+    <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.8" fill="none" />
+    <path d="M3 12h18M12 3c2.5 2.8 2.5 14.2 0 18M12 3c-2.5 2.8-2.5 14.2 0 18" stroke="currentColor" strokeWidth="1.8" fill="none" strokeLinecap="round" />
+  </svg>
+);
+
 export const RobboFooter = () => (
   <div className="wrapper wrapper-footer">
     <footer id="footer" className="robbo-site-footer">
       <div className="robbo-site-footer__inner">
-        <div className="robbo-footer__left">
-          <div className="robbo-footer__brand">
-            <span className="robbo-footer__logo" aria-label="РОББО">
-              РОББО
-              <sup className="robbo-footer__reg" aria-hidden="true">®</sup>
-            </span>
+        <div className="robbo-footer__main">
+          <div className="robbo-footer__brand-col">
+            <div className="robbo-footer__brand">
+              <span className="robbo-footer__logo" aria-label="РОББО">
+                РОББО
+                <sup className="robbo-footer__reg" aria-hidden="true">®</sup>
+              </span>
+            </div>
+            <p className="robbo-footer__tagline">Образовательная платформа РОББО</p>
+            <p className="robbo-footer__copyright">
+              © ООО «РОББО ТЕХНОЛОГИИ», {new Date().getFullYear()}
+            </p>
           </div>
-          <p className="robbo-footer__copyright">
-            © ООО «РОББО ТЕХНОЛОГИИ», {new Date().getFullYear()}
-          </p>
-        </div>
-        <div className="robbo-footer__center">
-          <nav className="robbo-footer__nav" aria-label="Документы">
+          <div className="robbo-footer__partner-col">
+            <div className="robbo-footer__partner">
+              <a
+                className="robbo-footer__partner-link"
+                href="https://fasie.ru"
+                target="_blank"
+                rel="noopener"
+              >
+                <img
+                  className="robbo-footer__partner-logo"
+                  src={fasieLogo}
+                  alt="Фонд содействия инновациям"
+                />
+              </a>
+            </div>
+          </div>
+          <nav className="robbo-footer__col" aria-label="Документы">
+            <h2 className="robbo-footer__heading">Документы</h2>
             <ul className="robbo-footer__links">
               <li>
-                <a href="https://edurobbo.ru/skill" target="_blank" rel="noopener noreferrer">
-                  Сведения об образовательной организации
-                </a>
-              </li>
-              <li>
-                <a href="https://robbo.ru/wp-content/uploads/policy.pdf" target="_blank" rel="noopener noreferrer">
+                <a href="https://robbo.ru/wp-content/uploads/policy.pdf" target="_blank" rel="noopener" style={{ textDecoration: 'underline' }}>
                   Политика обработки персональных данных
                 </a>
               </li>
               <li>
-                <a href="https://robbo.ru/wp-content/uploads/agree.pdf" target="_blank" rel="noopener noreferrer">
+                <a href="https://robbo.ru/wp-content/uploads/agree.pdf" target="_blank" rel="noopener" style={{ textDecoration: 'underline' }}>
                   Согласие на обработку персональных данных
                 </a>
               </li>
             </ul>
           </nav>
-        </div>
-        <div className="robbo-footer__contacts">
-          <p className="robbo-footer__contacts-title">Контактные данные:</p>
-          <p className="robbo-footer__contacts-line">
-            Почта <a href="mailto:skill@robbo.ru">skill@robbo.ru</a>
-          </p>
+          <div className="robbo-footer__col robbo-footer__contacts-col">
+            <h2 className="robbo-footer__heading">Контакты</h2>
+            <ul className="robbo-footer__contacts-list">
+              <li className="robbo-footer__contacts-item">
+                <span className="robbo-footer__contacts-icon" aria-hidden="true">
+                  <FooterMailIcon />
+                </span>
+                <a
+                  className="robbo-footer__contacts-link"
+                  href="mailto:info@robbo.ru"
+                  aria-label="Почта: info@robbo.ru"
+                >
+                  info@robbo.ru
+                </a>
+              </li>
+              <li className="robbo-footer__contacts-item">
+                <span className="robbo-footer__contacts-icon" aria-hidden="true">
+                  <FooterGlobeIcon />
+                </span>
+                <a
+                  className="robbo-footer__contacts-link"
+                  href="https://robbo.ru"
+                  target="_blank"
+                  rel="noopener"
+                  style={{ textDecoration: 'underline' }}
+                  aria-label="Наш сайт: robbo.ru"
+                >
+                  robbo.ru
+                </a>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </footer>

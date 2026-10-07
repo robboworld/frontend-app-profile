@@ -35,6 +35,7 @@ import LearningGoal from './forms/LearningGoal';
 
 // Selectors
 import { profilePageSelector } from './data/selectors';
+import { isProfileBlockVisible } from './utils/fieldVisibility';
 
 // i18n
 import messages from './ProfilePage.messages';
@@ -202,6 +203,7 @@ class ProfilePage extends React.Component {
       isLoadingProfile,
       username,
       saveState,
+      currentlyEditingField,
       navigate,
     } = this.props;
 
@@ -220,15 +222,31 @@ class ProfilePage extends React.Component {
       changeHandler: this.handleChange,
     };
 
-    const isBlockVisible = (blockInfo) => this.isAuthenticatedUserProfile()
-      || (!this.isAuthenticatedUserProfile() && Boolean(blockInfo));
+    const canEditEmptyBlocks = this.isAuthenticatedUserProfile() && !requiresParentalConsent;
 
-    const isLanguageBlockVisible = isBlockVisible(languageProficiencies.length);
-    const isEducationBlockVisible = isBlockVisible(levelOfEducation);
-    const isBioBlockVisible = isBlockVisible(bio);
-    const isCertificatesBlockVisible = isBlockVisible(courseCertificates.length);
-    const isNameBlockVisible = isBlockVisible(name);
-    const isLocationBlockVisible = isBlockVisible(country);
+    const blockVisible = (formId, value, { showEmptyForEditing = canEditEmptyBlocks } = {}) => (
+      isProfileBlockVisible(formId, value, currentlyEditingField, { showEmptyForEditing })
+    );
+
+    const isLanguageBlockVisible = blockVisible('languageProficiencies', languageProficiencies);
+    const isEducationBlockVisible = blockVisible('levelOfEducation', levelOfEducation);
+    const isBioBlockVisible = blockVisible('bio', bio);
+    const isCertificatesBlockVisible = blockVisible('certificates', courseCertificates);
+    const isNameBlockVisible = blockVisible('name', name);
+    const isLocationBlockVisible = blockVisible('country', country);
+    const isLearningGoalBlockVisible = getConfig().ENABLE_SKILLS_BUILDER_PROFILE
+      && blockVisible('learningGoal', learningGoal, { showEmptyForEditing: false });
+    const shouldShowAgeMessage = !this.isYOBDisabled()
+      && requiresParentalConsent
+      && this.isAuthenticatedUserProfile();
+    const hasSidebarContent = isNameBlockVisible
+      || isLocationBlockVisible
+      || isLanguageBlockVisible
+      || isEducationBlockVisible;
+    const hasMainContent = shouldShowAgeMessage
+      || isBioBlockVisible
+      || isLearningGoalBlockVisible
+      || isCertificatesBlockVisible;
 
     return (
       <div className="container-fluid profile-page__container">
@@ -253,8 +271,10 @@ class ProfilePage extends React.Component {
           </div>
         </div>
         {this.renderPhotoUploadErrorMessage()}
+        {(hasSidebarContent || hasMainContent) && (
         <div className="row profile-page__body">
-          <div className="col-12 col-lg-4 profile-page__info profile-page__sidebar">
+          {hasSidebarContent && (
+          <div className={`col-12 profile-page__info profile-page__sidebar ${hasMainContent ? 'col-lg-4' : 'col-lg-12'}`}>
             {isNameBlockVisible && (
               <Name
                 name={name}
@@ -288,8 +308,10 @@ class ProfilePage extends React.Component {
               />
             )}
           </div>
-          <div className="col-12 col-lg-8 profile-page__info profile-page__main">
-            {!this.isYOBDisabled() && this.renderAgeMessage()}
+          )}
+          {hasMainContent && (
+          <div className={`col-12 profile-page__info profile-page__main ${hasSidebarContent ? 'col-lg-8' : 'col-lg-12'}`}>
+            {shouldShowAgeMessage && this.renderAgeMessage()}
             {isBioBlockVisible && (
               <Bio
                 bio={bio}
@@ -298,7 +320,7 @@ class ProfilePage extends React.Component {
                 {...commonFormProps}
               />
             )}
-            {getConfig().ENABLE_SKILLS_BUILDER_PROFILE && (
+            {isLearningGoalBlockVisible && (
               <LearningGoal
                 learningGoal={learningGoal}
                 visibilityLearningGoal={visibilityLearningGoal}
@@ -314,7 +336,9 @@ class ProfilePage extends React.Component {
               />
             )}
           </div>
+          )}
         </div>
+        )}
         <div className="d-lg-none profile-page__footer-actions">
           {this.renderProfileActionButtons('profile-page__hero-actions-inner--footer')}
         </div>
@@ -380,6 +404,7 @@ ProfilePage.propTypes = {
   saveState: PropTypes.oneOf([null, 'pending', 'complete', 'error']),
   savePhotoState: PropTypes.oneOf([null, 'pending', 'complete', 'error']),
   isLoadingProfile: PropTypes.bool.isRequired,
+  currentlyEditingField: PropTypes.string,
 
   // Page state helpers
   photoUploadError: PropTypes.objectOf(PropTypes.string),
@@ -407,6 +432,7 @@ ProfilePage.defaultProps = {
   saveState: null,
   username: '',
   savePhotoState: null,
+  currentlyEditingField: null,
   photoUploadError: {},
   profileImage: {},
   name: null,
