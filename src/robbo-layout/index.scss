@@ -13,6 +13,9 @@ $robbo-mfe-header-wordmark: 30px; // LMS $robbo-header-wordmark
 $robbo-mfe-header-nav-fs: 20px; // LMS $robbo-header-nav-font
 $robbo-mfe-stack-badge-size: 28px; // LMS $robbo-stack-badge-size
 $robbo-mfe-stack-badge-fs: 16px; // LMS $robbo-stack-badge-fs
+// ProximaNova caps sit 0.05em above the middle of their line box: lift the centred badge by as much
+// so it shares the optical middle of the wordmark caps (LMS $robbo-stack-badge-lift).
+$robbo-mfe-stack-badge-lift: 0.05 * $robbo-mfe-header-wordmark;
 $robbo-dropdown-enter-duration: 200ms;
 $robbo-dropdown-enter-ease: ease-out;
 $robbo-profile-chevron-size: 5px;
@@ -43,6 +46,8 @@ $robbo-mfe-user-menu-item-hover-color-collapsed: #111;
 
 .robbo-layout-header {
   position: relative;
+  // Brand font for the whole bar, whatever the page uses (Learning pages: system font).
+  font-family: $robbo-font-stack;
   z-index: 20;
   min-height: $robbo-mfe-header-bar-min-h;
   background: $robbo-brand-primary;
@@ -89,6 +94,8 @@ $robbo-mfe-user-menu-item-hover-color-collapsed: #111;
 
 // Admin-only stack profile letter (O / S / C), as LMS `.robbo-stack-badge`.
 .robbo-layout-header__stack-badge {
+  position: relative;
+  top: -$robbo-mfe-stack-badge-lift;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -156,7 +163,54 @@ $robbo-mfe-user-menu-item-hover-color-collapsed: #111;
   position: relative;
   z-index: 2;
   justify-self: end;
+  display: flex;
+  align-items: center;
+  gap: 10px;
   min-width: 0;
+}
+
+/* LMS `robbo-header-studio-link` — pill next to user menu (staff only). */
+.robbo-header-studio-link {
+  flex: 0 0 auto;
+  margin: 0;
+
+  &[hidden] {
+    display: none !important;
+  }
+}
+
+.robbo-header-studio-link__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 6px 16px;
+  margin: 0;
+  background: transparent;
+  color: #fff !important;
+  font-size: $robbo-mfe-header-profile-toggle-fs;
+  font-weight: 700;
+  line-height: 1.35;
+  border-radius: 999px;
+  border: 1px solid #fff;
+  box-sizing: border-box;
+  cursor: pointer;
+  text-decoration: none;
+  white-space: nowrap;
+
+  &:hover,
+  &:focus,
+  &:focus-visible {
+    color: #fff !important;
+    text-decoration: none !important;
+    background: rgba(255, 255, 255, 0.12);
+    outline: none;
+  }
+
+  &:focus-visible {
+    outline: 2px solid rgba(255, 255, 255, 0.45);
+    outline-offset: 3px;
+  }
 }
 
 .robbo-layout-header__link {

@@ -17,5 +17,7 @@
   "profile.certificate.organization.label": "От",
   "profile.certificate.completion.date.label": "Завершено {date}",
   "profile.certificates.types.honor": "Сертификат",
-  "profile.certificates.types.audit": "Сертификат"
+  "profile.certificates.types.audit": "Сертификат",
+  "robbo.header.studio.label": "Студия",
+  "robbo.header.studio.aria": "Перейти в Студию"
 }
