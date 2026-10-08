@@ -12,6 +12,7 @@ import { FormattedMessage, useIntl } from '@edx/frontend-platform/i18n';
 import { AppContext } from '@edx/frontend-platform/react';
 
 import RobboStackBadge from './stackBadge';
+import RobboWhatsNew from './whatsNew';
 import './index.scss';
 import fasieLogo from './fasie-logo.png';
 import { getRobboLkHeaderNavItem } from './lkNav';
@@ -60,6 +61,11 @@ const getCatalogUrl = (config) => (
 
 const getProgramsUrl = (config) => buildUrl(config.LMS_BASE_URL, '/dashboard/programs');
 
+const getStudioUrl = (config) => {
+  const base = config.STUDIO_BASE_URL || config.CMS_BASE_URL || '';
+  return base ? String(base).replace(/\/$/, '') : '';
+};
+
 /** Account MFE uses PUBLIC_PATH `/account/`; basename requires a trailing slash. */
 const getAccountSettingsUrl = (config) => {
   const base = config.ACCOUNT_SETTINGS_URL;
@@ -84,7 +90,10 @@ export const RobboHeader = ({
   const config = getConfig();
   const dashboardUrl = getDashboardUrl(config);
   const catalogUrl = getCatalogUrl(config);
+  const studioUrl = getStudioUrl(config);
   const username = authenticatedUser?.username || authenticatedUser?.name || '';
+  // LMS studio_header_link: superuser / global staff only (`administrator` in JWT).
+  const showStudioLink = Boolean(studioUrl && authenticatedUser?.administrator);
 
   const mainLinks = [
     {
@@ -179,6 +188,28 @@ export const RobboHeader = ({
           ))}
         </nav>
         <div className="robbo-layout-header__trailing">
+          {username && <RobboWhatsNew className="robbo-layout-header__whats-new" />}
+          {showStudioLink && (
+            <div
+              className="robbo-header-studio-link"
+              hidden={collapseMainNav}
+              aria-hidden={collapseMainNav}
+            >
+              <a
+                className="robbo-header-studio-link__btn"
+                href={studioUrl}
+                aria-label={intl.formatMessage({
+                  id: 'robbo.header.studio.aria',
+                  defaultMessage: 'Go to Studio',
+                })}
+              >
+                <FormattedMessage
+                  id="robbo.header.studio.label"
+                  defaultMessage="Studio"
+                />
+              </a>
+            </div>
+          )}
           {showUserDropdown && username && (
             <div className="robbo-layout-user-menu" ref={userMenuRef}>
               <button
@@ -231,6 +262,18 @@ export const RobboHeader = ({
                       <FormattedMessage id={item.messageId} />
                     </a>
                   ))}
+                  {collapseMainNav && showStudioLink && (
+                    <a
+                      className="robbo-layout-user-menu__item robbo-layout-user-menu__item--main-nav"
+                      href={studioUrl}
+                      role="menuitem"
+                    >
+                      <FormattedMessage
+                        id="robbo.header.studio.label"
+                        defaultMessage="Studio"
+                      />
+                    </a>
+                  )}
                   {userMenuLinks.map((item) => (
                     <a
                       key={`${item.href}-${item.messageId}`}
