@@ -905,3 +905,95 @@ body.indigo-dark-theme {
     animation: none;
   }
 }
+// «Личный кабинет» before account activation (lkLockedItem.jsx, as LMS `.robbo-header-lk-locked`):
+// a dimmed item with a lock, no link; the hint pops up on hover / keyboard focus in the bar and is
+// a second line in the collapsed menu (no hover on phones).
+$robbo-lk-locked-color: rgba(255, 255, 255, 0.6);
+$robbo-lk-hint-gap: 10px;
+
+.robbo-lk-locked__icon {
+  flex: none;
+  width: 0.8em;
+  height: 0.8em;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.robbo-layout-header .robbo-layout-header__link.robbo-lk-locked {
+  position: relative;
+  gap: 0.3em;
+  color: $robbo-lk-locked-color;
+  cursor: not-allowed;
+
+  &:hover,
+  &:focus {
+    color: $robbo-lk-locked-color;
+    border-bottom-color: transparent;
+  }
+
+  .robbo-lk-locked__hint {
+    position: absolute;
+    top: calc(100% + #{$robbo-lk-hint-gap});
+    left: 50%;
+    z-index: 10;
+    width: max-content;
+    max-width: min(340px, 80vw);
+    padding: 8px 12px;
+    border-radius: 8px;
+    background: $robbo-brand-white;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
+    color: $robbo-brand-coal;
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: normal;
+    line-height: 20px;
+    text-align: center;
+    white-space: normal;
+    // Hidden visually only: screen readers read it as part of the item's name.
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(-50%, -4px);
+    transition: opacity 0.15s ease-out, transform 0.15s ease-out;
+  }
+
+  &:hover .robbo-lk-locked__hint,
+  &:focus-visible .robbo-lk-locked__hint {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+.robbo-layout-header .robbo-layout-user-menu__item.robbo-lk-locked--menu {
+  color: $robbo-brand-grey;
+  cursor: not-allowed;
+
+  &:hover,
+  &:focus {
+    background: transparent;
+    color: $robbo-brand-grey;
+  }
+
+  .robbo-lk-locked__icon {
+    margin-right: 0.3em;
+    vertical-align: -0.1em;
+  }
+
+  .robbo-lk-locked__hint {
+    display: block;
+    max-width: 240px;
+    padding-top: 2px;
+    color: $robbo-brand-coal;
+    font-size: 12px;
+    line-height: 16px;
+    white-space: normal;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .robbo-layout-header .robbo-layout-header__link.robbo-lk-locked .robbo-lk-locked__hint {
+    transition: none;
+  }
+}

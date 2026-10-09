@@ -4,6 +4,7 @@
   "robbo.header.mainNav.programs": "Programs",
   "robbo.header.mainNav.courseCatalog": "Course catalog",
   "robbo.header.mainNav.personalAccount": "Personal account",
+  "robbo.header.mainNav.personalAccountLockedHint": "Confirm your email to open your personal account",
   "robbo.header.mainNav.aria": "Main navigation",
   "robbo.footer.mainNav.heading": "Sections",
   "robbo.footer.mainNav.aria": "Site sections",
