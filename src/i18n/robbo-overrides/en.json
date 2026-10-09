@@ -13,5 +13,7 @@
   "robbo.header.user.profile": "Profile",
   "robbo.header.user.account": "Account",
   "robbo.header.user.analytics": "Analytics",
-  "robbo.header.user.signOut": "Sign Out"
+  "robbo.header.user.signOut": "Sign Out",
+  "robbo.header.studio.label": "Studio",
+  "robbo.header.studio.aria": "Go to Studio"
 }
