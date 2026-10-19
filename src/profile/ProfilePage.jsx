@@ -6,7 +6,7 @@ import { sendTrackingLogEvent } from '@edx/frontend-platform/analytics';
 import { ensureConfig, getConfig } from '@edx/frontend-platform';
 import { AppContext } from '@edx/frontend-platform/react';
 import { injectIntl, intlShape } from '@edx/frontend-platform/i18n';
-import { Alert, Hyperlink } from '@openedx/paragon';
+import { Alert, Button, Hyperlink } from '@openedx/paragon';
 
 // Actions
 import {
@@ -41,7 +41,7 @@ import { isProfileBlockVisible } from './utils/fieldVisibility';
 import messages from './ProfilePage.messages';
 
 import withParams from '../utils/hoc';
-import { RobboErrorDetails } from '../robbo-errors';
+import { RobboErrorDetails, RobboErrorNotice, uiText } from '../robbo-errors';
 
 ensureConfig(['CREDENTIALS_BASE_URL', 'LMS_BASE_URL'], 'ProfilePage');
 
@@ -174,6 +174,27 @@ class ProfilePage extends React.Component {
     );
   }
 
+  // Robbo: a failure outside the form fields (saving, the photo, loading the profile) with what
+  // failed, the code and number (src/robbo-errors); loading failures offer to reload the page.
+  renderPageError() {
+    const { pageError, isLoadingProfile } = this.props;
+
+    if (!pageError) {
+      return null;
+    }
+
+    const actions = isLoadingProfile ? [
+      <Button key="reload" variant="primary" onClick={() => global.location.reload()}>{uiText('reload')}</Button>,
+    ] : [];
+    return (
+      <div className="row">
+        <div className="col-12">
+          <RobboErrorNotice info={pageError} actions={actions} />
+        </div>
+      </div>
+    );
+  }
+
   renderAgeMessage() {
     const { requiresParentalConsent } = this.props;
     const shouldShowAgeMessage = requiresParentalConsent && this.isAuthenticatedUserProfile();
@@ -210,6 +231,9 @@ class ProfilePage extends React.Component {
     } = this.props;
 
     if (isLoadingProfile) {
+      if (this.props.pageError) {
+        return this.renderPageError();
+      }
       return <PageLoading srMessage={this.props.intl.formatMessage(messages['profile.loading'])} />;
     }
 
@@ -273,6 +297,7 @@ class ProfilePage extends React.Component {
           </div>
         </div>
         {this.renderPhotoUploadErrorMessage()}
+        {this.renderPageError()}
         {(hasSidebarContent || hasMainContent) && (
         <div className="row profile-page__body">
           {hasSidebarContent && (
@@ -411,6 +436,10 @@ ProfilePage.propTypes = {
   // Page state helpers
   // Robbo: plus robboError, an object (src/robbo-errors)
   photoUploadError: PropTypes.objectOf(PropTypes.oneOfType([PropTypes.string, PropTypes.object])),
+  pageError: PropTypes.shape({
+    code: PropTypes.string,
+    message: PropTypes.string,
+  }),
 
   // Actions
   fetchProfile: PropTypes.func.isRequired,
@@ -437,6 +466,7 @@ ProfilePage.defaultProps = {
   savePhotoState: null,
   currentlyEditingField: null,
   photoUploadError: {},
+  pageError: null,
   profileImage: {},
   name: null,
   yearOfBirth: null,

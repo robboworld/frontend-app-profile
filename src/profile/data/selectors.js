@@ -20,6 +20,7 @@ export const profileVisibilityDraftsSelector = state => state.profilePage.visibi
 export const saveStateSelector = state => state.profilePage.saveState;
 export const savePhotoStateSelector = state => state.profilePage.savePhotoState;
 export const isLoadingProfileSelector = state => state.profilePage.isLoadingProfile;
+export const pageErrorSelector = state => state.profilePage.pageError;
 export const currentlyEditingFieldSelector = state => state.profilePage.currentlyEditingField;
 export const accountErrorsSelector = state => state.profilePage.errors;
 export const isAuthenticatedUserProfileSelector = state => state.profilePage.isAuthenticatedUserProfile;
@@ -325,6 +326,7 @@ export const profilePageSelector = createSelector(
   draftSocialLinksByPlatformSelector,
   profilePreferencesSelector,
   accountErrorsSelector,
+  pageErrorSelector,
   (
     account,
     formValues,
@@ -336,6 +338,7 @@ export const profilePageSelector = createSelector(
     draftSocialLinksByPlatform,
     preferences,
     errors,
+    pageError,
   ) => ({
     // Account data we need
     username: account.username,
@@ -383,5 +386,6 @@ export const profilePageSelector = createSelector(
     isLoadingProfile,
     currentlyEditingField,
     photoUploadError: errors.photo || null,
+    pageError: pageError || null,
   }),
 );

@@ -1,4 +1,5 @@
 import { getAuthenticatedUser } from '@edx/frontend-platform/auth';
+import { logError } from '@edx/frontend-platform/logging';
 import pick from 'lodash.pick';
 import {
   all,
@@ -18,6 +19,7 @@ import {
   fetchProfileReset,
   fetchProfileSuccess,
   FETCH_PROFILE,
+  profilePageError,
   resetDrafts,
   saveProfileBegin,
   saveProfileFailure,
@@ -32,6 +34,7 @@ import {
 } from './actions';
 import { handleSaveProfileSelector, userAccountSelector } from './selectors';
 import * as ProfileApiService from './services';
+import { describeError } from '../../robbo-errors';
 
 export function* handleFetchProfile(action) {
   const { username } = action.payload;
@@ -93,14 +96,17 @@ export function* handleFetchProfile(action) {
 
     yield put(fetchProfileReset());
   } catch (e) {
-    if (e.response.status === 404) {
+    if (e.response?.status === 404) {
       if (e.processedData && e.processedData.fieldErrors) {
         yield put(saveProfileFailure(e.processedData.fieldErrors));
       } else {
         yield put(saveProfileFailure(e.customAttributes));
       }
     } else {
-      throw e;
+      // Robbo: what failed with the code (src/robbo-errors) instead of an endless spinner; with no
+      // answer at all e.response is undefined and the old check itself threw.
+      yield put(profilePageError(describeError(e)));
+      logError(e);
     }
   }
 }
@@ -167,7 +173,9 @@ export function* handleSaveProfile(action) {
       yield put(saveProfileFailure(e.processedData.fieldErrors));
     } else {
       yield put(saveProfileReset());
-      throw e;
+      // Robbo: a failure of no field is shown on the page (src/robbo-errors) instead of being rethrown.
+      yield put(profilePageError(describeError(e)));
+      logError(e);
     }
   }
 }
@@ -187,7 +195,9 @@ export function* handleSaveProfilePhoto(action) {
       yield put(saveProfilePhotoFailure({ ...e.processedData, robboError: e.robbo }));
     } else {
       yield put(saveProfilePhotoReset());
-      throw e;
+      // Robbo: no answer at all (no connection, the site restarting) — shown on the page with the code.
+      yield put(profilePageError(describeError(e)));
+      logError(e);
     }
   }
 }
@@ -202,7 +212,9 @@ export function* handleDeleteProfilePhoto(action) {
     yield put(deleteProfilePhotoReset());
   } catch (e) {
     yield put(deleteProfilePhotoReset());
-    throw e;
+    // Robbo: shown on the page with the code (src/robbo-errors) instead of being rethrown.
+    yield put(profilePageError(describeError(e)));
+    logError(e);
   }
 }
 
