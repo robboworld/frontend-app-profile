@@ -116,6 +116,7 @@ ProfilePageWrapper.propTypes = {
 };
 
 describe('<ProfilePage />', () => {
+  // Robbo: snapshots follow the Robbo layout (no banner or social links, hero header, RobboSelect, empty blocks).
   describe('Renders correctly in various states', () => {
     it('app loading', () => {
       const contextValue = {
