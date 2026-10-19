@@ -182,7 +182,9 @@ export function* handleSaveProfilePhoto(action) {
     yield put(saveProfilePhotoReset());
   } catch (e) {
     if (e.processedData) {
-      yield put(saveProfilePhotoFailure(e.processedData));
+      // Robbo: robboError — the code and number of the failure (src/robbo-errors; set on the request's
+      // error, which processAndThrowError wraps), shown under the message.
+      yield put(saveProfilePhotoFailure({ ...e.processedData, robboError: e.robbo }));
     } else {
       yield put(saveProfilePhotoReset());
       throw e;
