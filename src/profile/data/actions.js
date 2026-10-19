@@ -8,6 +8,7 @@ export const OPEN_FORM = 'OPEN_FORM';
 export const CLOSE_FORM = 'CLOSE_FORM';
 export const UPDATE_DRAFT = 'UPDATE_DRAFT';
 export const RESET_DRAFTS = 'RESET_DRAFTS';
+export const PROFILE_PAGE_ERROR = 'PROFILE_PAGE_ERROR';
 
 // FETCH PROFILE ACTIONS
 
@@ -146,4 +147,11 @@ export const updateDraft = (name, value) => ({
 
 export const resetDrafts = () => ({
   type: RESET_DRAFTS,
+});
+
+// Robbo: a failure that belongs to no form field (server error, no connection): its text, code and
+// number (src/robbo-errors) for the page. It used to be rethrown, which stopped the profile's sagas.
+export const profilePageError = robboError => ({
+  type: PROFILE_PAGE_ERROR,
+  payload: { robboError },
 });

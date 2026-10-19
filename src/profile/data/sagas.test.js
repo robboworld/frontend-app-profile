@@ -25,6 +25,10 @@ jest.mock('@edx/frontend-platform/auth', () => ({
   getAuthenticatedUser: jest.fn(),
 }));
 
+jest.mock('@edx/frontend-platform/logging', () => ({
+  logError: jest.fn(),
+}));
+
 // RootSaga and ProfileApiService must be imported AFTER the mock above.
 /* eslint-disable import/first */
 import profileSaga, {
@@ -160,6 +164,22 @@ describe('RootSaga', () => {
       expect(gen.next(selectorData).value).toEqual(put(profileActions.saveProfileBegin()));
       const result = gen.throw(error);
       expect(result.value).toEqual(put(profileActions.saveProfileFailure({ uhoh: 'not good' })));
+      expect(gen.next().value).toBeUndefined();
+    });
+
+    // Robbo: a failure of no field went to reset + rethrow, which stopped the profile's sagas; now it is
+    // shown on the page with the code (src/robbo-errors).
+    it('should show a failure of no field on the page instead of rethrowing it', () => {
+      const error = { response: { status: 500 }, isAxiosError: true, message: 'Request failed' };
+      const action = profileActions.saveProfile('ze form id', 'my username');
+      const gen = handleSaveProfile(action);
+
+      expect(gen.next().value).toEqual(select(handleSaveProfileSelector));
+      expect(gen.next(selectorData).value).toEqual(put(profileActions.saveProfileBegin()));
+      expect(gen.throw(error).value).toEqual(put(profileActions.saveProfileReset()));
+      expect(gen.next().value).toEqual(put(profileActions.profilePageError(
+        expect.objectContaining({ code: 'SRV-ERROR' }),
+      )));
       expect(gen.next().value).toBeUndefined();
     });
   });

@@ -8,6 +8,7 @@ import {
   FETCH_PROFILE,
   UPDATE_DRAFT,
   RESET_DRAFTS,
+  PROFILE_PAGE_ERROR,
 } from './actions';
 
 export const initialState = {
@@ -23,6 +24,8 @@ export const initialState = {
   drafts: {},
   isLoadingProfile: true,
   isAuthenticatedUserProfile: false,
+  // Robbo: what failed outside the form fields (src/robbo-errors), shown on the page.
+  pageError: null,
 };
 
 const profilePage = (state = initialState, action = {}) => {
@@ -30,6 +33,7 @@ const profilePage = (state = initialState, action = {}) => {
     case FETCH_PROFILE.BEGIN:
       return {
         ...state,
+        pageError: null,
         // TODO: uncomment this line after ARCH-438 Image Post API returns the url
         // is complete. Right now we refetch the whole profile causing us to show a full reload
         // instead of a partial one.
@@ -51,6 +55,7 @@ const profilePage = (state = initialState, action = {}) => {
         ...state,
         saveState: 'pending',
         errors: {},
+        pageError: null,
       };
     case SAVE_PROFILE.SUCCESS:
       return {
@@ -82,6 +87,7 @@ const profilePage = (state = initialState, action = {}) => {
         ...state,
         savePhotoState: 'pending',
         errors: {},
+        pageError: null,
       };
     case SAVE_PROFILE_PHOTO.SUCCESS:
       return {
@@ -109,6 +115,7 @@ const profilePage = (state = initialState, action = {}) => {
         ...state,
         savePhotoState: 'pending',
         errors: {},
+        pageError: null,
       };
     case DELETE_PROFILE_PHOTO.SUCCESS:
       return {
@@ -147,6 +154,12 @@ const profilePage = (state = initialState, action = {}) => {
         ...state,
         currentlyEditingField: action.payload.formId,
         drafts: {},
+        pageError: null,
+      };
+    case PROFILE_PAGE_ERROR:
+      return {
+        ...state,
+        pageError: action.payload.robboError,
       };
     case CLOSE_FORM:
       // Only close if the field to close is undefined or matches the field that is currently open
