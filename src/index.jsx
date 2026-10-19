@@ -11,7 +11,6 @@ import {
 } from '@edx/frontend-platform';
 import {
   AppProvider,
-  ErrorPage,
 } from '@edx/frontend-platform/react';
 
 import React, { StrictMode } from 'react';
@@ -19,6 +18,9 @@ import React, { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 
 import messages from './i18n';
+import {
+  initRobboErrors, RobboErrorBoundary, RobboErrorPage, robboErrorsMiddleware,
+} from './robbo-errors';
 import configureStore from './data/configureStore';
 import { RobboFooter, RobboHeader } from './robbo-layout';
 
@@ -68,30 +70,37 @@ const initYandexMetrika = () => {
   });
 };
 
+// Robbo: human-readable errors with a code and number (src/robbo-errors).
+initRobboErrors({ app: 'profile' });
+
 const rootNode = createRoot(document.getElementById('root'));
 subscribe(APP_READY, () => {
   initYandexMetrika();
   rootNode.render(
     <StrictMode>
       <AppProvider store={configureStore()}>
-        <Head />
-        <div className="robbo-layout-page">
-          <RobboHeader collapseNavIntoUserMenuOnNarrow />
-          <main id="main">
-            <AppRoutes />
-          </main>
-          <RobboFooter />
-        </div>
+        <RobboErrorBoundary>
+          <Head />
+          <div className="robbo-layout-page">
+            <RobboHeader collapseNavIntoUserMenuOnNarrow />
+            <main id="main">
+              <AppRoutes />
+            </main>
+            <RobboFooter />
+          </div>
+        </RobboErrorBoundary>
       </AppProvider>
     </StrictMode>,
   );
 });
 
-subscribe(APP_INIT_ERROR, (error) => {
-  rootNode.render(<ErrorPage message={error.message} />);
+// PubSub calls back with (topic, data): the error is the second argument.
+subscribe(APP_INIT_ERROR, (message, error) => {
+  rootNode.render(<RobboErrorPage error={error} startup />);
 });
 
 initialize({
+  authMiddleware: [robboErrorsMiddleware],
   messages,
   hydrateAuthenticatedUser: true,
   handlers: {
