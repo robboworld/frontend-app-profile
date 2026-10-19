@@ -99,6 +99,12 @@ SocialLinksWrapperWithStore.propTypes = {
 };
 
 describe('<SocialLinks />', () => {
+  // Robbo: RobboSelect scrolls the highlighted option into view when opened; jsdom has no scrollIntoView.
+  beforeAll(() => {
+    Element.prototype.scrollIntoView = jest.fn();
+  });
+
+  // Robbo: snapshots follow the Robbo field card (header title row, RobboSelect visibility, outline Cancel).
   ['certificates', 'bio', 'goals', 'socialLinks'].forEach(editMode => (
     it(`calls social links with edit mode ${editMode}`, () => {
       const component = <SocialLinksWrapper {...defaultProps} formId={editMode} />;
@@ -126,10 +132,13 @@ describe('<SocialLinks />', () => {
     fireEvent.change(inputField, { target: { value: 'test', name: platform } });
     expect(changeHandler).toHaveBeenCalledTimes(1);
 
+    // Robbo: visibility is a RobboSelect (button + listbox), not a native <select>; pick the option by clicking.
     const selectElement = container.querySelector('#visibilitySocialLinks');
-    expect(selectElement.value).toBe('private');
-    fireEvent.change(selectElement, { target: { value: 'all_users', name: 'visibilitySocialLinks' } });
+    expect(selectElement).toHaveTextContent('Just me');
+    fireEvent.click(selectElement);
+    fireEvent.click(screen.getByRole('button', { name: 'Everyone on localhost' }));
     expect(changeHandler).toHaveBeenCalledTimes(2);
+    expect(changeHandler).toHaveBeenLastCalledWith('visibilitySocialLinks', 'all_users');
 
     fireEvent.submit(container.querySelector('[aria-labelledby="editing-form"]'));
     expect(submitHandler).toHaveBeenCalledTimes(1);
