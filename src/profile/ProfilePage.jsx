@@ -41,6 +41,7 @@ import { isProfileBlockVisible } from './utils/fieldVisibility';
 import messages from './ProfilePage.messages';
 
 import withParams from '../utils/hoc';
+import { RobboErrorDetails } from '../robbo-errors';
 
 ensureConfig(['CREDENTIALS_BASE_URL', 'LMS_BASE_URL'], 'ProfilePage');
 
@@ -166,6 +167,7 @@ class ProfilePage extends React.Component {
         <div className="col-lg-4">
           <Alert variant="danger" dismissible={false} show>
             {photoUploadError.userMessage}
+            {photoUploadError.robboError && <RobboErrorDetails info={photoUploadError.robboError} />}
           </Alert>
         </div>
       </div>
@@ -407,7 +409,8 @@ ProfilePage.propTypes = {
   currentlyEditingField: PropTypes.string,
 
   // Page state helpers
-  photoUploadError: PropTypes.objectOf(PropTypes.string),
+  // Robbo: plus robboError, an object (src/robbo-errors)
+  photoUploadError: PropTypes.objectOf(PropTypes.oneOfType([PropTypes.string, PropTypes.object])),
 
   // Actions
   fetchProfile: PropTypes.func.isRequired,
