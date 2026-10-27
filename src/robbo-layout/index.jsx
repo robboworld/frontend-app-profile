@@ -13,6 +13,7 @@ import { AppContext } from '@edx/frontend-platform/react';
 
 import RobboStackBadge from './stackBadge';
 import RobboWhatsNew from './whatsNew';
+import RobboNotificationsBell from './notificationsBell';
 import './index.scss';
 
 const MOBILE_COLLAPSE_NAV_QUERY = '(max-width: 767.98px)';
@@ -183,6 +184,7 @@ export const RobboHeader = ({
         </nav>
         <div className="robbo-layout-header__trailing">
           {username && <RobboWhatsNew className="robbo-layout-header__whats-new" />}
+          {username && <RobboNotificationsBell className="robbo-layout-header__notifications" />}
           {showStudioLink && (
             <div
               className="robbo-header-studio-link"
