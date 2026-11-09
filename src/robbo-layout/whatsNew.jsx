@@ -9,32 +9,16 @@ import PropTypes from 'prop-types';
 import { getConfig } from '@edx/frontend-platform';
 import { getLocale } from '@edx/frontend-platform/i18n';
 
+import { createWidgetLoader, preloadWidget } from './widgetPreload';
+
 // «Что нового» button: one widget for every header, served by the LMS (robbo_changelog); it fetches
 // the user's changes on the LMS session and hides itself for guests. For learners it reports
 // {inMenu, unread, label, open} through onChange instead: RobboHeader shows a profile menu item.
 const WIDGET_PATH = '/api/robbo/v1/whats-new/widget.js';
 
-let widgetPromise = null;
+export const loadWhatsNewWidget = createWidgetLoader(WIDGET_PATH, 'RobboWhatsNew');
 
-export const loadWhatsNewWidget = (lmsBaseUrl) => {
-  if (window.RobboWhatsNew) {
-    return Promise.resolve(window.RobboWhatsNew);
-  }
-  if (!widgetPromise) {
-    widgetPromise = new Promise((resolve, reject) => {
-      const script = document.createElement('script');
-      script.src = `${lmsBaseUrl.replace(/\/$/, '')}${WIDGET_PATH}`;
-      script.async = true;
-      script.onload = () => (window.RobboWhatsNew ? resolve(window.RobboWhatsNew) : reject(new Error('no widget')));
-      script.onerror = () => {
-        widgetPromise = null;
-        reject(new Error('whats-new widget failed to load'));
-      };
-      document.head.appendChild(script);
-    });
-  }
-  return widgetPromise;
-};
+preloadWidget(loadWhatsNewWidget);
 
 const RobboWhatsNew = ({ className, profileToggleRef, onChange }) => {
   const containerRef = React.useRef(null);
